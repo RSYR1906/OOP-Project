@@ -31,51 +31,51 @@ public class Main {
 
 
         // Test StudentRepository
-//        Path path = Paths.get(studentRepository.getFilePath());
-//        if (!Files.exists(path)) {
-//            try {
-//                System.out.println("No file at path. Creating new file.");
-//                Files.createFile(path);
-//            } catch (IOException e) {
-//                System.out.println("Failed to create file: " + e.getMessage());
-//                return;
-//            }
-//        }
-//
-//        studentRepository.load();
-//        List<Student> students = studentRepository.getAllStudents();
-//        students.forEach(student -> {
-//            System.out.println("Name " + student.getName());
-//            System.out.println("Faculty " + student.getFaculty());
-//        });
-//        Student s1 = new Student("Tony", "Tony@ntu.edu.sg", "NBS");
-//        try{
-//            studentRepository.add(s1);
-//        } catch (DuplicateEntityExistsException e){
-//            System.out.println("Failed to add entity: " + e.getMessage());
-//            return;
-//        }
-
-         //Test CampController and CampRepository
-        Path campPath = Paths.get(campRepository.getFilePath());
-        if (!Files.exists(campPath)) {
+        Path path = Paths.get(studentRepository.getFilePath());
+        if (!Files.exists(path)) {
             try {
                 System.out.println("No file at path. Creating new file.");
-                Files.createFile(campPath);
+                Files.createFile(path);
             } catch (IOException e) {
                 System.out.println("Failed to create file: " + e.getMessage());
                 return;
             }
         }
 
-        campRepository.load();
-        List<Camp> camps = campRepository.getAllCamps();
-        camps.forEach(camp -> {
-            System.out.println("CampName " + camp.getCampName());
-            System.out.println("Description " + camp.getDescription());
+        studentRepository.load();
+        List<Student> students = studentRepository.getAllStudents();
+        students.forEach(student -> {
+            System.out.println("Name " + student.getName());
+            System.out.println("Faculty " + student.getFaculty());
         });
+        Student s1 = new Student("David", "David@ntu.edu.sg", "NBS");
+        try{
+            studentRepository.add(s1);
+        } catch (DuplicateEntityExistsException e){
+            System.out.println("Failed to add entity: " + e.getMessage());
+            return;
+        }
 
-        campController.createCamp("NBS FOP", "Yearly event to welcome freshmen", LocalDate.of(2023, 8, 22), LocalDate.of(2023, 8, 25), LocalDate.of(2023, 7, 12), Faculty.CCEB, "NTU campus", 150, 30);
+         //Test CampController and CampRepository
+//        Path campPath = Paths.get(campRepository.getFilePath());
+//        if (!Files.exists(campPath)) {
+//            try {
+//                System.out.println("No file at path. Creating new file.");
+//                Files.createFile(campPath);
+//            } catch (IOException e) {
+//                System.out.println("Failed to create file: " + e.getMessage());
+//                return;
+//            }
+//        }
+//
+//        campRepository.load();
+//        List<Camp> camps = campRepository.getAllCamps();
+//        camps.forEach(camp -> {
+//            System.out.println("CampName " + camp.getCampName());
+//            System.out.println("Description " + camp.getDescription());
+//        });
+//
+//        campController.createCamp("NBS FOP", "Yearly event to welcome freshmen", LocalDate.of(2023, 8, 22), LocalDate.of(2023, 8, 25), LocalDate.of(2023, 7, 12), Faculty.CCEB, "NTU campus", 150, 30);
 
 
 

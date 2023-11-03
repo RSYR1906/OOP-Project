@@ -1,16 +1,47 @@
-public interface User {
-    // Get the user ID, which is the part before @ in the email address.
-    String getUserId();
+package main.model.user;
 
-    // Get the user's email address.
+import main.model.Model;
+
+/**
+ * A class that represents a user
+ */
+public interface User extends Model {
+    /**
+     * Gets the username of the user
+     *
+     * @return the name of the user
+     */
+    String getUserName();
+
+    /**
+     * Gets the hashed password of the user
+     *
+     * @return the hashed password of the user
+     */
+    String getHashedPassword();
+
+    /**
+     * Sets the hashed password of the user
+     *
+     * @param hashedPassword the hashed password of the user
+     */
+    void setHashedPassword(String hashedPassword);
+
+    /**
+     * Gets the email of the user
+     *
+     * @return the email of the user
+     */
     String getEmail();
 
-    // Get the user's password.
-    String getPassword();
-
-    // Change the user's password.
-    void changePassword(String newPassword);
-
-    // Get the user's faculty information.
-    String getFaculty();
+    /**
+     * The function to check if username is equal to the user's username regardless of case
+     *
+     * @param username the username to be checked
+     *
+     * @return true if the username is equal to the user's username regardless of case
+     */
+    default boolean checkUsername(String username) {
+        return this.getUserName().equalsIgnoreCase(username);
+    }
 }

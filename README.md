@@ -47,7 +47,7 @@ We are from Nanyang Technological University, Singapore. There are 4 members in 
 ## UML Class Diagram
 
 ### Controller-Sub Diagram
-![Controller Sub-Diagram](UMLClassDiagram/controller.png)
+![Controller Sub-Diagram](UMLDiagram/Controllers.png)
 
 ### Entity-Sub Diagram
-![Entity Sub-Diagram](UMLClassDiagram/entity.png)
+![Entity Sub-Diagram](UMLDiagram/entity.png)

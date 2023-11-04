@@ -7,5 +7,9 @@ To test out Repository go src/main/java/Main.java to run and test StudentReposit
 
 
 # UML Class Diagram
+
+Controller-Sub Diagram
 ![UML Diagram](UMLDiagram/Controllers.png)
+
+Entity-Sub Diagram
 ![UML Diagram](UMLDiagram/entity.png)

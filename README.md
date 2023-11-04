@@ -6,5 +6,6 @@ Building an OO Application on Camp Application and Management System (CAMs). CAM
 To test out Repository go src/main/java/Main.java to run and test StudentRepository, CampController and CampRepository.
 
 
+# UML Class Diagram
 ![UML Diagram](UMLDiagram/Controllers.png)
 ![UML Diagram](UMLDiagram/entity.png)

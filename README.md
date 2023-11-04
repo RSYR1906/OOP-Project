@@ -44,10 +44,10 @@ We are from Nanyang Technological University, Singapore. There are 4 members in 
   - [x] Generate performance report
 
 
-# UML Class Diagram
+## UML Class Diagram
 
-Controller-Sub Diagram
-![UML Diagram](UMLDiagram/Controllers.png)
+### Controller-Sub Diagram
+[![Controller Sub-Diagram](UMLClassDiagram/controller.svg)](UMLClassDiagram/controller.svg)
 
-Entity-Sub Diagram
-![UML Diagram](UMLDiagram/entity.png)
+### Entity-Sub Diagram
+[![Entity Sub-Diagram](UMLClassDiagram/entity.svg)](UMLClassDiagram/entity.svg)

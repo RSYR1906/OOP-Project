@@ -1,3 +1,5 @@
+package org.sc2002.boundary
+
 import java.util.List;
 import java.util.Scanner;
 

@@ -1,6 +1,10 @@
 package org.sc2002.entity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import org.sc2002.utils.exception.EntityNotFoundException;
+import org.sc2002.utils.exception.CampFullException;
 
 public class Camp implements Entity{
 
@@ -19,7 +23,11 @@ public class Camp implements Entity{
     private int campCommitteeSlots;
 
     //private Staff staffInCharge; // add after Staff implementation
-    private Student[] studentsRegistered;
+    //private Student[] studentsRegistered;
+    
+    // i dont know, chatgpt ask me to change -zhiyi
+    private ArrayList<Student> studentsRegistered;
+    
     private Student[] committeeRegistered;
 
 
@@ -107,12 +115,11 @@ public class Camp implements Entity{
 //        this.staffInCharge = staffInCharge;
 //    }
 
-    public Student[] getStudentsRegistered() {
-        return studentsRegistered;
-    }
 
-    public void setStudentsRegistered(Student[] studentsRegistered) {
-        this.studentsRegistered = studentsRegistered;
+
+    public void setStudentsRegistered(Student[] studentsArray) {
+        this.studentsRegistered.clear();
+        this.studentsRegistered.addAll(Arrays.asList(studentsArray));
     }
 
     public Student[] getCommitteeRegistered() {
@@ -133,7 +140,36 @@ public class Camp implements Entity{
         this.location = location;
         this.totalSlots = totalSlots;
         this.campCommitteeSlots = campCommitteeSlots;
+        
+        this.studentsRegistered = new ArrayList<>(); 
         //this.staffInCharge = staffInCharge;
+    }
+    
+    public void registerStudent(Student student) throws CampFullException {
+        if (studentsRegistered.size() < totalSlots) {
+            studentsRegistered.add(student);
+        } else {
+            throw new CampFullException("No available slots to register for the camp.");
+        }
+    }
+    
+    
+    public void withdrawStudent(Student student) throws EntityNotFoundException {
+        boolean isRemoved = studentsRegistered.remove(student);
+        if (!isRemoved) {
+            throw new EntityNotFoundException("Student is not registered for this camp.");
+        }
+    }
+    
+    public Student[] getStudentsRegistered() {
+        return studentsRegistered.toArray(new Student[0]);
+    }
+    
+    public boolean canStudentRegister(Student student) {
+        LocalDate now = LocalDate.now();
+        boolean isBeforeDeadline = !now.isAfter(campRegistrationEndDate);
+        boolean isFacultyAllowed = student.getFaculty() == userGroupOpenTo || userGroupOpenTo == null; // Assuming null means open to all faculties
+        return isBeforeDeadline && isFacultyAllowed && studentsRegistered.size() < totalSlots;
     }
 
     public String toStringWithSeparator(String separator){

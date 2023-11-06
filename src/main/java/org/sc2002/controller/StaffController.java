@@ -22,7 +22,7 @@ public class StaffController {
     }
 
     // Method to edit an existing camp
-    public Camp editCamp(Staff staff, Camp campToEdit, String newDescription, LocalDate newStartDate, LocalDate newEndDate, LocalDate newRegistrationEndDate, Faculty newUserGroup, String newLocation, int newTotalSlots, int newCampCommitteeSlots) {
+    public Camp editCamp(Staff staff, Camp campToEdit, String newDescription, LocalDate newStartDate, LocalDate newEndDate, LocalDate newRegistrationEndDate, Faculty newUserGroup, String newLocation, int newTotalSlots, int newCampCommitteeSlots) throws WrongStaffException {
         // Check if the staff is the owner of the camp
         if (staffCamps.get(staff).contains(campToEdit)) {
             // Update the camp's details
@@ -45,7 +45,7 @@ public class StaffController {
     }
 
     // Method to delete a camp
-    public boolean deleteCamp(Staff staff, Camp campToDelete) {
+    public boolean deleteCamp(Staff staff, Camp campToDelete) throws WrongStaffException{
         if (staffCamps.get(staff).contains(campToDelete)) {
             // Remove the camp from the list of all camps
             allCamps.remove(campToDelete);
@@ -61,9 +61,22 @@ public class StaffController {
         }
     }
 
-    // Method to toggle the visibility of a camp
-    public void toggleVisibilityOfCamp(Camp camp) {
-        
+    // Method to toggle the visibility of a camp with exception handling
+    public void toggleVisibilityOfCamp(Camp camp) throws WrongStaffException {
+        // Check if the camp exists
+        if (allCamps.contains(camp)) {                                        //Need to add an isVisible() to the Camp.java
+            // Check the current visibility status of the camp
+            if (camp.isVisible()) {
+                // If the camp is currently visible, set it to "off"
+                camp.setVisible(false);
+            } else {
+                // If the camp is currently not visible, set it to "on"
+                camp.setVisible(true);
+            }    
+        } else {
+            // Camp does not exist, throw a custom exception
+            throw new WrongStaffException("Camp does not exist or is not accessible by the staff.");
+        }
     }
 
     // Method to view all camps

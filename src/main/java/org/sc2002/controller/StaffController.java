@@ -1,6 +1,7 @@
 package org.sc2002.controller;
 import java.util.List;
 import java.util.Map;
+import org.sc2002.utils.exception.WrongStaffException;
 
 public class StaffController {
     // List to store all camps
@@ -21,14 +22,23 @@ public class StaffController {
     }
 
     // Method to edit an existing camp
-    public Camp editCamp(Staff staff, Camp campToEdit) {
+    public Camp editCamp(Staff staff, Camp campToEdit, String newDescription, LocalDate newStartDate, LocalDate newEndDate, LocalDate newRegistrationEndDate, Faculty newUserGroup, String newLocation, int newTotalSlots, int newCampCommitteeSlots) {
         // Check if the staff is the owner of the camp
         if (staffCamps.get(staff).contains(campToEdit)) {
             // Update the camp's details
-            // You can implement the editing logic here
+            campToEdit.setDescription(newDescription);
+            campToEdit.setCampStartDate(newStartDate);
+            campToEdit.setCampEndDate(newEndDate);
+            campToEdit.setCampRegistrationEndDate(newRegistrationEndDate);
+            campToEdit.setUserGroupOpenTo(newUserGroup);
+            campToEdit.setLocation(newLocation);
+            campToEdit.setTotalSlots(newTotalSlots);
+            campToEdit.setCampCommitteeSlots(newCampCommitteeSlots);
+    
             return campToEdit;
         } else {
             // Camp does not belong to the staff
+            throw new WrongStaffException("Camp does not belong to the staff.");
             // Handle the error or provide appropriate feedback
             return null;
         }
@@ -46,6 +56,7 @@ public class StaffController {
             return true;
         } else {
             // Camp does not belong to the staff
+            throw new WrongStaffException("Camp does not belong to the staff.");
             return false;
         }
     }

@@ -52,7 +52,7 @@ public class StaffController {
 
     // Method to toggle the visibility of a camp
     public void toggleVisibilityOfCamp(Camp camp) {
-        // Implement the logic to toggle camp visibility (on/off)
+        
     }
 
     // Method to view all camps

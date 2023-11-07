@@ -9,7 +9,6 @@ import org.sc2002.utils.exception.CampFullException;
 public class Camp implements Entity{
 
     private String campName;
-    private String campID;
     private String description;
 
     private LocalDate campStartDate;
@@ -23,12 +22,10 @@ public class Camp implements Entity{
     private int campCommitteeSlots;
 
     //private Staff staffInCharge; // add after Staff implementation
-    //private Student[] studentsRegistered;
-    
-    // i dont know, chatgpt ask me to change -zhiyi
+
     private ArrayList<Student> studentsRegistered;
     
-    private Student[] committeeRegistered;
+    private ArrayList<Student> committeeRegistered;
 
 
     public String getCampName() {
@@ -41,7 +38,7 @@ public class Camp implements Entity{
 
     public String getID() {
         return campName;
-    } // to be changed to unique string
+    } // ID to use unique campName
 
     public String getDescription() {
         return description;
@@ -122,11 +119,11 @@ public class Camp implements Entity{
         this.studentsRegistered.addAll(Arrays.asList(studentsArray));
     }
 
-    public Student[] getCommitteeRegistered() {
+    public ArrayList<Student> getCommitteeRegistered() {
         return committeeRegistered;
     }
 
-    public void setCommitteeRegistered(Student[] committeeRegistered) {
+    public void setCommitteeRegistered(ArrayList<Student> committeeRegistered) {
         this.committeeRegistered = committeeRegistered;
     }
 

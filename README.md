@@ -12,12 +12,12 @@ To test out Repository go src/main/java/Main.java to run and test StudentReposit
 
 We are from Nanyang Technological University, Singapore. There are 4 members in our group:
 
-| Name         | Github Account                                  | Email                 |
-|--------------|-------------------------------------------------|-----------------------|
-| Ryan Sim Yao Rong     | [RSYR1906](https://github.com/RSYR1906)| [ryan0041@e.ntu.edu.sg](mailto:ryan0041@e.ntu.edu.sg) |
-| Won Seok | [wsklee](https://github.com/wsklee) | [@e.ntu.edu.sg](mailto:@e.ntu.edu.sg) |
-| Zhi Yi | [ii5ii](https://github.com/ii5ii) | [zzuo003@e.ntu.edu.sg](mailto:@e.ntu.edu.sg) |
-| Torrey | [TorDij](https://github.com/TorDij)   | [tdijong001@e.ntu.edu.sg](mailto:tdijong001@e.ntu.edu.sg)  |
+| Name              | Github Account                                  | Email                                                     |
+|-------------------|-------------------------------------------------|-----------------------------------------------------------|
+| Ryan Sim Yao Rong | [RSYR1906](https://github.com/RSYR1906)| [ryan0041@e.ntu.edu.sg](mailto:ryan0041@e.ntu.edu.sg)     |
+| Wonseok           | [wsklee](https://github.com/wsklee) | [wonseok001@e.ntu.edu.sg](mailto:@e.ntu.edu.sg)           |
+| Zhi Yi            | [ii5ii](https://github.com/ii5ii) | [zzuo003@e.ntu.edu.sg](mailto:@e.ntu.edu.sg)              |
+| Torrey            | [TorDij](https://github.com/TorDij)   | [tdijong001@e.ntu.edu.sg](mailto:tdijong001@e.ntu.edu.sg) |
 
 
 ## Features
@@ -47,7 +47,7 @@ We are from Nanyang Technological University, Singapore. There are 4 members in 
 ## UML Class Diagram
 
 ### Controller-Sub Diagram
-![Controller Sub-Diagram](UMLDiagram/Controllers.png)
+![Controller Sub-Diagram](UMLDiagram/Controller.png)
 
 ### Entity-Sub Diagram
-![Entity Sub-Diagram](UMLDiagram/entity.png)
+![Entity Sub-Diagram](UMLDiagram/Entity.png)

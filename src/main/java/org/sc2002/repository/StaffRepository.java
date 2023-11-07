@@ -34,7 +34,7 @@ public class StaffRepository extends Repository {
     protected Function<Entity, String> formatter() {
         return staff -> {
             Staff staffEntity = (Staff) staff;
-            return staffEntity.getName() + SEPARATOR + staffEntity.getEmail() + SEPARATOR + staffEntity.getFaculty().name();
+            return staffEntity.getName() + SEPARATOR + staffEntity.getEmail() + SEPARATOR + staffEntity.getPassword() + SEPARATOR + staffEntity.getFaculty();
         };
     }
 

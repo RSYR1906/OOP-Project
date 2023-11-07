@@ -33,7 +33,10 @@ public class StudentRepository extends Repository{
 
     @Override
     protected Function<Entity, String> formatter() {
-        return student -> ((Student) student).getName() + SEPARATOR + ((Student) student).getEmail() + SEPARATOR + ((Student) student).getFaculty();
+        return student -> {
+            Student studentEntity = (Student) student;
+            return studentEntity.getName() + SEPARATOR + studentEntity.getEmail() + SEPARATOR + studentEntity.getPassword() + SEPARATOR  + studentEntity.getFaculty();
+        };
     }
 
     @Override

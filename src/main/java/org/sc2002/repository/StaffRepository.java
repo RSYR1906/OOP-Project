@@ -3,6 +3,7 @@ package org.sc2002.repository;
 import org.sc2002.entity.Entity;
 import org.sc2002.entity.LineMapper;
 import org.sc2002.entity.Staff;
+import org.sc2002.entity.Student;
 import org.sc2002.utils.exception.EntityNotFoundException;
 
 import java.util.ArrayList;
@@ -42,6 +43,8 @@ public class StaffRepository extends Repository {
     protected LineMapper<Entity> mapper() {
         return fields -> new Staff(fields[0].trim(), fields[1].trim(), fields[2].trim(), fields[3].trim());
     }
+
+
 
     @Override
     public String getFilePath() {

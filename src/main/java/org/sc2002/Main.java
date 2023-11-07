@@ -46,9 +46,11 @@ public class Main {
         List<Student> students = studentRepository.getAllStudents();
         students.forEach(student -> {
             System.out.println("Name " + student.getName());
+            System.out.println("Email " + student.getEmail());
+            System.out.println("Password " + student.getPassword());
             System.out.println("Faculty " + student.getFaculty());
         });
-        Student s1 = new Student("David", "David@ntu.edu.sg", "NBS");
+        Student s1 = new Student("David", "David@ntu.edu.sg", "password", "NBS");
         try{
             studentRepository.add(s1);
         } catch (DuplicateEntityExistsException e){

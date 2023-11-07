@@ -1,5 +1,8 @@
 package org.sc2002.boundary;
 
+import org.sc2002.controller.UserController;
+import org.sc2002.entity.User;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,7 +22,7 @@ public class LoginUI {
         User authenticatedUser = userController.authenticateUser(userId, password);
 
         if (authenticatedUser != null) {
-            System.out.println("Login successful. Welcome, " + authenticatedUser.getUserId() + "!");
+            System.out.println("Login successful. Welcome, " + authenticatedUser.getID() + "!");
             System.out.println("Faculty: " + authenticatedUser.getFaculty());
             System.out.println("User Role: " + userController.getUserRole(authenticatedUser));
         } else {

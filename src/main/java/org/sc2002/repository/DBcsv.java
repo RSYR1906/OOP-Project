@@ -64,12 +64,12 @@ public class DBcsv {
             }
         }
         try {
-            List<Student> students =read(filename, fields -> new Student(fields[0].trim(), fields[1].trim(), fields[2].trim()));
+            List<Student> students =read(filename, fields -> new Student(fields[0].trim(), fields[1].trim(), fields[2].trim(), fields[3].trim()));
             students.forEach(student -> {
                 System.out.println("Name " + student.getName());
                 System.out.println("Faculty " + student.getFaculty());
             });
-            Student s1 = new Student("Tom", "tom@ntu.edu.sg", "SCSE");
+            Student s1 = new Student("Tom","tom@ntu.edu.sg", "password" ,"SCSE");
             students.add(s1);
             save(filename, students, student -> student.getName() +SEPARATOR+ student.getEmail() +SEPARATOR+ student.getFaculty());
         } catch (IOException e) {

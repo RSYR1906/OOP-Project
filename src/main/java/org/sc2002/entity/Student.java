@@ -10,8 +10,8 @@ public class Student extends User {
     private boolean isCampCommitteeMember;
     private List<Camp> registeredCamps;
 
-    public Student(String name, String email, String faculty) {
-        super(name, email, Faculty.valueOf(faculty.toUpperCase()));
+    public Student(String name, String email, String password, String faculty) {
+        super(name, email, password,Faculty.valueOf(faculty.toUpperCase()));
         this.isCampCommitteeMember = false;
         this.registeredCamps = new ArrayList<>();
     }

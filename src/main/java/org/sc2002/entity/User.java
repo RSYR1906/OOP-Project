@@ -6,14 +6,22 @@ public abstract class User implements Entity{
     private String email;
     private Faculty faculty;
 
-    public User(String name, String email,  Faculty faculty) {
+    private String password;
+
+    public User(String name, String email, String password, Faculty faculty) {
         this.email = email;
         this.name = name;
+        this.password = password;
         this.faculty = faculty;
+
     }
 
     public String getEmail() {
         return email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getName() {

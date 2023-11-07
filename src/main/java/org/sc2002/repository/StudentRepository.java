@@ -38,7 +38,7 @@ public class StudentRepository extends Repository{
 
     @Override
     protected LineMapper<Entity> mapper() {
-        return fields -> new Student(fields[0].trim(), fields[1].trim(), fields[2].trim());
+        return fields -> new Student(fields[0].trim(), fields[1].trim(), fields[2].trim(), fields[3].trim());
     }
 
     @Override

@@ -40,7 +40,7 @@ public class StaffRepository extends Repository {
 
     @Override
     protected LineMapper<Entity> mapper() {
-        return fields -> new Staff(fields[0].trim(), fields[1].trim(), fields[2].trim());
+        return fields -> new Staff(fields[0].trim(), fields[1].trim(), fields[2].trim(), fields[3].trim());
     }
 
     @Override

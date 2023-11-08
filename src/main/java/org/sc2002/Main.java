@@ -20,8 +20,8 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        StudentRepository studentRepository = StudentRepository.getInstance();
-        StaffRepository staffRepository = StaffRepository.getInstance();
+        StudentRepository studentRepository = new StudentRepository();
+        StaffRepository staffRepository = new StaffRepository();
         CampRepository campRepository = new CampRepository();
         CampController campController = new CampController(campRepository);
 
@@ -29,7 +29,7 @@ public class Main {
         System.out.println("Hello world!");
 
 
-//        // Test StudentRepository
+//      // Test StudentRepository
 //        Path path = Paths.get(studentRepository.getFilePath());
 //        if (!Files.exists(path)) {
 //            try {
@@ -49,7 +49,7 @@ public class Main {
 //            System.out.println("Password " + student.getPassword());
 //            System.out.println("Faculty " + student.getFaculty());
 //        });
-//        Student s1 = new Student("Max", "MAX@ntu.edu.sg", "password", "NBS");
+//        Student s1 = new Student("Dave", "DAVE@ntu.edu.sg", "password", "NBS");
 //        try{
 //            studentRepository.add(s1);
 //        } catch (DuplicateEntityExistsException e){
@@ -58,25 +58,25 @@ public class Main {
 //        }
 
          //Test CampController and CampRepository
-        Path campPath = Paths.get(campRepository.getFilePath());
-        if (!Files.exists(campPath)) {
-            try {
-                System.out.println("No file at path. Creating new file.");
-                Files.createFile(campPath);
-            } catch (IOException e) {
-                System.out.println("Failed to create file: " + e.getMessage());
-                return;
-            }
-        }
-
-        campRepository.load();
-        List<Camp> camps = campRepository.getAllCamps();
-        camps.forEach(camp -> {
-            System.out.println("CampName " + camp.getCampName());
-            System.out.println("Description " + camp.getDescription());
-        });
-
-        campController.createCamp("CAC FOP", "CAC Yearly event to welcome freshmen", LocalDate.of(2023, 8, 10), LocalDate.of(2023, 8, 13), LocalDate.of(2023, 7, 12), Faculty.ALL, "NTU campus", 300, 30);
+//        Path campPath = Paths.get(campRepository.getFilePath());
+//        if (!Files.exists(campPath)) {
+//            try {
+//                System.out.println("No file at path. Creating new file.");
+//                Files.createFile(campPath);
+//            } catch (IOException e) {
+//                System.out.println("Failed to create file: " + e.getMessage());
+//                return;
+//            }
+//        }
+//
+//        campRepository.load();
+//        List<Camp> camps = campRepository.getAllCamps();
+//        camps.forEach(camp -> {
+//            System.out.println("CampName " + camp.getCampName());
+//            System.out.println("Description " + camp.getDescription());
+//        });
+//
+//        campController.createCamp("CAC FOP", "CAC Yearly event to welcome freshmen", LocalDate.of(2023, 8, 10), LocalDate.of(2023, 8, 13), LocalDate.of(2023, 7, 12), Faculty.ALL, "NTU campus", 300, 30);
 
         // Test StaffRepository
 //        Path path = Paths.get(staffRepository.getFilePath());

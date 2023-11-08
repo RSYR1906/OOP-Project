@@ -15,22 +15,6 @@ public class StudentRepository extends Repository{
 
     protected final String FILENAME = "student.csv";
 
-    // SINGLETON PATTERN
-    // Private static variable of the same class that is the only instance of the class.
-    private static StudentRepository instance;
-
-    // Private constructor to restrict instantiation of the class from other classes.
-    private StudentRepository() {}
-
-    // Public static method that returns the instance of the class.
-    public static synchronized StudentRepository getInstance() {
-        if (instance == null) {
-            instance = new StudentRepository();
-        }
-        return instance;
-    }
-
-
     @Override
     protected Function<Entity, String> formatter() {
         return student -> {

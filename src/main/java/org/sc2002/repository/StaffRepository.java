@@ -16,21 +16,6 @@ public class StaffRepository extends Repository {
 
     protected final String FILENAME = "staff.csv";
 
-    // SINGLETON PATTERN
-    // Private static variable of the same class that is the only instance of the class.
-    private static StaffRepository instance;
-
-    // Private constructor to restrict instantiation of the class from other classes.
-    private StaffRepository() {}
-
-    // Public static method that returns the instance of the class.
-    public static synchronized StaffRepository getInstance() {
-        if (instance == null) {
-            instance = new StaffRepository();
-        }
-        return instance;
-    }
-
     @Override
     protected Function<Entity, String> formatter() {
         return staff -> {

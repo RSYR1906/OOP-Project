@@ -7,7 +7,14 @@ import java.util.List;
 import java.util.Scanner;
 
 public class LoginUI {
-    public static void main(String[] args) {
+
+    UserController userController;
+
+    public LoginUI(UserController userController) {
+        this.userController = userController;
+    }
+
+     public void login() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to the Login Page");
 
@@ -17,7 +24,6 @@ public class LoginUI {
         System.out.print("Enter your password: ");
         String password = scanner.nextLine();
 
-        UserController userController = new UserController();
 
         User authenticatedUser = userController.authenticateUser(userId, password);
 

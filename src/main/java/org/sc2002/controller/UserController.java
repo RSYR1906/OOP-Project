@@ -4,6 +4,8 @@ import org.sc2002.entity.Faculty;
 import org.sc2002.entity.Staff;
 import org.sc2002.entity.Student;
 import org.sc2002.entity.User;
+import org.sc2002.repository.StaffRepository;
+import org.sc2002.repository.StudentRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,16 +13,15 @@ import java.util.List;
 public class UserController {
     private List<User> users;
 
-    public UserController() {
+    public UserController(StudentRepository studentRepository, StaffRepository staffRepository) {
         users = new ArrayList<>();
-        users.add(new Student("student1", "student1@ntu.edu.sg" ,"password", "EEE"));
-        users.add(new Student("student2", "student2@ntu.edu.sg","password", "SCSE"));
-        users.add(new Staff("staff1", "staff1@ntu.edu.sg","admin123", "NBS"));
-        users.add(new Staff("staff2", "staff2@ntu.edu.sg" ,"admin123", "SSS"));
+        users.addAll(studentRepository.getAllStudents());
+        users.addAll(staffRepository.getAllStaff());
     }
 
     public User authenticateUser(String userId, String password) {
         for (User user : users) {
+            //System.out.println(user.getID()+" "+user.getPassword());
             if (user.getID().equals(userId) && user.getPassword().equals(password)) {
                 return user;
             }

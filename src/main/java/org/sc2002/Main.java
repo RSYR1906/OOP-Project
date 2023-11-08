@@ -1,6 +1,8 @@
 package org.sc2002;
 
+import org.sc2002.boundary.LoginUI;
 import org.sc2002.controller.CampController;
+import org.sc2002.controller.UserController;
 import org.sc2002.entity.*;
 import org.sc2002.repository.CampRepository;
 import org.sc2002.repository.StaffRepository;
@@ -23,10 +25,23 @@ public class Main {
         StudentRepository studentRepository = new StudentRepository();
         StaffRepository staffRepository = new StaffRepository();
         CampRepository campRepository = new CampRepository();
+
+        campRepository.load();
+        studentRepository.load();
+        staffRepository.load();
+
+
         CampController campController = new CampController(campRepository);
+        UserController userController = new UserController(studentRepository, staffRepository);
+
+        LoginUI loginUI = new LoginUI(userController);
 
 
         System.out.println("Hello world!");
+
+
+
+        loginUI.login();
 
 
 //      // Test StudentRepository

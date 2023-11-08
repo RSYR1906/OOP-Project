@@ -10,23 +10,11 @@ import java.time.LocalDate;
 
 public class CampController {
 
-    // SINGLETON PATTERN
-    // Private static variable of the same class that is the only instance of the class.
-    private static CampController instance;
+    private CampRepository campRepository;
 
-    // Private constructor to restrict instantiation of the class from other classes.
-    private CampController() {}
-
-    // Public static method that returns the instance of the class.
-    public static synchronized CampController getInstance() {
-        if (instance == null) {
-            instance = new CampController();
-        }
-        return instance;
+    public CampController(CampRepository campRepository) {
+        this.campRepository = campRepository;
     }
-
-    CampRepository campRepository = CampRepository.getInstance();
-
 
     public void createCamp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots){
 

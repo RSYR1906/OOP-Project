@@ -14,21 +14,6 @@ public class CampRepository extends Repository{
 
     protected final String FILENAME = "camp.csv";
 
-    // SINGLETON PATTERN
-    // Private static variable of the same class that is the only instance of the class.
-    private static CampRepository instance;
-
-    // Private constructor to restrict instantiation of the class from other classes.
-    private CampRepository() {}
-
-    // Public static method that returns the instance of the class.
-    public static synchronized CampRepository getInstance() {
-        if (instance == null) {
-            instance = new CampRepository();
-        }
-        return instance;
-    }
-
     @Override
     protected Function<Entity, String> formatter() {
         return camp -> formatEntityToCampString(camp);

@@ -22,8 +22,8 @@ public class Main {
 
         StudentRepository studentRepository = StudentRepository.getInstance();
         StaffRepository staffRepository = StaffRepository.getInstance();
-        CampRepository campRepository = CampRepository.getInstance();
-        CampController campController = CampController.getInstance();
+        CampRepository campRepository = new CampRepository();
+        CampController campController = new CampController(campRepository);
 
 
         System.out.println("Hello world!");
@@ -58,53 +58,53 @@ public class Main {
 //        }
 
          //Test CampController and CampRepository
-//        Path campPath = Paths.get(campRepository.getFilePath());
-//        if (!Files.exists(campPath)) {
-//            try {
-//                System.out.println("No file at path. Creating new file.");
-//                Files.createFile(campPath);
-//            } catch (IOException e) {
-//                System.out.println("Failed to create file: " + e.getMessage());
-//                return;
-//            }
-//        }
-//
-//        campRepository.load();
-//        List<Camp> camps = campRepository.getAllCamps();
-//        camps.forEach(camp -> {
-//            System.out.println("CampName " + camp.getCampName());
-//            System.out.println("Description " + camp.getDescription());
-//        });
-//
-//        campController.createCamp("NBS FOP", "Yearly event to welcome freshmen", LocalDate.of(2023, 8, 22), LocalDate.of(2023, 8, 25), LocalDate.of(2023, 7, 12), Faculty.CCEB, "NTU campus", 150, 30);
-
-        // Test StaffRepository
-        Path path = Paths.get(staffRepository.getFilePath());
-        if (!Files.exists(path)) {
+        Path campPath = Paths.get(campRepository.getFilePath());
+        if (!Files.exists(campPath)) {
             try {
                 System.out.println("No file at path. Creating new file.");
-                Files.createFile(path);
+                Files.createFile(campPath);
             } catch (IOException e) {
                 System.out.println("Failed to create file: " + e.getMessage());
                 return;
             }
         }
 
-        staffRepository.load();
-        List<Staff> staffs = staffRepository.getAllStaff();
-        staffs.forEach(staff -> {
-            System.out.println("Name " + staff.getName());
-            System.out.println("Email " + staff.getEmail());
-            System.out.println("Password " + staff.getPassword());
-            System.out.println("Faculty " + staff.getFaculty());
+        campRepository.load();
+        List<Camp> camps = campRepository.getAllCamps();
+        camps.forEach(camp -> {
+            System.out.println("CampName " + camp.getCampName());
+            System.out.println("Description " + camp.getDescription());
         });
-        Staff staff1 = new Staff("Daniel", "DAN@ntu.edu.sg", "password", "NBS");
-        try{
-            staffRepository.add(staff1);
-        } catch (DuplicateEntityExistsException e){
-            System.out.println("Failed to add entity: " + e.getMessage());
-            return;
-        }
+
+        campController.createCamp("CAC FOP", "CAC Yearly event to welcome freshmen", LocalDate.of(2023, 8, 10), LocalDate.of(2023, 8, 13), LocalDate.of(2023, 7, 12), Faculty.ALL, "NTU campus", 300, 30);
+
+        // Test StaffRepository
+//        Path path = Paths.get(staffRepository.getFilePath());
+//        if (!Files.exists(path)) {
+//            try {
+//                System.out.println("No file at path. Creating new file.");
+//                Files.createFile(path);
+//            } catch (IOException e) {
+//                System.out.println("Failed to create file: " + e.getMessage());
+//                return;
+//            }
+//        }
+//
+//        staffRepository.load();
+//        List<Staff> staffs = staffRepository.getAllStaff();
+//        staffs.forEach(staff -> {
+//            System.out.println("Name " + staff.getName());
+//            System.out.println("Email " + staff.getEmail());
+//            System.out.println("Password " + staff.getPassword());
+//            System.out.println("Faculty " + staff.getFaculty());
+//        });
+//        Staff staff1 = new Staff("Daniel", "DAN@ntu.edu.sg", "password", "NBS");
+//        try{
+//            staffRepository.add(staff1);
+//        } catch (DuplicateEntityExistsException e){
+//            System.out.println("Failed to add entity: " + e.getMessage());
+//            return;
+//        }
 
 
 

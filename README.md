@@ -5,7 +5,7 @@ The default password for every user is `password`.
 
 ---
 
-git make change
+git change again
 
 ## Team Members
 

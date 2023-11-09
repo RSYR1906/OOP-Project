@@ -5,8 +5,7 @@ The default password for every user is `password`.
 
 ---
 
-To test out Repository go src/main/java/Main.java to run and test StudentRepository, CampController and CampRepository.
-
+testing git
 
 ## Team Members
 

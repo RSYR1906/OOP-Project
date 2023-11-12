@@ -8,7 +8,7 @@ public class Staff extends User {
     public Staff(String name, String email, String password ,String faculty) {
         super(name, email, password,Faculty.valueOf(faculty.toUpperCase()));
     }
-    //.
+    
     @Override
     public String getID() {
         Pattern pattern = Pattern.compile("^(.*?)@");

@@ -18,6 +18,8 @@ public class Camp implements Entity{
     private Faculty userGroupOpenTo;
     private String location;
 
+    private Staff staffInCharge;
+
     private int totalSlots;
     private int campCommitteeSlots;
 
@@ -104,13 +106,13 @@ public class Camp implements Entity{
         this.campCommitteeSlots = campCommitteeSlots;
     }
 
-//    public Staff getStaffInCharge() {
-//        return staffInCharge;
-//    }
-//
-//    public void setStaffInCharge(Staff staffInCharge) {
-//        this.staffInCharge = staffInCharge;
-//    }
+   public Staff getStaffInCharge() {
+       return staffInCharge;
+   }
+
+   public void setStaffInCharge(Staff staffInCharge) {
+       this.staffInCharge = staffInCharge;
+   }
 
 
 
@@ -127,7 +129,7 @@ public class Camp implements Entity{
         this.committeeRegistered = committeeRegistered;
     }
 
-    public Camp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots) {
+    public Camp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, Staff staffInCharge) {
         this.campName = campName;
         this.description = description;
         this.campStartDate = campStartDate;
@@ -137,6 +139,7 @@ public class Camp implements Entity{
         this.location = location;
         this.totalSlots = totalSlots;
         this.campCommitteeSlots = campCommitteeSlots;
+        this.staffInCharge = staffInCharge;
         
         this.studentsRegistered = new ArrayList<>(); 
         //this.staffInCharge = staffInCharge;

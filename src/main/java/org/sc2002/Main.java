@@ -41,7 +41,7 @@ public class Main {
 
 
 
-        loginUI.login();
+        loginUI.showMainMenu();
 
 
 //      // Test StudentRepository

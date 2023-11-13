@@ -13,10 +13,10 @@ public class LoginUI {
         this.userController = userController;
     }
 
-    public void login() {
+    public void showMainMenu() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("   _     _    ______    __        __        ______    __  ");
+        System.out.println("\n   _     _    ______    __        __        ______    __  ");
         System.out.println("  | |   | |  |  ____|  |  |      |  |      |  __  |  |  |   ");
         System.out.println("  | |___| |  |  |___   |  |      |  |      | |  | |  |  |   ");
         System.out.println("  |  ___  |  |  ____|  |  |      |  |      | |  | |  |__|   ");
@@ -26,6 +26,35 @@ public class LoginUI {
         System.out.println("\u001B[36m\n =================================================================\u001B[0m");
         System.out.println("\u001B[36m     Welcome to Camp Application and Management System (CAMs)    \u001B[0m");
         System.out.println("\u001B[36m =================================================================\u001B[0m");
+
+        System.out.println("\u001B[36m\nPlease enter your choice to continue:\u001B[0m");
+        System.out.println("1. Login");
+        System.out.println("2. Forget UserID");
+        System.out.println("3. Exit");
+
+        System.out.print("\nYour choice (1-3): ");
+        int choice = scanner.nextInt();
+
+        switch (choice) {
+            case 1:
+                login();
+                break;
+            case 2:
+                // Implement Forget UserID logic
+                break;
+            case 3:
+                System.out.println("\nExiting. Goodbye!");
+                break;
+            default:
+                System.out.println("\u001B[31mInvalid choice. Please enter a valid option.\u001B[0m");
+                break;
+        }
+
+        scanner.close();
+    }
+
+    public void login() {
+        Scanner scanner = new Scanner(System.in);
 
         // Get user input for user ID and password
         System.out.print("\u001B[33m\nEnter your user ID:\u001B[0m ");
@@ -43,9 +72,6 @@ public class LoginUI {
             System.out.println("\u001B[31m \nLogin failed. Invalid user ID or password.\u001B[0m");
         }
 
-        //System.out.println("\u001B[36m============================\u001B[0m");
-
         scanner.close();
     }
 }
-

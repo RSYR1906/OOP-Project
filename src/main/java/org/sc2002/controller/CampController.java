@@ -1,6 +1,7 @@
 package org.sc2002.controller;
 
 import org.sc2002.entity.Camp;
+import org.sc2002.entity.Staff;
 import org.sc2002.entity.Faculty;
 import org.sc2002.entity.Staff;
 import org.sc2002.repository.CampRepository;
@@ -17,9 +18,10 @@ public class CampController {
         this.campRepository = campRepository;
     }
 
-    public Camp createCamp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, Staff staffInCharge) throws DuplicateEntityExistsException{
 
-        Camp camp = new Camp( campName,  description,  campStartDate,  campEndDate,  campRegistrationEndDate,  userGroupOpenTo,  location, totalSlots,  campCommitteeSlots, staffInCharge.getID());
+    public void createCamp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, Staff staffInCharge){
+
+        Camp camp = new Camp( campName,  description,  campStartDate,  campEndDate,  campRegistrationEndDate,  userGroupOpenTo,  location, totalSlots,  campCommitteeSlots, staffInCharge);
 
         try{
             campRepository.add(camp);
@@ -30,9 +32,10 @@ public class CampController {
         return camp;
     }
 
-    public Camp editCamp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, Staff staffInCharge) throws EntityNotFoundException{
 
-        Camp newCamp = new Camp( campName,  description,  campStartDate,  campEndDate,  campRegistrationEndDate,  userGroupOpenTo,  location, totalSlots,  campCommitteeSlots, staffInCharge.getID());
+    public void editCamp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, Staff staffInCharge){
+
+        Camp newCamp = new Camp( campName,  description,  campStartDate,  campEndDate,  campRegistrationEndDate,  userGroupOpenTo,  location, totalSlots,  campCommitteeSlots, staffInCharge);
 
         try{
             campRepository.update(newCamp);

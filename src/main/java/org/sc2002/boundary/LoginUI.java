@@ -5,7 +5,7 @@ import org.sc2002.entity.User;
 
 import java.util.Scanner;
 
-public class LoginUI {
+public class LoginUI implements UI{
 
     private final UserController userController;
 
@@ -13,7 +13,8 @@ public class LoginUI {
         this.userController = userController;
     }
 
-    public void showMainMenu() {
+    @Override
+    public void body() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("\u001B[36m\n   _     _    ______    __        __        ______    __    \u001B[0m");

@@ -21,8 +21,6 @@ public class StaffRepositoryTest {
     public void CreateStaffRepository_If_No_FileAtPath(){
 
         StaffRepository staffRepository = new StaffRepository();
-
-        // Test StaffRepository
         Path path = Paths.get(staffRepository.getFilePath());
         if (!Files.exists(path)) {
             try {

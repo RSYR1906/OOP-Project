@@ -45,6 +45,18 @@ public class CampRepository extends Repository{
         return camps;
     }
 
+    public Camp getCampByID(String entityID) throws EntityNotFoundException {
+        Camp camp;
+        Entity entity = super.getByID(entityID);
+        if (entity instanceof Staff) {
+            camp = (Camp) entity;
+        } 
+        else {
+            throw new EntityNotFoundException();
+        }
+        return camp;
+    }
+
     private String formatEntityToCampString(Entity entity){
         Camp camp = (Camp) entity;
         return camp.toStringWithSeparator(SEPARATOR);

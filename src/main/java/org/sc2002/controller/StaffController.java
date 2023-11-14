@@ -3,12 +3,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import org.sc2002.entity.*;
 import org.sc2002.repository.CampRepository;
+
 import org.sc2002.utils.exception.EntityNotFoundException;
 import org.sc2002.utils.exception.WrongStaffException;
 
 public class StaffController {
+
     private CampRepository campRepository;
     private CampController campController;
 
@@ -26,6 +29,7 @@ public class StaffController {
         // Check if the staff is the owner of the camp
         if (campRepository.getCampByID(campName).getStaffInCharge().getID().equals(staffInCharge.getID())) {
             campController.editCamp(campName, description, campStartDate, campEndDate, campRegistrationEndDate, userGroupOpenTo, location, totalSlots, campCommitteeSlots, staffInCharge);
+
         } else {
             // Camp does not belong to the staff
             throw new WrongStaffException("Camp does not belong to the staff.");
@@ -33,9 +37,11 @@ public class StaffController {
     }
 
     // Method to delete a camp
+
     public void deleteCamp(String campID, Staff staffInCharge) throws WrongStaffException, EntityNotFoundException {
         if (campRepository.getCampByID(campID).getStaffInCharge().getID().equals(staffInCharge.getID())) {
             campController.deleteCamp(campID);
+
         } else {
             // Camp does not belong to the staff
             throw new WrongStaffException("Camp does not belong to the staff.");

@@ -2,6 +2,7 @@ package org.sc2002;
 
 import org.sc2002.boundary.LoginUI;
 import org.sc2002.controller.CampController;
+import org.sc2002.controller.StaffController;
 import org.sc2002.controller.UserController;
 import org.sc2002.entity.*;
 import org.sc2002.repository.CampRepository;
@@ -33,6 +34,7 @@ public class Main {
 
         CampController campController = new CampController(campRepository);
         UserController userController = new UserController(studentRepository, staffRepository);
+        StaffController staffController = new StaffController(campController);
 
         LoginUI loginUI = new LoginUI(userController);
 
@@ -41,7 +43,7 @@ public class Main {
 
 
 
-        loginUI.login();
+        loginUI.body();
 
 
 //      // Test StudentRepository
@@ -72,7 +74,7 @@ public class Main {
 //            return;
 //        }
 
-         //Test CampController and CampRepository
+        //Test CampController and CampRepository
 //        Path campPath = Paths.get(campRepository.getFilePath());
 //        if (!Files.exists(campPath)) {
 //            try {
@@ -93,33 +95,7 @@ public class Main {
 //
 //        campController.createCamp("CAC FOP", "CAC Yearly event to welcome freshmen", LocalDate.of(2023, 8, 10), LocalDate.of(2023, 8, 13), LocalDate.of(2023, 7, 12), Faculty.ALL, "NTU campus", 300, 30);
 
-        // Test StaffRepository
-//        Path path = Paths.get(staffRepository.getFilePath());
-//        if (!Files.exists(path)) {
-//            try {
-//                System.out.println("No file at path. Creating new file.");
-//                Files.createFile(path);
-//            } catch (IOException e) {
-//                System.out.println("Failed to create file: " + e.getMessage());
-//                return;
-//            }
-//        }
-//
-//        staffRepository.load();
-//        List<Staff> staffs = staffRepository.getAllStaff();
-//        staffs.forEach(staff -> {
-//            System.out.println("Name " + staff.getName());
-//            System.out.println("Email " + staff.getEmail());
-//            System.out.println("Password " + staff.getPassword());
-//            System.out.println("Faculty " + staff.getFaculty());
-//        });
-//        Staff staff1 = new Staff("Daniel", "DAN@ntu.edu.sg", "password", "NBS");
-//        try{
-//            staffRepository.add(staff1);
-//        } catch (DuplicateEntityExistsException e){
-//            System.out.println("Failed to add entity: " + e.getMessage());
-//            return;
-//        }
+
 
 
 

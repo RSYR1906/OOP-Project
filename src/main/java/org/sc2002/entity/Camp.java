@@ -131,7 +131,7 @@ public class Camp implements Entity{
     }
 
 
-    public Camp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, Staff staffInCharge) {
+    public Camp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, String staffInChargeID) {
         this.campName = campName;
         this.description = description;
         this.campStartDate = campStartDate;
@@ -141,7 +141,6 @@ public class Camp implements Entity{
         this.location = location;
         this.totalSlots = totalSlots;
         this.campCommitteeSlots = campCommitteeSlots;
-        this.staffInCharge = staffInCharge;
         
         this.studentsRegistered = new ArrayList<>(); 
         this.staffInChargeID = staffInChargeID;

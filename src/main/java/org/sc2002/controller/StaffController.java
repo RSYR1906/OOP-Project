@@ -1,48 +1,62 @@
 package org.sc2002.controller;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
 
 
 import org.sc2002.entity.*;
-import org.sc2002.repository.CampRepository;
-
+import org.sc2002.repository.*;
+import org.sc2002.utils.exception.DuplicateEntityExistsException;
 import org.sc2002.utils.exception.EntityNotFoundException;
 import org.sc2002.utils.exception.WrongStaffException;
 import org.sc2002.utils.exception.DuplicateEntityExistsException;
 
 public class StaffController {
 
-    private CampRepository campRepository;
     private CampController campController;
+    private CampRepository campRepository;
+    private StaffRepository staffRepository;
 
-    public StaffController(CampController campController, CampRepository campRepository){
-        this.campRepository = campRepository;
+    public StaffController(CampController campController, CampRepository campRepository, StaffRepository staffRepository) {
         this.campController = campController;
+        this.campRepository = campRepository;
+        this.staffRepository = staffRepository;
     }
     
-    public void createCamp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, String staffInChargeID) throws DuplicateEntityExistsException{
-        campController.createCamp(campName, description, campStartDate, campEndDate, campRegistrationEndDate, userGroupOpenTo, location, totalSlots, campCommitteeSlots, staffInChargeID);
+    public Camp createCamp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, String staffInChargeID) throws DuplicateEntityExistsException, EntityNotFoundException{
+        Camp createdCamp = campController.createCamp(campName, description, campStartDate, campEndDate, campRegistrationEndDate, userGroupOpenTo, location, totalSlots, campCommitteeSlots, staffInChargeID);
+        staffRepository.getStaffByID(staffInChargeID).addToCreatedCamps(createdCamp);
+        return createdCamp;
     }
 
     // Method to edit an existing camp
-    public void editCamp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, String staffInChargeID) throws WrongStaffException, EntityNotFoundException {
+    public Camp editCamp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, String staffInChargeID) throws WrongStaffException, EntityNotFoundException {
         // Check if the staff is the owner of the camp
-        if (campRepository.getCampByID(campName).getStaffInCharge().getID().equals(staffInChargeID)) {
-            campController.editCamp(campName, description, campStartDate, campEndDate, campRegistrationEndDate, userGroupOpenTo, location, totalSlots, campCommitteeSlots, staffInChargeID);
-
+        if (campRepository.getCampByID(campName).getStaffInChargeID().equals(staffInChargeID)) {
+            Camp editedCamp = campController.editCamp(campName, description, campStartDate, campEndDate, campRegistrationEndDate, userGroupOpenTo, location, totalSlots, campCommitteeSlots, staffInChargeID);
+            staffRepository.getStaffByID(staffInChargeID).deleteFromCreatedCamps(editedCamp);
+            staffRepository.getStaffByID(staffInChargeID).addToCreatedCamps(editedCamp);
+            return editedCamp;
         } else {
             // Camp does not belong to the staff
             throw new WrongStaffException("Camp does not belong to the staff.");
+            // Handle the error or provide appropriate feedback
+            //return null;
         }
     }
 
-    // Method to delete a camp
-
     public void deleteCamp(String campID, String staffInChargeID) throws WrongStaffException, EntityNotFoundException {
-        if (campRepository.getCampByID(campID).getStaffInCharge().getID().equals(staffInChargeID)) {
+        if (campRepository.getCampByID(campID).getStaffInChargeID().equals(staffInChargeID)) {
+            Camp campToDelete = campRepository.getCampByID(campID);
             campController.deleteCamp(campID);
+            // Remove the camp from the staff's created camps
+            staffRepository.getStaffByID(staffInChargeID).deleteFromCreatedCamps(campToDelete);
 
+            // Remove the camp from the list of all camps
+            campController.deleteCamp(campToDelete.getID());
+
+            return;
         } else {
             // Camp does not belong to the staff
             throw new WrongStaffException("Camp does not belong to the staff.");
@@ -77,7 +91,7 @@ public class StaffController {
         List<Entity> entities = campRepository.getAll();
         List<Camp> camps = new ArrayList<>();
         for (Entity entity : entities) {
-            if (entity instanceof Camp && campRepository.getCampByID(entity.getID()).getStaffInCharge().getID().equals(staffID)) {
+            if (entity instanceof Camp && campRepository.getCampByID(entity.getID()).getStaffInChargeID().equals(staffID)) {
                 camps.add((Camp) entity);
             }
         }

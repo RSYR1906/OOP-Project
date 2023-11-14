@@ -18,8 +18,6 @@ public class Camp implements Entity{
     private Faculty userGroupOpenTo;
     private String location;
 
-    private Staff staffInCharge;
-
     private int totalSlots;
     private int campCommitteeSlots;
 
@@ -106,16 +104,9 @@ public class Camp implements Entity{
         this.campCommitteeSlots = campCommitteeSlots;
     }
 
-
-   public Staff getStaffInCharge() {
-       return staffInCharge;
-   }
-
-   public void setStaffInCharge(Staff staffInCharge) {
-       this.staffInCharge = staffInCharge;
-   }
-
-
+    public String getStaffInChargeID() {
+        return staffInChargeID;
+    }
 
     public void setStudentsRegistered(Student[] studentsArray) {
         this.studentsRegistered.clear();
@@ -129,7 +120,6 @@ public class Camp implements Entity{
     public void setCommitteeRegistered(ArrayList<Student> committeeRegistered) {
         this.committeeRegistered = committeeRegistered;
     }
-
 
     public Camp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, String staffInChargeID) {
         this.campName = campName;

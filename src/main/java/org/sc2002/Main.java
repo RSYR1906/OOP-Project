@@ -2,6 +2,7 @@ package org.sc2002;
 
 import org.sc2002.boundary.LoginUI;
 import org.sc2002.controller.CampController;
+import org.sc2002.controller.StaffController;
 import org.sc2002.controller.UserController;
 import org.sc2002.entity.*;
 import org.sc2002.repository.CampRepository;
@@ -33,6 +34,7 @@ public class Main {
 
         CampController campController = new CampController(campRepository);
         UserController userController = new UserController(studentRepository, staffRepository);
+        StaffController staffController = new StaffController(campController);
 
         LoginUI loginUI = new LoginUI(userController);
 

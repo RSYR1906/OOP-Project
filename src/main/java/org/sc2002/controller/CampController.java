@@ -16,7 +16,7 @@ public class CampController {
         this.campRepository = campRepository;
     }
 
-    public void createCamp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots){
+    public Camp createCamp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots) throws DuplicateEntityExistsException{
 
         Camp camp = new Camp( campName,  description,  campStartDate,  campEndDate,  campRegistrationEndDate,  userGroupOpenTo,  location, totalSlots,  campCommitteeSlots);
 
@@ -24,19 +24,21 @@ public class CampController {
             campRepository.add(camp);
         } catch (DuplicateEntityExistsException e){
             System.out.println("Failed to add entity: " + e.getMessage());
-            return;
+            throw e;
         }
+        return camp;
     }
 
-    public void editCamp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots){
+    public Camp editCamp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots) throws EntityNotFoundException{
 
         Camp newCamp = new Camp( campName,  description,  campStartDate,  campEndDate,  campRegistrationEndDate,  userGroupOpenTo,  location, totalSlots,  campCommitteeSlots);
 
         try{
             campRepository.update(newCamp);
+            return newCamp;
         } catch (EntityNotFoundException e){
             System.out.println("Failed to update entity: " + e.getMessage());
-            return;
+            throw e;
         }
     }
 

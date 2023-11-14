@@ -104,15 +104,9 @@ public class Camp implements Entity{
         this.campCommitteeSlots = campCommitteeSlots;
     }
 
-//    public Staff getStaffInCharge() {
-//        return staffInCharge;
-//    }
-//
-//    public void setStaffInCharge(Staff staffInCharge) {
-//        this.staffInCharge = staffInCharge;
-//    }
-
-
+    public String getStaffInChargeID() {
+        return staffInChargeID;
+    }
 
     public void setStudentsRegistered(Student[] studentsArray) {
         this.studentsRegistered.clear();

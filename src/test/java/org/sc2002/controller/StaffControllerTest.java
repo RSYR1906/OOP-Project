@@ -51,6 +51,7 @@ public class StaffControllerTest {
         try{
             Camp sports_camp = (Camp)campRepository.getByID("BEACH CAMP");
             Assertions.assertEquals("BEACH CAMP", sports_camp.getCampName());
+            Assertions.assertEquals(staff.getID(), sports_camp.getStaffInChargeID());
         } catch (EntityNotFoundException e){
             System.out.println("failed");
         }

@@ -21,7 +21,7 @@ public class StaffController {
     // Method to create a new camp
     public void createCamp(Staff staff, String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots) {
         try{
-            Camp createdCamp = campController.createCamp(campName, description, campStartDate, campEndDate, campRegistrationEndDate, userGroupOpenTo, location, totalSlots, campCommitteeSlots);
+            Camp createdCamp = campController.createCamp(campName, description, campStartDate, campEndDate, campRegistrationEndDate, userGroupOpenTo, location, totalSlots, campCommitteeSlots, staff);
             staff.addToCreatedCamps(createdCamp);
         } catch (DuplicateEntityExistsException e){
             System.out.println("Staff Failed to add entity: " + e.getMessage());
@@ -33,7 +33,7 @@ public class StaffController {
         // Check if the staff is the owner of the camp
         if (staff.getCreatedCamps().contains(campToEdit)) {
             try{
-                Camp editedCamp = campController.editCamp(campToEdit.getCampName(), newDescription, newStartDate, newEndDate, newRegistrationEndDate, newUserGroup, newLocation, newTotalSlots, newCampCommitteeSlots);
+                Camp editedCamp = campController.editCamp(campToEdit.getCampName(), newDescription, newStartDate, newEndDate, newRegistrationEndDate, newUserGroup, newLocation, newTotalSlots, newCampCommitteeSlots, staff);
                 staff.deleteFromCreatedCamps(campToEdit);
                 staff.addToCreatedCamps(editedCamp);
             } catch (EntityNotFoundException e){

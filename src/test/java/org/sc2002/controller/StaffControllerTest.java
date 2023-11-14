@@ -45,12 +45,12 @@ public class StaffControllerTest {
         CampController campController = new CampController(campRepository);
         StaffController staffController = new StaffController(campController);
 
-        staffController.createCamp(staff, "SPORTS CAMP", "sports camp to welcome freshmen", LocalDate.of(2023, 8, 10), LocalDate.of(2023, 8, 13), LocalDate.of(2023, 7, 12), Faculty.ALL, "NTU campus", 100, 30);
+        staffController.createCamp(staff, "BEACH CAMP", "sports camp to welcome freshmen", LocalDate.of(2023, 8, 10), LocalDate.of(2023, 8, 13), LocalDate.of(2023, 7, 12), Faculty.ALL, "NTU campus", 100, 30);
 
         // result
         try{
-            Camp sports_camp = (Camp)campRepository.getByID("SPORTS CAMP");
-            Assertions.assertEquals("SPORTS CAMP", sports_camp.getCampName());
+            Camp sports_camp = (Camp)campRepository.getByID("BEACH CAMP");
+            Assertions.assertEquals("BEACH CAMP", sports_camp.getCampName());
         } catch (EntityNotFoundException e){
             System.out.println("failed");
         }

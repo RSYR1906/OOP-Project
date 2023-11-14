@@ -21,7 +21,7 @@ public class Camp implements Entity{
     private int totalSlots;
     private int campCommitteeSlots;
 
-    //private Staff staffInCharge; // add after Staff implementation
+    private String staffInChargeID;
 
     private ArrayList<Student> studentsRegistered;
     
@@ -127,7 +127,7 @@ public class Camp implements Entity{
         this.committeeRegistered = committeeRegistered;
     }
 
-    public Camp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots) {
+    public Camp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, String staffInChargeID) {
         this.campName = campName;
         this.description = description;
         this.campStartDate = campStartDate;
@@ -139,7 +139,7 @@ public class Camp implements Entity{
         this.campCommitteeSlots = campCommitteeSlots;
         
         this.studentsRegistered = new ArrayList<>(); 
-        //this.staffInCharge = staffInCharge;
+        this.staffInChargeID = staffInChargeID;
     }
     
     public void registerStudent(Student student) throws CampFullException {
@@ -179,8 +179,8 @@ public class Camp implements Entity{
                 .append(userGroupOpenTo).append(separator)
                 .append(location).append(separator)
                 .append(totalSlots).append(separator)
-                .append(campCommitteeSlots).append(separator);
-                //.append(staffInCharge);
+                .append(campCommitteeSlots).append(separator)
+                .append(staffInChargeID);
         return sb.toString();
 
     }

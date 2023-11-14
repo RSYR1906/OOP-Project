@@ -22,7 +22,7 @@ public class UserController {
     public User authenticateUser(String userId, String password) {
         for (User user : users) {
             //System.out.println(user.getID()+" "+user.getPassword());
-            if (user.getID().equals(userId) && user.getPassword().equals(password)) {
+            if (user.getID().equalsIgnoreCase(userId) && user.getPassword().equals(password)) {
                 return user;
             }
         }

@@ -57,15 +57,15 @@ public class LoginUI {
         Scanner scanner = new Scanner(System.in);
 
         // Get user input for user ID and password
-        System.out.print("\nEnter your user ID:");
+        System.out.print("\nEnter your user ID: ");
         String userId = scanner.nextLine();
-        System.out.print("Enter your password:");
+        System.out.print("Enter your password: ");
         String password = scanner.nextLine();
 
         User authenticatedUser = userController.authenticateUser(userId, password);
 
         if (authenticatedUser != null) {
-            System.out.println("\u001B[33m \nLogin successful. Welcome " + authenticatedUser.getID() + "!\u001B[0m");
+            System.out.println("\u001B[33m \nLogin successful. Welcome " + authenticatedUser.getName().toUpperCase() + "!\u001B[0m");
             System.out.println("\u001B[34mFaculty:\u001B[0m " + authenticatedUser.getFaculty());
             System.out.println("\u001B[34mUser Role:\u001B[0m " + userController.getUserRole(authenticatedUser));
         } else {

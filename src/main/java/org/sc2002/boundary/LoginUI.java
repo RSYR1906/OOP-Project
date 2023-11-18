@@ -41,7 +41,7 @@ public class LoginUI implements UI{
                 login();
                 break;
             case 2:
-                // Implement Forget UserID logic
+                changePassword();
                 break;
             case 3:
                 System.out.println("\nExiting. Goodbye!");
@@ -71,6 +71,35 @@ public class LoginUI implements UI{
             System.out.println("\u001B[34mUser Role:\u001B[0m " + userController.getUserRole(authenticatedUser));
         } else {
             System.out.println("\u001B[31m \nLogin failed. Invalid user ID or password.\u001B[0m");
+        }
+
+        scanner.close();
+    }
+    public void changePassword() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("\nEnter your user ID: ");
+        String userId = scanner.nextLine();
+        System.out.print("Enter your current password: ");
+        String currentPassword = scanner.nextLine();
+
+        // Authenticate the user first
+        User authenticatedUser = userController.authenticateUser(userId, currentPassword);
+
+        if (authenticatedUser != null) {
+            System.out.print("Enter your new password: ");
+            String newPassword = scanner.nextLine();
+
+            // Call a method in the UserController to handle the password change
+            boolean success = userController.changePassword(authenticatedUser, newPassword);
+
+            if (success) {
+                System.out.println("\u001B[32m \nPassword change successful.\u001B[0m");
+            } else {
+                System.out.println("\u001B[31m \nPassword change failed.\u001B[0m");
+            }
+        } else {
+            System.out.println("\u001B[31m \nAuthentication failed. Invalid user ID or password.\u001B[0m");
         }
 
         scanner.close();

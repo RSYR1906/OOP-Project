@@ -34,7 +34,7 @@ public class Main {
 
         CampController campController = new CampController(campRepository);
         UserController userController = new UserController(studentRepository, staffRepository);
-        StaffController staffController = new StaffController(campController, campRepository);
+        StaffController staffController = new StaffController(campController, campRepository, staffRepository);
 
         LoginUI loginUI = new LoginUI(userController);
 

@@ -152,12 +152,60 @@ public void changePassword() {
 
     private void editCamp() {
         // Add logic to join a camp
+        Scanner scanner = new Scanner(System.in);
+
         System.out.println("\u001B[32mEdit camp successfully.\u001B[0m");
+        System.out.println("\nWhat would you like to do next?");
+        System.out.println("1. Go back to the previous menu");
+        System.out.println("2. Exit the application");
+
+        System.out.print("\nYour choice (1-2): ");
+        int choice = scanner.nextInt();
+
+        switch (choice) {
+            case 1:
+                displayStudentFeatures();  // Assuming this is the previous menu
+                break;
+            case 2:
+                System.out.println("\nExiting. Goodbye!");
+                System.exit(0);
+                break;
+            default:
+                System.out.println("\u001B[31mInvalid choice. Please enter a valid option.\u001B[0m");
+                break;
+        }
+        
+        scanner.close();
+
     }
 
     private void viewAllCamps() {
         // Add logic to view camps
+        Scanner scanner = new Scanner(System.in);
+
         System.out.println("\u001B[32mDisplaying all camps...\u001B[0m");
+        System.out.println("\nWhat would you like to do next?");
+        System.out.println("1. Go back to the previous menu");
+        System.out.println("2. Exit the application");
+
+        System.out.print("\nYour choice (1-2): ");
+        int choice = scanner.nextInt();
+
+        switch (choice) {
+            case 1:
+                displayStudentFeatures();  // Assuming this is the previous menu
+                break;
+            case 2:
+                System.out.println("\nExiting. Goodbye!");
+                System.exit(0);
+                break;
+            default:
+                System.out.println("\u001B[31mInvalid choice. Please enter a valid option.\u001B[0m");
+                break;
+        }
+        
+        scanner.close();
+
     }
     private void displayStudentFeatures() {
         Scanner scanner = new Scanner(System.in);

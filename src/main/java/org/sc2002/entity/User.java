@@ -31,7 +31,10 @@ public abstract class User implements Entity{
     public Faculty getFaculty() {
         return faculty;
     }
-
+    
+    public void setPassword(String newPassword) {
+        this.password = newPassword;
+    }
 
     public abstract String getID();
 }

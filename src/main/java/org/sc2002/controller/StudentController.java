@@ -16,19 +16,13 @@ public class StudentController {
     }
     
     public void registerCampAsStudent(Student student, Camp camp) throws FacultyNotEligibleException, CampFullException, RegistrationClosedException, BlacklistedStudentException, RegisteredAlreadyException {
-        if (camp.canStudentRegister(student) && !student.getRegisteredCamps().contains(camp)) {
+        if (student.getRegisteredCamps().contains(camp)){
+            throw new RegisteredAlreadyException();
+        }
+
+        if (camp.canStudentRegister(student)) {
             camp.registerStudent(student);
             student.registerForCamp(camp);
-        } else {
-            if (student.getRegisteredCamps().contains(camp)){
-                throw new RegisteredAlreadyException();
-            } else if (student.getFaculty() != camp.getUserGroupOpenTo()) {
-                throw new FacultyNotEligibleException();
-            } else if (camp.getStudentsRegistered().size() >= camp.getTotalSlots()) {
-                throw new CampFullException();
-            } else {
-                throw new RegistrationClosedException();
-            }
         }
     }
     

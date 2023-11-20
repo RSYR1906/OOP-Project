@@ -4,9 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.sc2002.utils.exception.BlacklistedStudentException;
-import org.sc2002.utils.exception.EntityNotFoundException;
-import org.sc2002.utils.exception.CampFullException;
+import org.sc2002.utils.exception.*;
 
 public class Camp implements Entity{
 
@@ -20,10 +18,10 @@ public class Camp implements Entity{
     private Faculty userGroupOpenTo;
     private String location;
 
+    private String staffInChargeID;
+
     private int totalSlots;
     private int campCommitteeSlots;
-
-    private String staffInChargeID;
 
     private ArrayList<Student> studentsRegistered;
     
@@ -151,7 +149,7 @@ public class Camp implements Entity{
             throw new BlacklistedStudentException();
         }
         studentsRegistered.add(student);
-
+        totalSlots--;
     }
     
     
@@ -161,6 +159,7 @@ public class Camp implements Entity{
             throw new EntityNotFoundException("Student is not registered for this camp.");
         }
         studentBlacklist.add(student);
+        totalSlots++;
     }
 
     public ArrayList<Student> getStudentsRegistered() {
@@ -173,12 +172,21 @@ public class Camp implements Entity{
 
 
 
-    public boolean canStudentRegister(Student student) {
+    public boolean canStudentRegister(Student student) throws RegistrationClosedException, FacultyNotEligibleException, CampFullException, BlacklistedStudentException {
         LocalDate now = LocalDate.now();
-        //boolean isBeforeDeadline = !now.isAfter(campRegistrationEndDate);
-        boolean isBeforeDeadline = true; // set to true for testing
-        boolean isFacultyAllowed = student.getFaculty() == userGroupOpenTo || userGroupOpenTo == Faculty.ALL; // Faculty.ALL means open to everyone
-        return isBeforeDeadline && isFacultyAllowed && studentsRegistered.size() < totalSlots;
+//        if(now.isAfter(campRegistrationEndDate)){ //comment out for test
+//            throw new RegistrationClosedException();
+//        }
+        if(student.getFaculty() != userGroupOpenTo && userGroupOpenTo != Faculty.ALL){
+            throw new FacultyNotEligibleException();
+        }
+        if (studentsRegistered.size() >= totalSlots) {
+            throw new CampFullException();
+        }
+        if (studentBlacklist.contains(student)){
+            throw new BlacklistedStudentException();
+        }
+        return true;
     }
 
     public String toStringWithSeparator(String separator){

@@ -10,6 +10,7 @@ import org.sc2002.repository.CampRepository;
 import org.sc2002.repository.StaffRepository;
 import org.sc2002.repository.StudentRepository;
 import org.sc2002.utils.exception.BlacklistedStudentException;
+import org.sc2002.utils.exception.EntityNotFoundException;
 import org.sc2002.utils.exception.FacultyNotEligibleException;
 import org.sc2002.utils.exception.RegisteredAlreadyException;
 
@@ -19,6 +20,13 @@ public class StudentControllerTest {
     StudentRepository studentRepository;
     StaffRepository staffRepository;
     CampRepository campRepository;
+
+    final String TEST_ALL_CAMP = "TEST ALL CAMP";
+    final String TEST_SCSE_CAMP = "TEST SCSE CAMP";
+    
+    final String SCSE_STUDENT_ID = "LE51";
+    final String ADM_STUDENT_ID = "DON84";
+
 
 
     @BeforeEach
@@ -44,8 +52,8 @@ public class StudentControllerTest {
 
         // result
         try{
-            Camp testCamp = (Camp)campRepository.getByID("SCSE FOP");
-            Student testStudent = studentRepository.getStudentByID("LE51");
+            Camp testCamp = (Camp)campRepository.getByID(TEST_SCSE_CAMP);
+            Student testStudent = studentRepository.getStudentByID(SCSE_STUDENT_ID);
 
             studentController.registerCampAsStudent(testStudent, testCamp);
 
@@ -66,9 +74,9 @@ public class StudentControllerTest {
 
         // result
         try{
-            Camp testCamp = (Camp)campRepository.getByID("CAC FOP");
-            Student testStudent = studentRepository.getStudentByID("LE51");
-            Student testStudent2 = studentRepository.getStudentByID("DENISE");
+            Camp testCamp = (Camp)campRepository.getByID(TEST_ALL_CAMP);
+            Student testStudent = studentRepository.getStudentByID(SCSE_STUDENT_ID);
+            Student testStudent2 = studentRepository.getStudentByID(ADM_STUDENT_ID);
 
             studentController.registerCampAsStudent(testStudent, testCamp);
             studentController.registerCampAsStudent(testStudent2, testCamp);
@@ -93,8 +101,8 @@ public class StudentControllerTest {
 
         // result
         try{
-            Camp testCamp = (Camp)campRepository.getByID("SCSE FOP");
-            Student testStudent = studentRepository.getStudentByID("DENISE");
+            Camp testCamp = (Camp)campRepository.getByID(TEST_SCSE_CAMP);
+            Student testStudent = studentRepository.getStudentByID(ADM_STUDENT_ID);
 
             Assertions.assertThrows(FacultyNotEligibleException.class, ()->{
                 studentController.registerCampAsStudent(testStudent, testCamp);
@@ -115,8 +123,8 @@ public class StudentControllerTest {
 
         // result
         try{
-            Camp testCamp = (Camp)campRepository.getByID("SCSE FOP");
-            Student testStudent = studentRepository.getStudentByID("LE51");
+            Camp testCamp = (Camp)campRepository.getByID(TEST_SCSE_CAMP);
+            Student testStudent = studentRepository.getStudentByID(SCSE_STUDENT_ID);
 
             studentController.registerCampAsStudent(testStudent, testCamp);
 
@@ -131,7 +139,7 @@ public class StudentControllerTest {
     }
 
     @Test
-    @DisplayName("RegistersCampFails_WhenRegisterSameCampAgain")
+    @DisplayName("RegistersCampFails_WhenStudentOnBlacklist")
     public void StudentController_RegistersCampFails_WhenStudentOnBlacklist(){
 
 
@@ -139,8 +147,33 @@ public class StudentControllerTest {
 
         // result
         try{
-            Camp testCamp = (Camp)campRepository.getByID("SCSE FOP");
-            Student testStudent = studentRepository.getStudentByID("LE51");
+            Camp testCamp = (Camp)campRepository.getByID(TEST_SCSE_CAMP);
+            Student testStudent = studentRepository.getStudentByID(SCSE_STUDENT_ID);
+
+            studentController.registerCampAsStudent(testStudent, testCamp);
+            studentController.withdrawFromCamp(testStudent, testCamp);
+
+            Assertions.assertThrows(BlacklistedStudentException.class, ()->{
+                studentController.registerCampAsStudent(testStudent, testCamp);
+            });
+
+        } catch (Exception e){
+            System.out.println("failed: " + e.getMessage());
+            Assertions.fail("Failed test");
+        }
+    }
+
+    @Test
+    @DisplayName("RegistersCampFails_WhenStudentOnBlacklist")
+    public void StudentController_RegistersCampFails_WhenNoMoreSlot(){
+
+
+        StudentController studentController = new StudentController();
+
+        // result
+        try{
+            Camp testCamp = (Camp)campRepository.getByID(TEST_SCSE_CAMP);
+            Student testStudent = studentRepository.getStudentByID(SCSE_STUDENT_ID);
 
             studentController.registerCampAsStudent(testStudent, testCamp);
             studentController.withdrawFromCamp(testStudent, testCamp);
@@ -164,8 +197,8 @@ public class StudentControllerTest {
 
         // result
         try{
-            Camp testCamp = (Camp)campRepository.getByID("SCSE FOP");
-            Student testStudent = studentRepository.getStudentByID("LE51");
+            Camp testCamp = (Camp)campRepository.getByID(TEST_SCSE_CAMP);
+            Student testStudent = studentRepository.getStudentByID(SCSE_STUDENT_ID);
 
             studentController.registerCampAsStudent(testStudent, testCamp);
             studentController.withdrawFromCamp(testStudent, testCamp);
@@ -173,6 +206,28 @@ public class StudentControllerTest {
             Assertions.assertFalse(testStudent.getRegisteredCamps().contains(testCamp));
             Assertions.assertFalse(testCamp.getStudentsRegistered().contains(testStudent));
             Assertions.assertTrue(testCamp.getStudentBlacklist().contains(testStudent));
+        } catch (Exception e){
+            System.out.println("failed: " + e.getMessage());
+            Assertions.fail("Failed test");
+        }
+    }
+
+    @Test
+    @DisplayName("WithdrawCamp_WhenNotRegistered")
+    public void StudentController_WithdrawCampFails_WhenNotRegistered(){
+
+        StudentController studentController = new StudentController();
+
+        // result
+        try{
+            Camp testCamp = (Camp)campRepository.getByID(TEST_SCSE_CAMP);
+            Student testStudent = studentRepository.getStudentByID(SCSE_STUDENT_ID);
+
+            Assertions.assertFalse(testStudent.getRegisteredCamps().contains(testCamp));
+            Assertions.assertFalse(testCamp.getStudentsRegistered().contains(testStudent));
+            Assertions.assertThrows(EntityNotFoundException.class, ()->{
+                studentController.withdrawFromCamp(testStudent, testCamp);
+            });
         } catch (Exception e){
             System.out.println("failed: " + e.getMessage());
             Assertions.fail("Failed test");

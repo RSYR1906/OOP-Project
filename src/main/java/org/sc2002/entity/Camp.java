@@ -152,14 +152,20 @@ public class Camp implements Entity{
         }
     }
     
-    public Student[] getStudentsRegistered() {
-        return studentsRegistered.toArray(new Student[0]);
+//    public Student[] getStudentsRegistered() {
+//        return studentsRegistered.toArray(new Student[0]);
+//    }
+
+
+    public ArrayList<Student> getStudentsRegistered() {
+        return studentsRegistered;
     }
-    
+
     public boolean canStudentRegister(Student student) {
         LocalDate now = LocalDate.now();
-        boolean isBeforeDeadline = !now.isAfter(campRegistrationEndDate);
-        boolean isFacultyAllowed = student.getFaculty() == userGroupOpenTo || userGroupOpenTo == null; // Assuming null means open to all faculties
+        //boolean isBeforeDeadline = !now.isAfter(campRegistrationEndDate);
+        boolean isBeforeDeadline = true; // set to true for testing
+        boolean isFacultyAllowed = student.getFaculty() == userGroupOpenTo || userGroupOpenTo == Faculty.ALL; // Faculty.ALL means open to everyone
         return isBeforeDeadline && isFacultyAllowed && studentsRegistered.size() < totalSlots;
     }
 

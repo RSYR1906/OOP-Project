@@ -11,6 +11,8 @@ import org.sc2002.utils.exception.EntityNotFoundException;
 public class Student extends User {
 
     private boolean isCampCommitteeMember;
+
+    private Camp committeeMemberCamp;
     private List<Camp> registeredCamps;
 
     public Student(String name, String email, String password, String faculty) {

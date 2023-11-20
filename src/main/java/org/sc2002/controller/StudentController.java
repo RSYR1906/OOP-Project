@@ -18,14 +18,14 @@ public class StudentController {
         }
     }
     
-    public void registerStudentToCamp(Student student, Camp camp) throws FacultyNotEligibleException, CampFullException, RegistrationClosedException {
+    public void registerCampAsStudent(Student student, Camp camp) throws FacultyNotEligibleException, CampFullException, RegistrationClosedException {
         if (camp.canStudentRegister(student)) {
             camp.registerStudent(student);
             student.registerForCamp(camp);
         } else {
             if (student.getFaculty() != camp.getUserGroupOpenTo()) {
                 throw new FacultyNotEligibleException("Student's faculty is not eligible for this camp.");
-            } else if (camp.getStudentsRegistered().length >= camp.getTotalSlots()) {
+            } else if (camp.getStudentsRegistered().size() >= camp.getTotalSlots()) {
                 throw new CampFullException("The camp is full and cannot accept more registrations.");
             } else {
                 throw new RegistrationClosedException("Registration is closed for this camp.");

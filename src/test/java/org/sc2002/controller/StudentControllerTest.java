@@ -10,6 +10,7 @@ import org.sc2002.repository.CampRepository;
 import org.sc2002.repository.StaffRepository;
 import org.sc2002.repository.StudentRepository;
 import org.sc2002.utils.exception.FacultyNotEligibleException;
+import org.sc2002.utils.exception.RegisteredAlreadyException;
 
 
 public class StudentControllerTest {
@@ -34,7 +35,7 @@ public class StudentControllerTest {
 
 
     @Test
-    @DisplayName("Test")
+    @DisplayName("RegistersCamp_WhenDataIsValid")
     public void StudentController_RegistersCamp_WhenDataIsValid(){
 
 
@@ -56,7 +57,7 @@ public class StudentControllerTest {
     }
 
     @Test
-    @DisplayName("Test")
+    @DisplayName("RegistersCamp_WhenCampIsOpenToAll")
     public void StudentController_RegistersCamp_WhenCampIsOpenToAll(){
 
 
@@ -83,7 +84,7 @@ public class StudentControllerTest {
     }
 
     @Test
-    @DisplayName("Test")
+    @DisplayName("RegistersCampFails_WhenWrongFaculty")
     public void StudentController_RegistersCampFails_WhenWrongFaculty(){
 
 
@@ -95,6 +96,30 @@ public class StudentControllerTest {
             Student testStudent = studentRepository.getStudentByID("DENISE");
 
             Assertions.assertThrows(FacultyNotEligibleException.class, ()->{
+                studentController.registerCampAsStudent(testStudent, testCamp);
+            });
+
+        } catch (Exception e){
+            System.out.println("failed: " + e.getMessage());
+            Assertions.fail("Failed test");
+        }
+    }
+
+    @Test
+    @DisplayName("RegistersCampFails_WhenRegisterSameCampAgain")
+    public void StudentController_RegistersCampFails_WhenRegisterSameCampAgain(){
+
+
+        StudentController studentController = new StudentController();
+
+        // result
+        try{
+            Camp testCamp = (Camp)campRepository.getByID("SCSE FOP");
+            Student testStudent = studentRepository.getStudentByID("LE51");
+
+            studentController.registerCampAsStudent(testStudent, testCamp);
+
+            Assertions.assertThrows(RegisteredAlreadyException.class, ()->{
                 studentController.registerCampAsStudent(testStudent, testCamp);
             });
 

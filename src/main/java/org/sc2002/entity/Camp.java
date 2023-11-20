@@ -3,6 +3,8 @@ package org.sc2002.entity;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import org.sc2002.utils.exception.BlacklistedStudentException;
 import org.sc2002.utils.exception.EntityNotFoundException;
 import org.sc2002.utils.exception.CampFullException;
 
@@ -26,6 +28,8 @@ public class Camp implements Entity{
     private ArrayList<Student> studentsRegistered;
     
     private ArrayList<Student> committeeRegistered;
+
+    private ArrayList<Student> studentBlacklist;
 
 
     public String getCampName() {
@@ -132,16 +136,22 @@ public class Camp implements Entity{
         this.totalSlots = totalSlots;
         this.campCommitteeSlots = campCommitteeSlots;
         
-        this.studentsRegistered = new ArrayList<>(); 
+        this.studentsRegistered = new ArrayList<>();
+        this.studentBlacklist = new ArrayList<>();
+        this.committeeRegistered = new ArrayList<>();
         this.staffInChargeID = staffInChargeID;
     }
     
-    public void registerStudent(Student student) throws CampFullException {
-        if (studentsRegistered.size() < totalSlots) {
-            studentsRegistered.add(student);
-        } else {
+    public void registerStudent(Student student) throws CampFullException, BlacklistedStudentException {
+        if (studentsRegistered.size() >= totalSlots) {
             throw new CampFullException("No available slots to register for the camp.");
         }
+
+        if (studentBlacklist.contains(student)){
+            throw new BlacklistedStudentException();
+        }
+        studentsRegistered.add(student);
+
     }
     
     
@@ -150,16 +160,18 @@ public class Camp implements Entity{
         if (!isRemoved) {
             throw new EntityNotFoundException("Student is not registered for this camp.");
         }
+        studentBlacklist.add(student);
     }
-    
-//    public Student[] getStudentsRegistered() {
-//        return studentsRegistered.toArray(new Student[0]);
-//    }
-
 
     public ArrayList<Student> getStudentsRegistered() {
         return studentsRegistered;
     }
+
+    public ArrayList<Student> getStudentBlacklist() {
+        return studentBlacklist;
+    }
+
+
 
     public boolean canStudentRegister(Student student) {
         LocalDate now = LocalDate.now();

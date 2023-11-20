@@ -2,10 +2,7 @@ package org.sc2002.controller;
 
 import org.sc2002.entity.Camp;
 import org.sc2002.entity.Student;
-import org.sc2002.utils.exception.EntityNotFoundException;
-import org.sc2002.utils.exception.CampFullException;
-import org.sc2002.utils.exception.FacultyNotEligibleException;
-import org.sc2002.utils.exception.RegistrationClosedException;
+import org.sc2002.utils.exception.*;
 
 public class StudentController {
 
@@ -18,17 +15,19 @@ public class StudentController {
         }
     }
     
-    public void registerCampAsStudent(Student student, Camp camp) throws FacultyNotEligibleException, CampFullException, RegistrationClosedException {
-        if (camp.canStudentRegister(student)) {
+    public void registerCampAsStudent(Student student, Camp camp) throws FacultyNotEligibleException, CampFullException, RegistrationClosedException, BlacklistedStudentException, RegisteredAlreadyException {
+        if (camp.canStudentRegister(student) && !student.getRegisteredCamps().contains(camp)) {
             camp.registerStudent(student);
             student.registerForCamp(camp);
         } else {
-            if (student.getFaculty() != camp.getUserGroupOpenTo()) {
-                throw new FacultyNotEligibleException("Student's faculty is not eligible for this camp.");
+            if (student.getRegisteredCamps().contains(camp)){
+                throw new RegisteredAlreadyException();
+            } else if (student.getFaculty() != camp.getUserGroupOpenTo()) {
+                throw new FacultyNotEligibleException();
             } else if (camp.getStudentsRegistered().size() >= camp.getTotalSlots()) {
-                throw new CampFullException("The camp is full and cannot accept more registrations.");
+                throw new CampFullException();
             } else {
-                throw new RegistrationClosedException("Registration is closed for this camp.");
+                throw new RegistrationClosedException();
             }
         }
     }

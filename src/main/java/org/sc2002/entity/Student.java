@@ -42,14 +42,7 @@ public class Student extends User {
     }
 
     public void registerForCamp(Camp camp) {
-        if (!registeredCamps.contains(camp)) {
-            try {
-                camp.registerStudent(this);
-                registeredCamps.add(camp);
-            } catch (CampFullException e) {
-            	
-            }
-        }
+        registeredCamps.add(camp);
     }
 
     public void withdrawFromCamp(Camp camp) {

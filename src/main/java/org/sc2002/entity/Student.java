@@ -46,14 +46,7 @@ public class Student extends User {
     }
 
     public void withdrawFromCamp(Camp camp) {
-        if (registeredCamps.contains(camp)) {
-            try {
-                camp.withdrawStudent(this);
-                registeredCamps.remove(camp);
-            } catch (EntityNotFoundException e) {
-               
-            }
-        }
+        registeredCamps.remove(camp);
     }
 
 

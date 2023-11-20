@@ -9,6 +9,7 @@ import org.sc2002.entity.Student;
 import org.sc2002.repository.CampRepository;
 import org.sc2002.repository.StaffRepository;
 import org.sc2002.repository.StudentRepository;
+import org.sc2002.utils.exception.BlacklistedStudentException;
 import org.sc2002.utils.exception.FacultyNotEligibleException;
 import org.sc2002.utils.exception.RegisteredAlreadyException;
 
@@ -123,6 +124,55 @@ public class StudentControllerTest {
                 studentController.registerCampAsStudent(testStudent, testCamp);
             });
 
+        } catch (Exception e){
+            System.out.println("failed: " + e.getMessage());
+            Assertions.fail("Failed test");
+        }
+    }
+
+    @Test
+    @DisplayName("RegistersCampFails_WhenRegisterSameCampAgain")
+    public void StudentController_RegistersCampFails_WhenStudentOnBlacklist(){
+
+
+        StudentController studentController = new StudentController();
+
+        // result
+        try{
+            Camp testCamp = (Camp)campRepository.getByID("SCSE FOP");
+            Student testStudent = studentRepository.getStudentByID("LE51");
+
+            studentController.registerCampAsStudent(testStudent, testCamp);
+            studentController.withdrawFromCamp(testStudent, testCamp);
+
+            Assertions.assertThrows(BlacklistedStudentException.class, ()->{
+                studentController.registerCampAsStudent(testStudent, testCamp);
+            });
+
+        } catch (Exception e){
+            System.out.println("failed: " + e.getMessage());
+            Assertions.fail("Failed test");
+        }
+    }
+
+    @Test
+    @DisplayName("WithdrawCamp_WhenDataIsValid")
+    public void StudentController_WithdrawCamp_WhenDataIsValid(){
+
+
+        StudentController studentController = new StudentController();
+
+        // result
+        try{
+            Camp testCamp = (Camp)campRepository.getByID("SCSE FOP");
+            Student testStudent = studentRepository.getStudentByID("LE51");
+
+            studentController.registerCampAsStudent(testStudent, testCamp);
+            studentController.withdrawFromCamp(testStudent, testCamp);
+
+            Assertions.assertFalse(testStudent.getRegisteredCamps().contains(testCamp));
+            Assertions.assertFalse(testCamp.getStudentsRegistered().contains(testStudent));
+            Assertions.assertTrue(testCamp.getStudentBlacklist().contains(testStudent));
         } catch (Exception e){
             System.out.println("failed: " + e.getMessage());
             Assertions.fail("Failed test");

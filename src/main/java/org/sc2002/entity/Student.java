@@ -11,6 +11,8 @@ import org.sc2002.utils.exception.EntityNotFoundException;
 public class Student extends User {
 
     private boolean isCampCommitteeMember;
+
+    private Camp committeeMemberCamp;
     private List<Camp> registeredCamps;
 
     public Student(String name, String email, String password, String faculty) {
@@ -40,25 +42,11 @@ public class Student extends User {
     }
 
     public void registerForCamp(Camp camp) {
-        if (!registeredCamps.contains(camp)) {
-            try {
-                camp.registerStudent(this);
-                registeredCamps.add(camp);
-            } catch (CampFullException e) {
-            	
-            }
-        }
+        registeredCamps.add(camp);
     }
 
     public void withdrawFromCamp(Camp camp) {
-        if (registeredCamps.contains(camp)) {
-            try {
-                camp.withdrawStudent(this);
-                registeredCamps.remove(camp);
-            } catch (EntityNotFoundException e) {
-               
-            }
-        }
+        registeredCamps.remove(camp);
     }
 
 

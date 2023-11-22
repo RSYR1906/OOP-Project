@@ -2,9 +2,12 @@ package org.sc2002.repository;
 
 import org.sc2002.entity.Entity;
 import org.sc2002.entity.LineMapper;
+import org.sc2002.entity.Staff;
 import org.sc2002.entity.Student;
 import org.sc2002.utils.exception.EntityNotFoundException;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -66,4 +69,52 @@ public class StudentRepository extends Repository{
         }
         return student;
     }
+
+     public boolean updateStudentPassword(String studentId, String newPassword) {
+        List<Student> students = getAllStudents();
+        boolean isUpdated = false;
+
+        for (Student student : students) {
+            if (student.getID().equals(studentId)) {
+                student.setPassword(newPassword);
+                isUpdated = true;
+                break;
+            }
+        }
+
+        if (isUpdated) {
+            // Save the updated student list back to the CSV file
+            saveAllStudent(students);
+        }
+
+        return isUpdated;
+    }
+
+    private void saveAllStudent(List<Student> students) {
+        // Logic to write all students back to the CSV file
+        // Ensure that the CSV file is updated with the new password for the students
+            FileWriter fileWriter = null;
+    try {
+        fileWriter = new FileWriter(getFilePath(), false); // false to overwrite the file
+        for (Student student : students) {
+            String studentData = formatter().apply(student) + "\n"; // Convert student object to CSV string
+            fileWriter.write(studentData);
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+        // Handle exceptions (e.g., log them, notify the user)
+    } finally {
+        try {
+            if (fileWriter != null) {
+                fileWriter.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle exception during file close operation
+        }
+    }
+
+    }
+
 }
+

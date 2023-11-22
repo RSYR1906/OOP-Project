@@ -6,6 +6,8 @@ import org.sc2002.entity.Staff;
 import org.sc2002.entity.Student;
 import org.sc2002.utils.exception.EntityNotFoundException;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -73,4 +75,51 @@ public class StaffRepository extends Repository {
         }
         return staff;
     }
+
+    public boolean updateStaffPassword(String staffId, String newPassword) {
+        List<Staff> staffMembers = getAllStaff();
+        boolean isUpdated = false;
+
+        for (Staff staff : staffMembers) {
+            if (staff.getID().equals(staffId)) {
+                staff.setPassword(newPassword);
+                isUpdated = true;
+                break;
+            }
+        }
+
+        if (isUpdated) {
+            // Save the updated staff list back to the CSV file
+            saveAllStaff(staffMembers);
+        }
+
+        return isUpdated;
+    }
+
+    private void saveAllStaff(List<Staff> staffMembers) {
+        // Logic to write all staff members back to the CSV file
+        // Ensure that the CSV file is updated with the new password for the relevant staff member
+            FileWriter fileWriter = null;
+    try {
+        fileWriter = new FileWriter(getFilePath(), false); // false to overwrite the file
+        for (Staff staff : staffMembers) {
+            String staffData = formatter().apply(staff) + "\n"; // Convert staff object to CSV string
+            fileWriter.write(staffData);
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+        // Handle exceptions (e.g., log them, notify the user)
+    } finally {
+        try {
+            if (fileWriter != null) {
+                fileWriter.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle exception during file close operation
+        }
+    }
+
+    }
+
 }

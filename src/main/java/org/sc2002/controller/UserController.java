@@ -12,6 +12,7 @@ import java.util.List;
 
 public class UserController {
     private List<User> users;
+    private User currentUser;  // Field to store the current logged-in user
 
     public UserController(StudentRepository studentRepository, StaffRepository staffRepository) {
         users = new ArrayList<>();
@@ -21,8 +22,8 @@ public class UserController {
 
     public User authenticateUser(String userId, String password) {
         for (User user : users) {
-            //System.out.println(user.getID()+" "+user.getPassword());
             if (user.getID().equalsIgnoreCase(userId) && user.getPassword().equals(password)) {
+                currentUser = user;  // Set the currentUser when authentication is successful
                 return user;
             }
         }
@@ -38,4 +39,21 @@ public class UserController {
             return "Unknown";
         }
     }
+
+    public boolean changePassword(User user, String newPassword) {
+        for (User u : users) {
+            if (u.equals(user)) {
+                u.setPassword(newPassword);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Method to get the current logged-in user
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    
 }

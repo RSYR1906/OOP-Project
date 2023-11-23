@@ -18,7 +18,7 @@ public class LoginUI implements UI{
     }
 
     @Override
-    public void body() {
+    public User body() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("\u001B[36m\n   _     _    ______    __        __        ______    __    \u001B[0m");
@@ -42,13 +42,16 @@ public class LoginUI implements UI{
 
         switch (choice) {
             case 1:
-                login();
+                User user = login();
+                if (user != null) return user;
                 break;
             case 2:
-                changePassword();
+                User userChange = changePassword();
+                if (userChange != null) return userChange;
                 break;
             case 3:
                 System.out.println("\nExiting. Goodbye!");
+                System.exit(0);
                 break;
             default:
                 System.out.println("\u001B[31mInvalid choice. Please enter a valid option.\u001B[0m");
@@ -56,9 +59,10 @@ public class LoginUI implements UI{
         }
 
         scanner.close();
+        return null;
     }
 
-    public void login() {
+    public User login() {
         Scanner scanner = new Scanner(System.in);
 
         // Get user input for user ID and password
@@ -74,27 +78,30 @@ public class LoginUI implements UI{
             System.out.println("\u001B[34mFaculty:\u001B[0m " + authenticatedUser.getFaculty());
             //System.out.println("\u001B[34mUser Role:\u001B[0m " + userController.getUserRole(authenticatedUser));
             String userRole = userController.getUserRole(authenticatedUser);
-        System.out.println("\u001B[34mUser Role:\u001B[0m " + userRole);
+            System.out.println("\u001B[34mUser Role:\u001B[0m " + userRole);
 
-        switch (userRole) {
-            case "Staff Member":
-                displayStaffFeatures();
-                break;
-            case "Student":
-                displayStudentFeatures();
-                break;
-            default:
-                System.out.println("\u001B[31mUnknown user role.\u001B[0m");
-                break;
-        }
+            return authenticatedUser;
+
+//        switch (userRole) {
+//            case "Staff Member":
+//                displayStaffFeatures();
+//                break;
+//            case "Student":
+//                displayStudentFeatures();
+//                break;
+//            default:
+//                System.out.println("\u001B[31mUnknown user role.\u001B[0m");
+//                break;
+//        }
     } else {
         System.out.println("\u001B[31m \nLogin failed. Invalid user ID or password.\u001B[0m");
+        scanner.close();
+        return null;
     }
 
-    scanner.close();
 }
 
-public void changePassword() {
+public User changePassword() {
     Scanner scanner = new Scanner(System.in);
 
     System.out.print("\nEnter your user ID: ");
@@ -114,6 +121,7 @@ public void changePassword() {
 
         if (success) {
             System.out.println("\u001B[32m \nPassword change successful.\u001B[0m");
+            return authenticatedUser;
         } else {
             System.out.println("\u001B[31m \nPassword change failed.\u001B[0m");
         }
@@ -122,6 +130,7 @@ public void changePassword() {
     }
 
     scanner.close();
+    return null;
 }
 
 

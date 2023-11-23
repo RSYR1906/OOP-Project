@@ -1,5 +1,5 @@
 package org.sc2002.boundary;
 
-public interface UI {
-    public void body();
+public interface UI<T> {
+    public T body();
 }

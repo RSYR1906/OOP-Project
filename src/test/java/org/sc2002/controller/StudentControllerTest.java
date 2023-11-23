@@ -17,6 +17,8 @@ public class StudentControllerTest {
     StudentRepository studentRepository;
     StaffRepository staffRepository;
     CampRepository campRepository;
+    
+    StudentController studentController;
 
     final String TEST_ALL_CAMP = "TEST ALL CAMP";
     final String TEST_SCSE_CAMP = "TEST SCSE CAMP";
@@ -34,6 +36,7 @@ public class StudentControllerTest {
         this.studentRepository = new StudentRepository();
         this.staffRepository = new StaffRepository();
         this.campRepository = new CampRepository();
+        this.studentController = new StudentController(campRepository);
 
         campRepository.load();
         studentRepository.load();
@@ -48,7 +51,7 @@ public class StudentControllerTest {
     public void StudentController_RegistersCamp_WhenDataIsValid(){
 
 
-        StudentController studentController = new StudentController();
+        
 
         // result
         try{
@@ -70,7 +73,7 @@ public class StudentControllerTest {
     public void StudentController_RegistersCamp_WhenCampIsOpenToAll(){
 
 
-        StudentController studentController = new StudentController();
+        
 
         // result
         try{
@@ -97,7 +100,7 @@ public class StudentControllerTest {
     public void StudentController_RegistersCampFails_WhenWrongFaculty(){
 
 
-        StudentController studentController = new StudentController();
+        
 
         // result
         try{
@@ -119,7 +122,7 @@ public class StudentControllerTest {
     public void StudentController_RegistersCampFails_WhenRegisterSameCampAgain(){
 
 
-        StudentController studentController = new StudentController();
+        
 
         // result
         try{
@@ -143,7 +146,7 @@ public class StudentControllerTest {
     public void StudentController_RegistersCampFails_WhenStudentOnBlacklist(){
 
 
-        StudentController studentController = new StudentController();
+        
 
         // result
         try{
@@ -168,7 +171,7 @@ public class StudentControllerTest {
     public void StudentController_RegistersCampFails_WhenNoMoreSlot(){
 
 
-        StudentController studentController = new StudentController();
+        
 
         // result
         try{
@@ -195,7 +198,7 @@ public class StudentControllerTest {
     public void StudentController_WithdrawCamp_WhenDataIsValid(){
 
 
-        StudentController studentController = new StudentController();
+        
 
         // result
         try{
@@ -218,7 +221,7 @@ public class StudentControllerTest {
     @DisplayName("WithdrawCamp_WhenNotRegistered")
     public void StudentController_WithdrawCampFails_WhenNotRegistered(){
 
-        StudentController studentController = new StudentController();
+        
 
         // result
         try{
@@ -241,7 +244,7 @@ public class StudentControllerTest {
     @DisplayName("RegistersCampAsCommitteeMember_WhenDataIsValid")
     public void StudentController_RegistersCampAsCommitteeMember_WhenDataIsValid(){
 
-        StudentController studentController = new StudentController();
+        
 
         // result
         try{
@@ -266,7 +269,7 @@ public class StudentControllerTest {
     public void StudentController_RegistersCampAsCommitteeMemberFails_WhenNoMoreSlot(){
 
 
-        StudentController studentController = new StudentController();
+        
 
         // result
         try{
@@ -292,7 +295,7 @@ public class StudentControllerTest {
     public void StudentController_RegistersCampAsCommitteeMemberFails_WhenAlreadyRegisteredAsStudent(){
 
 
-        StudentController studentController = new StudentController();
+        
 
         // result
         try{
@@ -316,7 +319,7 @@ public class StudentControllerTest {
     @DisplayName("RegistersCampAsCommitteeMemberFails_WhenAlreadyCampCommitteeMember")
     public void StudentController_RegistersCampAsCommitteeMemberFails_WhenAlreadyCampCommitteeMember(){
 
-        StudentController studentController = new StudentController();
+        
 
         // result
         try{
@@ -344,7 +347,7 @@ public class StudentControllerTest {
     public void StudentController_RegistersMultipleCampsAsStudent_WhenDataIsValid(){
 
 
-        StudentController studentController = new StudentController();
+        
 
         // result
         try{
@@ -371,7 +374,7 @@ public class StudentControllerTest {
     public void StudentController_PrintRegisteredCampsOfStudent(){
 
 
-        StudentController studentController = new StudentController();
+        
 
         // result
         try{
@@ -398,7 +401,7 @@ public class StudentControllerTest {
     public void StudentController_RegistersCampForStudentAndCommittee_WhenDataIsValid(){
 
 
-        StudentController studentController = new StudentController();
+        
 
         // result
         try{

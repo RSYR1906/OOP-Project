@@ -67,7 +67,7 @@ public class CampRepository extends Repository{
                 fields[0].trim(), fields[1].trim(), formatStringToDate(fields[2].trim()),
                 formatStringToDate(fields[3].trim()), formatStringToDate(fields[4].trim()),
                 Faculty.valueOf(fields[5].trim()),
-                fields[6].trim(), Integer.parseInt(fields[7].trim()), Integer.parseInt(fields[8].trim()) , fields[9].trim()
+                fields[6].trim(), Integer.parseInt(fields[7].trim()), Integer.parseInt(fields[8].trim()) , fields[9].trim(), fields[10].trim().equals("true")
         );
 
     }

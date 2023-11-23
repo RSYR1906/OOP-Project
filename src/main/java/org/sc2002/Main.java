@@ -1,9 +1,7 @@
 package org.sc2002;
 
 import org.sc2002.boundary.LoginUI;
-import org.sc2002.controller.CampController;
-import org.sc2002.controller.StaffController;
-import org.sc2002.controller.UserController;
+import org.sc2002.controller.*;
 import org.sc2002.entity.*;
 import org.sc2002.repository.CampRepository;
 import org.sc2002.repository.StaffRepository;
@@ -35,10 +33,10 @@ public class Main {
         CampController campController = new CampController(campRepository);
         UserController userController = new UserController(studentRepository, staffRepository);
         StaffController staffController = new StaffController(campController, campRepository, staffRepository);
+        StudentController studentController = new StudentController();
+        EnquiryController enquiryController = new EnquiryController();
 
         LoginUI loginUI = new LoginUI(userController);
-
-
         System.out.println("Hello world!");
 
 

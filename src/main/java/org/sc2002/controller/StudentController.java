@@ -4,6 +4,9 @@ import org.sc2002.entity.Camp;
 import org.sc2002.entity.Student;
 import org.sc2002.utils.exception.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StudentController {
 
     public void withdrawFromCamp(Student student, Camp camp) throws EntityNotFoundException {
@@ -41,15 +44,16 @@ public class StudentController {
         }
     }
     
-   /* public void joinCampCommittee(Student student, Camp camp) {
-        if (!student.isCampCommitteeMember() && camp.getCommitteeRegistered().length < camp.getCampCommitteeSlots()) {
-            student.setCampCommitteeMember(true);
-            //  need to add the logic to actually add the student to the committee list in Camp class
-        } else {
-            // Handle the case where the student cannot join the committee
-        }
-    }
-    */
+   public void printRegisteredCamps(Student student){
+       ArrayList<Camp> registeredCamps = student.getRegisteredCamps();
+       registeredCamps.stream().forEach(camp -> {
+           String role = "STUDENT";
+           if(student.isCampCommitteeMember() && student.getCommitteeMemberCamp() == camp){
+               role = "COMMITTEE";
+           }
+           System.out.println("CAMP: " + camp.getCampName() + "\t ROLE: " + role);
+       });
+   }
 
 }
 

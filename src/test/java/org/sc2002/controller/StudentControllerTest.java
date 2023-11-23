@@ -338,6 +338,60 @@ public class StudentControllerTest {
         }
     }
 
+    // Student registering for multiple camps
+    @Test
+    @DisplayName("RegistersMultipleCampsAsStudent_WhenDataIsValid")
+    public void StudentController_RegistersMultipleCampsAsStudent_WhenDataIsValid(){
+
+
+        StudentController studentController = new StudentController();
+
+        // result
+        try{
+            Camp testCampAll = (Camp)campRepository.getByID(TEST_ALL_CAMP);
+            Camp testCampSCSE = (Camp)campRepository.getByID(TEST_SCSE_CAMP);
+            Student testStudentSCSE = studentRepository.getStudentByID(SCSE_STUDENT_ID);
+
+            studentController.registerCampAsStudent(testStudentSCSE, testCampAll);
+            studentController.registerCampAsStudent(testStudentSCSE, testCampSCSE);
+
+
+
+            Assertions.assertTrue(testStudentSCSE.getRegisteredCamps().contains(testCampAll));
+            Assertions.assertTrue(testStudentSCSE.getRegisteredCamps().contains(testCampSCSE));
+        } catch (Exception e){
+            System.out.println("failed: " + e.getMessage());
+            Assertions.fail("Failed test");
+        }
+    }
+
+    // Test printing out camps registered
+    @Test
+    @DisplayName("PrintRegisteredCampsOfStudent")
+    public void StudentController_PrintRegisteredCampsOfStudent(){
+
+
+        StudentController studentController = new StudentController();
+
+        // result
+        try{
+            Camp testCampAll = (Camp)campRepository.getByID(TEST_ALL_CAMP);
+            Camp testCampSCSE = (Camp)campRepository.getByID(TEST_SCSE_CAMP);
+            Student testStudentSCSE = studentRepository.getStudentByID(SCSE_STUDENT_ID);
+
+            studentController.registerCampAsStudent(testStudentSCSE, testCampAll);
+            studentController.registerCampAsCampCommitteeMember(testStudentSCSE, testCampSCSE);
+
+
+            studentController.printRegisteredCamps(testStudentSCSE);
+        } catch (Exception e){
+            System.out.println("failed: " + e.getMessage());
+            Assertions.fail("Failed test");
+        }
+    }
+
+
+
     // Complex test involving camp committee member and student withdrawal
     @Test
     @DisplayName("RegistersCamp_WhenDataIsValid")

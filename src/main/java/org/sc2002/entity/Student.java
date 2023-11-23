@@ -56,7 +56,7 @@ public class Student extends User {
     }
 
 
-    public List<Camp> getRegisteredCamps() {
+    public ArrayList<Camp> getRegisteredCamps() {
         return new ArrayList<>(registeredCamps);
     }
 

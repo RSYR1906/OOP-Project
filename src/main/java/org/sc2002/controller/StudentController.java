@@ -25,6 +25,21 @@ public class StudentController {
             student.registerForCamp(camp);
         }
     }
+
+    public void registerCampAsCampCommitteeMember(Student student, Camp camp) throws FacultyNotEligibleException, CampFullException, RegistrationClosedException, BlacklistedStudentException, RegisteredAlreadyException, AlreadyCampCommitteeMemberException{
+        if (student.getRegisteredCamps().contains(camp)){
+            throw new RegisteredAlreadyException();
+        }
+
+        if (student.isCampCommitteeMember()){
+            throw new AlreadyCampCommitteeMemberException();
+        }
+
+        if(camp.canCampCommitteeMemberRegister(student)){
+            camp.registerCampCommitteeMember(student);
+            student.registerForCampAsCampCommitteeMember(camp);
+        }
+    }
     
    /* public void joinCampCommittee(Student student, Camp camp) {
         if (!student.isCampCommitteeMember() && camp.getCommitteeRegistered().length < camp.getCampCommitteeSlots()) {
@@ -34,17 +49,6 @@ public class StudentController {
             // Handle the case where the student cannot join the committee
         }
     }
-
-    // Method to handle student leaving the camp committee
-    public void leaveCampCommittee(Student student, Camp camp) {
-        if (student.isCampCommitteeMember()) {
-            student.setCampCommitteeMember(false);
-            //need to add the logic to actually remove the student from the committee list in Camp class
-        } else {
-            // Handle the case where the student is not a committee member
-        }
-    }
-
     */
 
 }

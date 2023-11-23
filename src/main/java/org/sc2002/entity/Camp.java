@@ -151,6 +151,19 @@ public class Camp implements Entity{
         studentsRegistered.add(student);
         totalSlots--;
     }
+
+    public void registerCampCommitteeMember(Student student) throws CampFullException, BlacklistedStudentException {
+        if (committeeRegistered.size() >= campCommitteeSlots) {
+            throw new CampFullException("No available slots to register for the camp.");
+        }
+
+        if (studentBlacklist.contains(student)){
+            throw new BlacklistedStudentException();
+        }
+        committeeRegistered.add(student);
+        totalSlots--;
+        campCommitteeSlots--;
+    }
     
     
     public void withdrawStudent(Student student) throws EntityNotFoundException {
@@ -181,6 +194,23 @@ public class Camp implements Entity{
             throw new FacultyNotEligibleException();
         }
         if (studentsRegistered.size() >= totalSlots) {
+            throw new CampFullException();
+        }
+        if (studentBlacklist.contains(student)){
+            throw new BlacklistedStudentException();
+        }
+        return true;
+    }
+
+    public boolean canCampCommitteeMemberRegister(Student student) throws RegistrationClosedException, FacultyNotEligibleException, CampFullException, BlacklistedStudentException {
+        LocalDate now = LocalDate.now();
+//        if(now.isAfter(campRegistrationEndDate)){ //comment out for test
+//            throw new RegistrationClosedException();
+//        }
+        if(student.getFaculty() != userGroupOpenTo && userGroupOpenTo != Faculty.ALL){
+            throw new FacultyNotEligibleException();
+        }
+        if (committeeRegistered.size() >= campCommitteeSlots) {
             throw new CampFullException();
         }
         if (studentBlacklist.contains(student)){

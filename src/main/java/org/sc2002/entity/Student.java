@@ -45,6 +45,12 @@ public class Student extends User {
         registeredCamps.add(camp);
     }
 
+    public void registerForCampAsCampCommitteeMember(Camp camp){
+        registeredCamps.add(camp);
+        committeeMemberCamp = camp;
+        isCampCommitteeMember = true;
+    }
+
     public void withdrawFromCamp(Camp camp) {
         registeredCamps.remove(camp);
     }
@@ -52,6 +58,10 @@ public class Student extends User {
 
     public List<Camp> getRegisteredCamps() {
         return new ArrayList<>(registeredCamps);
+    }
+
+    public Camp getCommitteeMemberCamp() {
+        return committeeMemberCamp;
     }
 }
 

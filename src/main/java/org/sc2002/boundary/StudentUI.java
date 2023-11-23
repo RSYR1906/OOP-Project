@@ -24,19 +24,8 @@ public class StudentUI implements UI{
     }
 
     @Override
-    public void body() {
+    public Object body() {
         Scanner scanner = new Scanner(System.in);
-
-        System.out.println("\u001B[36m\n   _     _    ______    __        __        ______    __    \u001B[0m");
-        System.out.println("\u001B[36m  | |   | |  |  ____|  |  |      |  |      |  __  |  |  |   \u001B[0m");
-        System.out.println("\u001B[36m  | |___| |  |  |___   |  |      |  |      | |  | |  |  |   \u001B[0m");
-        System.out.println("\u001B[36m  |  ___  |  |  ____|  |  |      |  |      | |  | |  |__|   \u001B[0m");
-        System.out.println("\u001B[36m  | |   | |  |  |___   |  |___   |  |___   | |__| |   __    \u001B[0m");
-        System.out.println("\u001B[36m  |_|   |_|  |______|  |______|  |______|  |______|  |__|   \u001B[0m");
-
-        System.out.println("\u001B[36m\n =================================================================\u001B[0m");
-        System.out.println("\u001B[36m     Welcome to Camp Application and Management System (CAMs)    \u001B[0m");
-        System.out.println("\u001B[36m =================================================================\u001B[0m");
 
         System.out.println("\u001B[36m\nPlease enter your choice to continue:\u001B[0m");
         while (true) {
@@ -71,7 +60,7 @@ public class StudentUI implements UI{
                 case 6:
                     //deleteEnquery();
                     break;
-                case 7:
+                case 9:
                     System.out.println("\nExiting. Goodbye!");
                     System.exit(0);
                     break;

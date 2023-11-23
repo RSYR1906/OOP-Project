@@ -26,19 +26,8 @@ public class StaffUI implements UI{
     }
 
     @Override
-    public void body() {
+    public Object body() {
         Scanner scanner = new Scanner(System.in);
-
-        System.out.println("\u001B[36m\n   _     _    ______    __        __        ______    __    \u001B[0m");
-        System.out.println("\u001B[36m  | |   | |  |  ____|  |  |      |  |      |  __  |  |  |   \u001B[0m");
-        System.out.println("\u001B[36m  | |___| |  |  |___   |  |      |  |      | |  | |  |  |   \u001B[0m");
-        System.out.println("\u001B[36m  |  ___  |  |  ____|  |  |      |  |      | |  | |  |__|   \u001B[0m");
-        System.out.println("\u001B[36m  | |   | |  |  |___   |  |___   |  |___   | |__| |   __    \u001B[0m");
-        System.out.println("\u001B[36m  |_|   |_|  |______|  |______|  |______|  |______|  |__|   \u001B[0m");
-
-        System.out.println("\u001B[36m\n =================================================================\u001B[0m");
-        System.out.println("\u001B[36m     Welcome to Camp Application and Management System (CAMs)    \u001B[0m");
-        System.out.println("\u001B[36m =================================================================\u001B[0m");
 
         System.out.println("\u001B[36m\nPlease enter your choice to continue:\u001B[0m");
         while (true) {
@@ -50,7 +39,7 @@ public class StaffUI implements UI{
             System.out.println("6. View and approve suggestions to changes to camp details from camp committee.");
             System.out.println("7. Generate a report of the list of students attending each camp you has created.");
             System.out.println("8. Generate a performance report of the camp committee members.");
-            System.out.println("9. 直接退出");
+            System.out.println("9. Exit");
 
             System.out.print("\nYour choice (1-9): ");
             int choice = scanner.nextInt();
@@ -82,6 +71,7 @@ public class StaffUI implements UI{
 
                 case 9:
                     System.out.println("\nExiting. Goodbye!");
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("\u001B[31mInvalid choice. Please enter a valid option.\u001B[0m");

@@ -1,6 +1,8 @@
 package org.sc2002;
 
 import org.sc2002.boundary.LoginUI;
+import org.sc2002.boundary.StaffUI;
+import org.sc2002.boundary.StudentUI;
 import org.sc2002.controller.*;
 import org.sc2002.entity.*;
 import org.sc2002.repository.CampRepository;
@@ -41,7 +43,15 @@ public class Main {
 
 
 
-        loginUI.body();
+        User user = loginUI.body();
+        if (userController.getUserRole(user).equals("Staff Member")) {
+            StaffUI staffUI = new StaffUI(staffController, campController, userController, campRepository, user);
+            staffUI.body();
+        } else if (userController.getUserRole(user).equals("Student")) {
+            Student student = (Student) user;
+            StudentUI studentUI = new StudentUI(studentController, student, enquiryController,campController);
+            studentUI.body();
+        }
 
 
 //      // Test StudentRepository

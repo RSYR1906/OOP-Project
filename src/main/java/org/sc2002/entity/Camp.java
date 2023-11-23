@@ -20,6 +20,8 @@ public class Camp implements Entity{
 
     private String staffInChargeID;
 
+    private boolean visibilityToStudent = true;
+
     private int totalSlots;
     private int campCommitteeSlots;
 
@@ -123,7 +125,15 @@ public class Camp implements Entity{
         this.committeeRegistered = committeeRegistered;
     }
 
-    public Camp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, String staffInChargeID) {
+    public boolean getVisibilityToStudent() {
+        return visibilityToStudent;
+    }
+
+    public void setVisibilityToStudent(boolean visibilityToStudent) {
+        this.visibilityToStudent = visibilityToStudent;
+    }
+
+    public Camp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, String staffInChargeID, Boolean visibilityToStudent) {
         this.campName = campName;
         this.description = description;
         this.campStartDate = campStartDate;
@@ -138,10 +148,11 @@ public class Camp implements Entity{
         this.studentBlacklist = new ArrayList<>();
         this.committeeRegistered = new ArrayList<>();
         this.staffInChargeID = staffInChargeID;
+        this.visibilityToStudent = visibilityToStudent;
     }
     
     public void registerStudent(Student student) throws CampFullException, BlacklistedStudentException {
-        if (studentsRegistered.size() >= totalSlots) {
+        if (studentsRegistered.size() >= (totalSlots - campCommitteeSlots)) {
             throw new CampFullException("No available slots to register for the camp.");
         }
 
@@ -149,7 +160,6 @@ public class Camp implements Entity{
             throw new BlacklistedStudentException();
         }
         studentsRegistered.add(student);
-        totalSlots--;
     }
 
     public void registerCampCommitteeMember(Student student) throws CampFullException, BlacklistedStudentException {
@@ -161,8 +171,6 @@ public class Camp implements Entity{
             throw new BlacklistedStudentException();
         }
         committeeRegistered.add(student);
-        totalSlots--;
-        campCommitteeSlots--;
     }
     
     
@@ -230,7 +238,8 @@ public class Camp implements Entity{
                 .append(location).append(separator)
                 .append(totalSlots).append(separator)
                 .append(campCommitteeSlots).append(separator)
-                .append(staffInChargeID);
+                .append(staffInChargeID).append(separator)
+                .append(visibilityToStudent);
         return sb.toString();
 
     }

@@ -24,17 +24,17 @@ public class StaffController {
         this.staffRepository = staffRepository;
     }
     
-    public Camp createCamp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, String staffInChargeID) throws DuplicateEntityExistsException, EntityNotFoundException{
-        Camp createdCamp = campController.createCamp(campName, description, campStartDate, campEndDate, campRegistrationEndDate, userGroupOpenTo, location, totalSlots, campCommitteeSlots, staffInChargeID);
+    public Camp createCamp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, String staffInChargeID, Boolean visibilityToStudent) throws DuplicateEntityExistsException, EntityNotFoundException{
+        Camp createdCamp = campController.createCamp(campName, description, campStartDate, campEndDate, campRegistrationEndDate, userGroupOpenTo, location, totalSlots, campCommitteeSlots, staffInChargeID, visibilityToStudent);
         staffRepository.getStaffByID(staffInChargeID).addToCreatedCamps(createdCamp);
         return createdCamp;
     }
 
     // Method to edit an existing camp
-    public Camp editCamp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, String staffInChargeID) throws WrongStaffException, EntityNotFoundException {
+    public Camp editCamp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, String staffInChargeID,  boolean visibilityToStudent) throws WrongStaffException, EntityNotFoundException {
         // Check if the staff is the owner of the camp
         if (campRepository.getCampByID(campName).getStaffInChargeID().equals(staffInChargeID)) {
-            Camp editedCamp = campController.editCamp(campName, description, campStartDate, campEndDate, campRegistrationEndDate, userGroupOpenTo, location, totalSlots, campCommitteeSlots, staffInChargeID);
+            Camp editedCamp = campController.editCamp(campName, description, campStartDate, campEndDate, campRegistrationEndDate, userGroupOpenTo, location, totalSlots, campCommitteeSlots, staffInChargeID,  visibilityToStudent);
             staffRepository.getStaffByID(staffInChargeID).deleteFromCreatedCamps(editedCamp);
             staffRepository.getStaffByID(staffInChargeID).addToCreatedCamps(editedCamp);
             return editedCamp;

@@ -35,7 +35,7 @@ public class Main {
         CampController campController = new CampController(campRepository);
         UserController userController = new UserController(studentRepository, staffRepository);
         StaffController staffController = new StaffController(campController, campRepository, staffRepository);
-        StudentController studentController = new StudentController();
+        StudentController studentController = new StudentController(campRepository);
         EnquiryController enquiryController = new EnquiryController();
 
         LoginUI loginUI = new LoginUI(userController);
@@ -45,7 +45,8 @@ public class Main {
 
         User user = loginUI.body();
         if (userController.getUserRole(user).equals("Staff Member")) {
-            StaffUI staffUI = new StaffUI(staffController, campController, userController, campRepository, user);
+            Staff staff = (Staff) user;
+            StaffUI staffUI = new StaffUI(staffController, campController, userController, campRepository, staff);
             staffUI.body();
         } else if (userController.getUserRole(user).equals("Student")) {
             Student student = (Student) user;

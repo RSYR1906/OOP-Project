@@ -17,9 +17,12 @@ public abstract class Repository{
      */
     List<Entity> listOfEntityObjects;
 
+    protected String FILE_PATH;
     protected abstract Function<Entity,String> formatter();
 
     protected abstract LineMapper<Entity> mapper();
+
+
 
     /**
      * Creates a new instance of the Repository class.
@@ -33,7 +36,19 @@ public abstract class Repository{
      *
      * @return the path of the repository file
      */
-    public abstract String getFilePath();
+    public String getFilePath() {
+        return this.FILE_PATH;
+    }
+
+    /**
+     * Sets the file path of the repository.
+     *
+     * @param filePath the file path to set
+     */
+    protected void setFilePath(String filePath) {
+        this.FILE_PATH = filePath;
+    }
+
 
     /**
      * Gets the list of entity objects stored in the repository

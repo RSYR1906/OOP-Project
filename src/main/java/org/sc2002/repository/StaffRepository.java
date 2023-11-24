@@ -14,7 +14,10 @@ import static org.sc2002.repository.DBcsv.SEPARATOR;
 
 public class StaffRepository extends Repository {
 
-    protected final String FILENAME = "staff.csv";
+    public StaffRepository() {
+        super();
+        setFilePath("staff.csv");
+    }
 
     @Override
     protected Function<Entity, String> formatter() {
@@ -29,12 +32,6 @@ public class StaffRepository extends Repository {
         return fields -> new Staff(fields[0].trim(), fields[1].trim(), fields[2].trim(), fields[3].trim());
     }
 
-
-
-    @Override
-    public String getFilePath() {
-        return FILENAME;
-    }
 
     // Methods specific to Staff entity
     // Implement methods for handling staff-related functionality based on your requirements.

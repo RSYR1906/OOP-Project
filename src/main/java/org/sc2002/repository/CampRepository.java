@@ -12,7 +12,10 @@ import static org.sc2002.utils.CAMSDateFormat.formatStringToDate;
 
 public class CampRepository extends Repository{
 
-    protected final String FILENAME = "camp.csv";
+    public CampRepository() {
+        super();
+        setFilePath("camp.csv");
+    }
 
     @Override
     protected Function<Entity, String> formatter() {
@@ -22,11 +25,6 @@ public class CampRepository extends Repository{
     @Override
     protected LineMapper<Entity> mapper() {
         return fields -> formatCampStringToCamp(fields);
-    }
-
-    @Override
-    public String getFilePath() {
-        return FILENAME;
     }
 
     /**

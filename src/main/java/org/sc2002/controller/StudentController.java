@@ -21,7 +21,7 @@ public class StudentController {
     }
 
     public Camp getCamp(String campId) throws EntityNotFoundException {
-        return (Camp)campRepository.getByID(campId);
+        return campRepository.getCampByID(campId);
     }
 
     public void withdrawFromCamp(Student student, Camp camp) throws EntityNotFoundException, Exception {

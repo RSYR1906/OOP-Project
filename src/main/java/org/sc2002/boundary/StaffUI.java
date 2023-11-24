@@ -59,7 +59,7 @@ public class StaffUI implements UI{
                     changeCamp();
                     break;
                 case 2:
-                    //changeVisibility();
+                    toggleVisibility();
                     break;
                 case 3:
                     viewAllCamps();
@@ -131,6 +131,27 @@ public class StaffUI implements UI{
         System.out.print("\u001B[34mCamp is \u001B[0m ");
         System.out.println(camp.getVisibilityToStudent() ? "visible" : "invisible");
         System.out.println("------------------------------------");
+    }
+
+    public void toggleVisibility() {
+        List<Camp> camps = viewCampsICreated();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("If you want change visibility of the camp, you should enter the following details!");
+        System.out.print("Camp Name: ");
+        String campName = scanner.nextLine();
+
+        try{
+            Camp campToChangeVisibility = campRepository.getCampByID(campName);
+            if(!campToChangeVisibility.getStaffInChargeID().equals(staff.getID())){
+                throw new WrongStaffException();
+            }
+            System.out.println("Current visibility of " + campToChangeVisibility.getCampName() + " : " + campToChangeVisibility.getVisibilityToStudent());
+            staffController.toggleVisibilityOfCamp(campToChangeVisibility, staff);
+            System.out.println("Updated visibility of " + campToChangeVisibility.getCampName() + " : " + campToChangeVisibility.getVisibilityToStudent());
+        } catch (EntityNotFoundException | WrongStaffException e) {
+            System.out.println("Failed to change visibility of the camp: " + e.getMessage());
+        }
+
     }
 
     public void changeCamp() {

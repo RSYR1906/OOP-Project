@@ -97,7 +97,11 @@ public class StaffUI implements UI{
     public List<Camp> viewAllCamps() {
         System.out.println("Viewing All camps");
         List<Camp> camps = staffController.viewAllCamps();
-        printCamps(camps);
+        int index = 0;
+        for(Camp camp : camps){
+            System.out.println("\u001B[34mCamp Number:\u001B[0m " + index++);
+            printCamp(camp);
+        }
         return camps;
     }
 
@@ -105,42 +109,12 @@ public class StaffUI implements UI{
         System.out.println("Viewing camps I created");
         List<Camp> camps = staffController.viewAllCamps();
         List<Camp> campsICreated = camps.stream().filter(camp -> camp.getStaffInChargeID().equals(staff.getID())).collect(Collectors.toList());
-        printCamps(campsICreated);
-        return campsICreated;
-    }
-
-
-
-    public void printCamps(List<Camp> camps){
         int index = 0;
-        for (Camp camp : camps) {
-            String campId = camp.getID();
-            String campName = camp.getCampName();
-            String description = camp.getDescription();
-            LocalDate campStartDate = camp.getCampStartDate();
-            LocalDate campEndDate = camp.getCampEndDate();
-            LocalDate campRegistrationEndDate = camp.getCampRegistrationEndDate();
-            Faculty userGroupOpenTo = camp.getUserGroupOpenTo();
-            String location = camp.getLocation();
-            String staffInChargeID = camp.getStaffInChargeID();
-            int totalSlots = camp.getTotalSlots();
-            int campCommitteeSlots = camp.getCampCommitteeSlots();
-            boolean visibilityToStudent = camp.getVisibilityToStudent();
+        for(Camp camp : campsICreated){
             System.out.println("\u001B[34mCamp Number:\u001B[0m " + index++);
-            System.out.println("\u001B[34mCamp Name:\u001B[0m " + campName);
-            System.out.println("\u001B[34mCamp Start Date:\u001B[0m " + campStartDate);
-            System.out.println("\u001B[34mRegistration closing date:\u001B[0m " + campEndDate);
-            System.out.println("\u001B[34mCamp Registration End Date:\u001B[0m " + campRegistrationEndDate);
-            System.out.println("\u001B[34mUser group:\u001B[0m " + userGroupOpenTo);
-            System.out.println("\u001B[34mLocation:\u001B[0m " + location);
-            System.out.println("\u001B[34mTotal Slots:\u001B[0m " + totalSlots);
-            System.out.println("\u001B[34mCamp Committee Slots:\u001B[0m " + campCommitteeSlots);
-            System.out.println("\u001B[34mDescription:\u001B[0m " + description);
-            System.out.println("\u001B[34mStaff in charge:\u001B[0m " + staffInChargeID);
-            System.out.print("\u001B[34mCamp is \u001B[0m ");
-            System.out.println(visibilityToStudent ? "visible" : "invisible");
-            System.out.println("--------------next one---------------");
+            printCamp(camp);
         }
+        return campsICreated;
     }
 
     public void printCamp(Camp camp){

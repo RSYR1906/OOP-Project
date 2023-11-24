@@ -8,6 +8,8 @@ import org.sc2002.entity.Faculty;
 import org.sc2002.entity.Staff;
 import org.sc2002.entity.User;
 import org.sc2002.repository.CampRepository;
+import org.sc2002.utils.exception.EntityNotFoundException;
+import org.sc2002.utils.exception.WrongStaffException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -51,7 +53,7 @@ public class StaffUI implements UI{
             int choice = scanner.nextInt();
             switch (choice) {
                 case 1:
-                    //changeCamp(user);
+                    changeCamp();
                     break;
                 case 2:
                     //changeVisibility();
@@ -137,4 +139,138 @@ public class StaffUI implements UI{
             System.out.println("--------------next one---------------");
         }
     }
+
+    public void changeCamp() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\nYour choice (1-3): ");
+        System.out.println("\n1. create\t2.edit\t3.delete");
+        int choice = scanner.nextInt();
+        switch (choice) {
+            case 1:
+                //createCamp(staff);
+                break;
+            case 2:
+                editCamp();
+                break;
+            case 3:
+                deleteCamp();
+                break;
+            default:
+                System.out.println();
+                break;
+        }
+    }
+
+    public void editCamp() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("If you want to edit camp you should enter the following details!");
+        System.out.println("Please enter the following details:");
+
+        System.out.print("Camp Name: ");
+        String campName = scanner.nextLine();
+        String campId=null;
+        LocalDate campStartDate = null;
+        LocalDate campEndDate = null;
+        LocalDate campRegistrationEndDate = null;
+
+        try{
+            Camp camp = campRepository.getCampByID(campName);
+            if(!camp.getStaffInChargeID().equals(staff.getID())){
+                throw new WrongStaffException();
+            }
+            campId= camp.getID();
+            campStartDate = camp.getCampStartDate();
+            campEndDate = camp.getCampEndDate();
+            campRegistrationEndDate = camp.getCampRegistrationEndDate();
+        } catch (EntityNotFoundException | WrongStaffException e) {
+            System.out.println("Failed to edit camp: " + e.getMessage());
+            return;
+        }
+
+
+        Faculty userGroupOpenTo;
+        while (true) {
+            System.out.print("User group (own school or whole NTU): Please enter 0： own school;     1: whole NTU");
+            String userInput = scanner.nextLine();
+            if (userInput.equals("0")) {
+                userGroupOpenTo = staff.getFaculty();
+                break;
+            } else if (userInput.equals("1")) {
+                userGroupOpenTo = Faculty.ALL;
+                break;
+            } else {
+                System.out.println("Invalid date format. Please enter in the format 0/1.");
+            }
+        }
+
+
+        System.out.print("Location: ");
+        String location = scanner.nextLine();
+
+        int committeeSlots = -1;
+        while (committeeSlots < 0 || committeeSlots > 10) {
+            System.out.print("Camp Committee Slots (max 10): ");
+            committeeSlots = scanner.nextInt();
+        }
+
+        int totalSlots = 0;
+        while (totalSlots <= committeeSlots) {
+            System.out.print("Total Slots (must be greater than the number of committee): ");
+            totalSlots = scanner.nextInt();
+        }
+
+        scanner.nextLine(); // consume the newline character
+
+        System.out.print("Description: ");
+        String description = scanner.nextLine();
+
+        // Assume the staff in charge is tied to the staff who created it
+        System.out.println("Automatically tied to the staff who created it");
+        String staffInCharge = staff.getID();
+
+        boolean visibilityToStudent = true;
+        while (true) {
+            System.out.print("Is the current campsite visible to students;  0： invisible;     1: visible");
+            String userInput = scanner.nextLine();
+            if (userInput.equals("0")) {
+                visibilityToStudent = false;
+                break;
+            } else if (userInput.equals("1")) {
+                visibilityToStudent = true;
+                break;
+            } else {
+                System.out.println("Invalid date format. Please enter in the format 0/1.");
+            }
+        }
+
+
+        Camp editedCamp = new Camp(campName, description, campStartDate, campEndDate, campRegistrationEndDate, userGroupOpenTo, location, totalSlots, committeeSlots, staffInCharge, visibilityToStudent);
+        try {
+            campController.editCamp(editedCamp);
+            System.out.println("Successfully edited camp: " + editedCamp.getCampName());
+        }catch (Exception e){
+            System.out.println("Failed to edit camp: " + e.getMessage());
+        }
+    }
+
+    public void deleteCamp() {
+        List<Camp> camps = viewCampsICreated();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("If you want delete camp, you should enter the following details!");
+        System.out.print("Camp Name: ");
+        String campName = scanner.nextLine();
+
+        try{
+            Camp campToDelete = campRepository.getCampByID(campName);
+            if(!campToDelete.getStaffInChargeID().equals(staff.getID())){
+                throw new WrongStaffException();
+            }
+            campController.deleteCamp(campToDelete.getID());
+            System.out.println("Successfully deleted camp: " + campToDelete.getCampName());
+        } catch (EntityNotFoundException | WrongStaffException e) {
+            System.out.println("Failed to delete camp: " + e.getMessage());
+        }
+    }
+
+
 }

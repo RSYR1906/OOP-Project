@@ -42,6 +42,16 @@ public class CampController {
         }
     }
 
+    public Camp editCamp(Camp camp) throws EntityNotFoundException{
+        try{
+            campRepository.update(camp);
+            return camp;
+        } catch (EntityNotFoundException e){
+            System.out.println("Failed to update entity: " + e.getMessage());
+            throw e;
+        }
+    }
+
     public void deleteCamp(String campId){
         try{
             campRepository.remove(campId);

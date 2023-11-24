@@ -13,7 +13,10 @@ import static org.sc2002.repository.DBcsv.SEPARATOR;
 
 public class StudentRepository extends Repository{
 
-    protected final String FILENAME = "student.csv";
+    public StudentRepository() {
+        super();
+        setFilePath("student.csv");
+    }
 
     @Override
     protected Function<Entity, String> formatter() {
@@ -26,12 +29,6 @@ public class StudentRepository extends Repository{
     @Override
     protected LineMapper<Entity> mapper() {
         return fields -> new Student(fields[0].trim(), fields[1].trim(), fields[2].trim(), fields[3].trim());
-    }
-
-    @Override
-    public String getFilePath() {
-
-        return FILENAME;
     }
 
     /**

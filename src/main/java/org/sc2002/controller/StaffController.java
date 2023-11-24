@@ -63,23 +63,18 @@ public class StaffController {
         }
     }
 
-    // Method to toggle the visibility of a camp with exception handling
-//    public void toggleVisibilityOfCamp(Camp camp) throws WrongStaffException {
-//        // Check if the camp exists
-//        if (allCamps.contains(camp)) {                                        //Need to add an isVisible() to the Camp.java
-//            // Check the current visibility status of the camp
-//            if (camp.isVisible()) {
-//                // If the camp is currently visible, set it to "off"
-//                camp.setVisible(false);
-//            } else {
-//                // If the camp is currently not visible, set it to "on"
-//                camp.setVisible(true);
-//            }
-//        } else {
-//            // Camp does not exist, throw a custom exception
-//            throw new WrongStaffException("Camp does not exist or is not accessible by the staff.");
-//        }
-//    }
+     //Method to toggle the visibility of a camp with exception handling
+    public void toggleVisibilityOfCamp(Camp camp, Staff staff) throws WrongStaffException, EntityNotFoundException {
+        // Check if the camp exists
+        Camp findCamp = campRepository.getCampByID(camp.getID());
+        if(findCamp.getStaffInChargeID().equals(staff.getID())){
+            findCamp.setVisibilityToStudent(!findCamp.getVisibilityToStudent());
+            campRepository.update(findCamp);
+        } else {
+            throw new WrongStaffException();
+        }
+    }
+
 
     // Method to view all camps
     public List<Camp> viewAllCamps() {

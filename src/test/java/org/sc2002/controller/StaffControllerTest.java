@@ -47,7 +47,7 @@ public class StaffControllerTest {
         try{
             staffController.createCamp( "BEACH CAMP", "sports camp to welcome freshmen", LocalDate.of(2023, 8, 10), LocalDate.of(2023, 8, 13), LocalDate.of(2023, 7, 12), Faculty.ALL, "NTU campus", 100, 30, "HUKUMAR", true);
 
-            Camp sports_camp = (Camp)campRepository.getByID("BEACH CAMP");
+            Camp sports_camp = campRepository.getCampByID("BEACH CAMP");
             Assertions.assertEquals("BEACH CAMP", sports_camp.getCampName());
             Assertions.assertEquals(staff.getID(), sports_camp.getStaffInChargeID());
         } catch (Exception e){

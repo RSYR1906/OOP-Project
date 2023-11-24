@@ -55,7 +55,7 @@ public class StudentControllerTest {
 
         // result
         try{
-            Camp testCamp = (Camp)campRepository.getByID(TEST_SCSE_CAMP);
+            Camp testCamp = campRepository.getCampByID(TEST_SCSE_CAMP);
             Student testStudent = studentRepository.getStudentByID(SCSE_STUDENT_ID);
 
             studentController.registerCampAsStudent(testStudent, testCamp);
@@ -77,7 +77,7 @@ public class StudentControllerTest {
 
         // result
         try{
-            Camp testCamp = (Camp)campRepository.getByID(TEST_ALL_CAMP);
+            Camp testCamp = campRepository.getCampByID(TEST_ALL_CAMP);
             Student testStudent = studentRepository.getStudentByID(SCSE_STUDENT_ID);
             Student testStudent2 = studentRepository.getStudentByID(ADM_STUDENT_ID);
 
@@ -104,7 +104,7 @@ public class StudentControllerTest {
 
         // result
         try{
-            Camp testCamp = (Camp)campRepository.getByID(TEST_SCSE_CAMP);
+            Camp testCamp = campRepository.getCampByID(TEST_SCSE_CAMP);
             Student testStudent = studentRepository.getStudentByID(ADM_STUDENT_ID);
 
             Assertions.assertThrows(FacultyNotEligibleException.class, ()->{
@@ -126,7 +126,7 @@ public class StudentControllerTest {
 
         // result
         try{
-            Camp testCamp = (Camp)campRepository.getByID(TEST_SCSE_CAMP);
+            Camp testCamp = campRepository.getCampByID(TEST_SCSE_CAMP);
             Student testStudent = studentRepository.getStudentByID(SCSE_STUDENT_ID);
 
             studentController.registerCampAsStudent(testStudent, testCamp);
@@ -150,7 +150,7 @@ public class StudentControllerTest {
 
         // result
         try{
-            Camp testCamp = (Camp)campRepository.getByID(TEST_SCSE_CAMP);
+            Camp testCamp = campRepository.getCampByID(TEST_SCSE_CAMP);
             Student testStudent = studentRepository.getStudentByID(SCSE_STUDENT_ID);
 
             studentController.registerCampAsStudent(testStudent, testCamp);
@@ -175,7 +175,7 @@ public class StudentControllerTest {
 
         // result
         try{
-            Camp testCamp = (Camp)campRepository.getByID(TEST_ALL_CAMP);
+            Camp testCamp = campRepository.getCampByID(TEST_ALL_CAMP);
             Student testStudentSCSE = studentRepository.getStudentByID(SCSE_STUDENT_ID);
             Student testStudentADM = studentRepository.getStudentByID(ADM_STUDENT_ID);
             Student testStudentEEE = studentRepository.getStudentByID(EEE_STUDENT_ID);
@@ -202,7 +202,7 @@ public class StudentControllerTest {
 
         // result
         try{
-            Camp testCamp = (Camp)campRepository.getByID(TEST_SCSE_CAMP);
+            Camp testCamp = campRepository.getCampByID(TEST_SCSE_CAMP);
             Student testStudent = studentRepository.getStudentByID(SCSE_STUDENT_ID);
 
             studentController.registerCampAsStudent(testStudent, testCamp);
@@ -225,7 +225,7 @@ public class StudentControllerTest {
 
         // result
         try{
-            Camp testCamp = (Camp)campRepository.getByID(TEST_SCSE_CAMP);
+            Camp testCamp = campRepository.getCampByID(TEST_SCSE_CAMP);
             Student testStudent = studentRepository.getStudentByID(SCSE_STUDENT_ID);
 
             Assertions.assertFalse(testStudent.getRegisteredCamps().contains(testCamp));
@@ -248,7 +248,7 @@ public class StudentControllerTest {
 
         // result
         try{
-            Camp testCamp = (Camp)campRepository.getByID(TEST_SCSE_CAMP);
+            Camp testCamp = campRepository.getCampByID(TEST_SCSE_CAMP);
             Student testStudent = studentRepository.getStudentByID(SCSE_STUDENT_ID);
 
             studentController.registerCampAsCampCommitteeMember(testStudent, testCamp);
@@ -273,7 +273,7 @@ public class StudentControllerTest {
 
         // result
         try{
-            Camp testCamp = (Camp)campRepository.getByID(TEST_ALL_CAMP);
+            Camp testCamp = campRepository.getCampByID(TEST_ALL_CAMP);
             Student testStudentSCSE = studentRepository.getStudentByID(SCSE_STUDENT_ID);
             Student testStudentADM = studentRepository.getStudentByID(ADM_STUDENT_ID);
 
@@ -299,7 +299,7 @@ public class StudentControllerTest {
 
         // result
         try{
-            Camp testCamp = (Camp)campRepository.getByID(TEST_ALL_CAMP);
+            Camp testCamp = campRepository.getCampByID(TEST_ALL_CAMP);
             Student testStudentSCSE = studentRepository.getStudentByID(SCSE_STUDENT_ID);
 
 
@@ -323,8 +323,8 @@ public class StudentControllerTest {
 
         // result
         try{
-            Camp testCampALL = (Camp)campRepository.getByID(TEST_ALL_CAMP);
-            Camp testCampSCSE = (Camp)campRepository.getByID(TEST_SCSE_CAMP);
+            Camp testCampALL = campRepository.getCampByID(TEST_ALL_CAMP);
+            Camp testCampSCSE = campRepository.getCampByID(TEST_SCSE_CAMP);
 
             Student testStudentSCSE = studentRepository.getStudentByID(SCSE_STUDENT_ID);
 
@@ -351,8 +351,8 @@ public class StudentControllerTest {
 
         // result
         try{
-            Camp testCampAll = (Camp)campRepository.getByID(TEST_ALL_CAMP);
-            Camp testCampSCSE = (Camp)campRepository.getByID(TEST_SCSE_CAMP);
+            Camp testCampAll = (Camp)campRepository.getCampByID(TEST_ALL_CAMP);
+            Camp testCampSCSE = campRepository.getCampByID(TEST_SCSE_CAMP);
             Student testStudentSCSE = studentRepository.getStudentByID(SCSE_STUDENT_ID);
 
             studentController.registerCampAsStudent(testStudentSCSE, testCampAll);
@@ -378,8 +378,8 @@ public class StudentControllerTest {
 
         // result
         try{
-            Camp testCampAll = (Camp)campRepository.getByID(TEST_ALL_CAMP);
-            Camp testCampSCSE = (Camp)campRepository.getByID(TEST_SCSE_CAMP);
+            Camp testCampAll = campRepository.getCampByID(TEST_ALL_CAMP);
+            Camp testCampSCSE = campRepository.getCampByID(TEST_SCSE_CAMP);
             Student testStudentSCSE = studentRepository.getStudentByID(SCSE_STUDENT_ID);
 
             studentController.registerCampAsStudent(testStudentSCSE, testCampAll);
@@ -405,7 +405,7 @@ public class StudentControllerTest {
 
         // result
         try{
-            Camp testCamp = (Camp)campRepository.getByID(TEST_ALL_CAMP);
+            Camp testCamp = campRepository.getCampByID(TEST_ALL_CAMP);
             Student testStudentSCSE = studentRepository.getStudentByID(SCSE_STUDENT_ID);
             Student testStudentADM = studentRepository.getStudentByID(ADM_STUDENT_ID);
             Student testStudentEEE = studentRepository.getStudentByID(EEE_STUDENT_ID);

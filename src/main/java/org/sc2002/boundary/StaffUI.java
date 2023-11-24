@@ -6,14 +6,17 @@ import org.sc2002.controller.UserController;
 import org.sc2002.entity.Camp;
 import org.sc2002.entity.Faculty;
 import org.sc2002.entity.Staff;
-import org.sc2002.entity.User;
 import org.sc2002.repository.CampRepository;
 import org.sc2002.utils.exception.EntityNotFoundException;
 import org.sc2002.utils.exception.WrongStaffException;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import static org.sc2002.utils.CAMSDateFormat.formatStringToDate;
 import java.util.stream.Collectors;
 
 public class StaffUI implements UI{
@@ -140,6 +143,22 @@ public class StaffUI implements UI{
         }
     }
 
+    public void printCamp(Camp camp){
+        System.out.println("\u001B[34mCamp Name:\u001B[0m " + camp.getCampName());
+        System.out.println("\u001B[34mCamp Start Date:\u001B[0m " + camp.getCampStartDate());
+        System.out.println("\u001B[34mRegistration closing date:\u001B[0m " + camp.getCampEndDate());
+        System.out.println("\u001B[34mCamp Registration End Date:\u001B[0m " + camp.getCampRegistrationEndDate());
+        System.out.println("\u001B[34mUser group:\u001B[0m " + camp.getUserGroupOpenTo());
+        System.out.println("\u001B[34mLocation:\u001B[0m " + camp.getLocation());
+        System.out.println("\u001B[34mTotal Slots:\u001B[0m " + camp.getTotalSlots());
+        System.out.println("\u001B[34mCamp Committee Slots:\u001B[0m " + camp.getCampCommitteeSlots());
+        System.out.println("\u001B[34mDescription:\u001B[0m " + camp.getDescription());
+        System.out.println("\u001B[34mStaff in charge:\u001B[0m " + camp.getStaffInChargeID());
+        System.out.print("\u001B[34mCamp is \u001B[0m ");
+        System.out.println(camp.getVisibilityToStudent() ? "visible" : "invisible");
+        System.out.println("------------------------------------");
+    }
+
     public void changeCamp() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nYour choice (1-3): ");
@@ -147,7 +166,7 @@ public class StaffUI implements UI{
         int choice = scanner.nextInt();
         switch (choice) {
             case 1:
-                //createCamp(staff);
+                createCamp();
                 break;
             case 2:
                 editCamp();
@@ -271,6 +290,114 @@ public class StaffUI implements UI{
             System.out.println("Failed to delete camp: " + e.getMessage());
         }
     }
+
+    public void createCamp() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Welcome to Camp Creator!");
+        System.out.println("Please enter the following details:");
+
+        System.out.print("Camp Name: ");
+        String campName = scanner.nextLine();
+
+        LocalDate campStartDate = null;
+        while (true) {
+            System.out.print("Camp Start Date (format: YYYY-MM-DD): ");
+            String dateString = scanner.nextLine();
+            try{
+                campStartDate = formatStringToDate(dateString);
+                break;
+            } catch (DateTimeException e){
+                System.out.println("Invalid date format. Please enter in the format YYYY-MM-DD.");
+            }
+        }
+
+        LocalDate campEndDate = null;
+        while (true) {
+            System.out.print("Camp End Date (format: YYYY-MM-DD): "); // Need to add check that start date is before end date
+            String closingDateString = scanner.nextLine();
+            try{
+                campEndDate = formatStringToDate(closingDateString);
+                break;
+            } catch (DateTimeException e){
+                System.out.println("Invalid date format. Please enter in the format YYYY-MM-DD.");
+            }
+        }
+
+        LocalDate campRegistrationEndDate = null;
+        while (true) {
+            System.out.print("Camp Registration End Date (format: YYYY-MM-DD): ");
+            String closingDateString = scanner.nextLine();
+            try{
+                campRegistrationEndDate = formatStringToDate(closingDateString);
+                break;
+            } catch (DateTimeException e){
+                System.out.println("Invalid date format. Please enter in the format YYYY-MM-DD.");
+            }
+        }
+        Faculty userGroupOpenTo;
+        while (true) {
+            System.out.print("User group (own school or whole NTU): Please enter 0： own school;     1: whole NTU");
+            String userInput = scanner.nextLine();
+            if (userInput.equals("0")) {
+                userGroupOpenTo = staff.getFaculty();
+                break;
+            } else if (userInput.equals("1")) {
+                userGroupOpenTo = Faculty.ALL;
+                break;
+            } else {
+                System.out.println("Invalid date format. Please enter in the format 0/1.");
+            }
+        }
+
+
+        System.out.print("Location: ");
+        String location = scanner.nextLine();
+
+        int committeeSlots = -1;
+        while (committeeSlots < 0 || committeeSlots > 10) {
+            System.out.print("Camp Committee Slots (max 10): ");
+            committeeSlots = scanner.nextInt();
+        }
+
+        int totalSlots = 0;
+        while (totalSlots <= committeeSlots) {
+            System.out.print("Total Slots (must be greater than the number of committee): ");
+            totalSlots = scanner.nextInt();
+        }
+
+        scanner.nextLine(); // consume the newline character
+
+        System.out.print("Description: ");
+        String description = scanner.nextLine();
+
+        // Assume the staff in charge is tied to the staff who created it
+        System.out.println("Automatically tied to the staff who created it");
+
+        boolean visibilityToStudent = true;
+        while (true) {
+            System.out.print("Is the current campsite visible to students;  0： invisible;     1: visible");
+            String userInput = scanner.nextLine();
+            if (userInput.equals("0")) {
+                visibilityToStudent = false;
+                break;
+            } else if (userInput.equals("1")) {
+                visibilityToStudent = true;
+                break;
+            } else {
+                System.out.println("Invalid date format. Please enter in the format 0/1.");
+            }
+        }
+        try {
+            Camp createdCamp = campController.createCamp(campName, description, campStartDate, campEndDate, campRegistrationEndDate, userGroupOpenTo, location, totalSlots, committeeSlots, staff.getID(), visibilityToStudent);
+            System.out.println("Successfully created a camp");
+            printCamp(createdCamp);
+        } catch (Exception e) {
+            System.out.println("Failed to create the camp : " + e.getMessage());
+        }
+    }
+
+
 
 
 }

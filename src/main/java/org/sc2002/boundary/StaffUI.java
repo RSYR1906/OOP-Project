@@ -21,19 +21,16 @@ import java.util.stream.Collectors;
 
 public class StaffUI implements UI{
 
+    private Staff staff;
     private StaffController staffController;
     private CampController campController;
-    private UserController userController;
     //private CommitteeController committeeController;
-    private CampRepository campRepository;
-    private Staff staff;
 
-    public StaffUI(StaffController staffController, CampController campController, UserController userController, CampRepository campRepository, Staff staff) {
-        this.staffController = staffController;
-        this.userController = userController;
-        this.campController = campController;
-        this.campRepository = campRepository;
+
+    public StaffUI(Staff staff, StaffController staffController, CampController campController) {
         this.staff = staff;
+        this.staffController = staffController;
+        this.campController = campController;
     }
 
     @Override
@@ -141,7 +138,7 @@ public class StaffUI implements UI{
         String campName = scanner.nextLine();
 
         try{
-            Camp campToChangeVisibility = campRepository.getCampByID(campName);
+            Camp campToChangeVisibility = campController.getCamp(campName);
             if(!campToChangeVisibility.getStaffInChargeID().equals(staff.getID())){
                 throw new WrongStaffException();
             }
@@ -188,7 +185,7 @@ public class StaffUI implements UI{
         LocalDate campRegistrationEndDate = null;
 
         try{
-            Camp camp = campRepository.getCampByID(campName);
+            Camp camp = campController.getCamp(campName);
             if(!camp.getStaffInChargeID().equals(staff.getID())){
                 throw new WrongStaffException();
             }
@@ -275,7 +272,7 @@ public class StaffUI implements UI{
         String campName = scanner.nextLine();
 
         try{
-            Camp campToDelete = campRepository.getCampByID(campName);
+            Camp campToDelete = campController.getCamp(campName);
             if(!campToDelete.getStaffInChargeID().equals(staff.getID())){
                 throw new WrongStaffException();
             }

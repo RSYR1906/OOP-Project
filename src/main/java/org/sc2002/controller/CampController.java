@@ -59,4 +59,8 @@ public class CampController {
             System.out.println("Failed to delete entity: " + e.getMessage());
         }
     }
+
+    public Camp getCamp(String campId) throws EntityNotFoundException{
+        return campRepository.getCampByID(campId);
+    }
 }

@@ -13,15 +13,16 @@ import java.util.Scanner;
 
 public class StudentUI implements UI{
 
+    private Student student;
     private StudentController studentController;
     private CampController campController;
     private EnquiryController enquiryController;
 
-    private Student student;
 
-    public StudentUI(StudentController studentController, Student student, EnquiryController enquiryController, CampController campController) {
-        this.studentController = studentController;
+
+    public StudentUI(Student student, StudentController studentController,  EnquiryController enquiryController, CampController campController) {
         this.student = student;
+        this.studentController = studentController;
         this.enquiryController = enquiryController;
         this.campController = campController;
     }

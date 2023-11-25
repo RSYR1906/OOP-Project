@@ -1,39 +1,88 @@
 package org.sc2002.entity;
 
+import java.util.Random;
+
 public class Suggestion implements Entity{
 
     private String suggestionID;
-    private String campID;
-    private String studentID;
+    private String staffID;
+    private Student student;
+    private Camp camp;
+    private String suggestion;
+    private Boolean isApproved;
 
-    public Suggestion(String suggestionID, String campID, String studentID){
+    public Suggestion(Student student, Camp camp, String suggestion) {
+        this.suggestionID = getRandomID();
+        this.student = student;
+        this.camp = camp;
+        this.staffID = camp.getStaffInChargeID();
+        this.suggestion = suggestion;
+        this.isApproved = false;
+    }
+
+    public Suggestion(String suggestionID, String staffID, Student student, Camp camp, String suggestion, Boolean isApproved) {
         this.suggestionID = suggestionID;
-        this.campID = campID;
-        this.studentID = studentID;
-    }
-
-    public void setSuggestionID(String suggestionID){
-        this.suggestionID = suggestionID;
-    }
-
-    public void setStudentID(String studentID){
-        this.studentID = studentID;
-    }
-
-    public void setCampID(String campID){
-        this.campID = campID;
+        this.staffID = staffID;
+        this.student = student;
+        this.camp = camp;
+        this.suggestion = suggestion;
+        this.isApproved = isApproved;
     }
 
     @Override
-    public String getID(){
+    public String getID() {
         return suggestionID;
     }
 
-    public String getStudentID(){
-        return studentID;
+    /**
+     * Gets random id.
+     *
+     * @return the random id
+     */
+    public String getRandomID() {
+        int length = 8;
+        long timestamp = System.currentTimeMillis();
+        Random random = new Random(timestamp);
+
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            int digit = random.nextInt(10);
+            sb.append(digit);
+        }
+
+        return sb.toString();
+
     }
 
-    public String getCampID(){
-        return campID;
+    public String getSuggestionID() {
+        return suggestionID;
+    }
+
+    public String getStaffID() {
+        return staffID;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public Camp getCamp() {
+        return camp;
+    }
+
+    public String getSuggestion() {
+        return suggestion;
+    }
+
+    public Boolean getApproved() {
+        return isApproved;
+    }
+
+    public void setSuggestion(String suggestion) {
+        this.suggestion = suggestion;
+    }
+
+    public void setApproved(Boolean approved) {
+        isApproved = approved;
     }
 }

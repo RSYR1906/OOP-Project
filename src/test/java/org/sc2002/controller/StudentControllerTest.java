@@ -45,7 +45,7 @@ public class StudentControllerTest {
         staffRepository.load();
         campStudentRepository.load();
 
-        this.studentController = new StudentController(campController,campStudentRepository);
+        this.studentController = new StudentController(campController,campStudentRepository, studentRepository);
     }
 
     @AfterEach

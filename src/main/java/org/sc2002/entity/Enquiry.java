@@ -74,4 +74,12 @@ public class Enquiry implements Entity{
     public String getAnswer() {
         return answer;
     }
+
+    public void setQuery(String query) {
+        this.query = query;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
 }

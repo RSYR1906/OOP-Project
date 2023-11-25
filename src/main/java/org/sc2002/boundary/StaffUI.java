@@ -54,7 +54,7 @@ public class StaffUI implements UI{
             System.out.println("6. View and approve suggestions to changes to camp details from camp committee.");
             System.out.println("7. Generate a report of the list of students attending each camp you has created.");
             System.out.println("8. Generate a performance report of the camp committee members.");
-            System.out.println("9. Exit");
+            System.out.println("9. Logout");
 
             System.out.print("\nYour choice (1-9): ");
             int choice = scanner.nextInt();
@@ -85,17 +85,20 @@ public class StaffUI implements UI{
                     break;
 
                 case 9:
-                    System.out.println("\nExiting. Goodbye!");
-                    System.exit(0);
-                    break;
+                    return logout(staff); // When user selects logout
                 default:
                     System.out.println("\u001B[31mInvalid choice. Please enter a valid option.\u001B[0m");
+                    body();
                     break;
             }
         }
 
     }
 
+    public boolean logout(User user) {
+    System.out.println("\u001B[33mYou have successfully logged out.\u001B[0m\n");
+    return true; // Indicate the user has logged out
+}
 
 
     public List<Camp> viewAllCamps() {
@@ -412,13 +415,13 @@ public class StaffUI implements UI{
                 staffController.createReportForStaff(staff, reportType);
                 System.out.println("\u001B[33mCamp report created successfully in " + reportType.toUpperCase() + " format.\u001B[0m\n");
             } catch (EntityNotFoundException e) {
-                System.out.println("Failed to create the camp report: " + e.getMessage());
+                System.out.println("\u001B[31mFailed to create the camp report: " + e.getMessage() + ".\u001B[0m");
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         } else {
-            System.out.println("No permission to create a report. Operation failed.");
+            System.out.println("\u001B[31mNo permission to create a report. Operation failed.\u001B[0m");
         }
     }
 }

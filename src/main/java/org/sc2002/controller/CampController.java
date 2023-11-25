@@ -7,6 +7,7 @@ import org.sc2002.utils.exception.DuplicateEntityExistsException;
 import org.sc2002.utils.exception.EntityNotFoundException;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class CampController {
 
@@ -62,5 +63,9 @@ public class CampController {
 
     public Camp getCamp(String campId) throws EntityNotFoundException{
         return campRepository.getCampByID(campId);
+    }
+
+    public List<Camp> getAllCamps(){
+        return campRepository.getAllCamps();
     }
 }

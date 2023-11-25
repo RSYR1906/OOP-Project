@@ -91,27 +91,24 @@ public class StaffUI implements UI{
 
 
 
-    public List<Camp> viewAllCamps() {
+    public void viewAllCamps() {
         System.out.println("Viewing All camps");
-        List<Camp> camps = staffController.viewAllCamps();
+        List<Camp> camps = campController.getAllCamps();
         int index = 0;
         for(Camp camp : camps){
             System.out.println("\u001B[34mCamp Number:\u001B[0m " + index++);
             printCamp(camp);
         }
-        return camps;
     }
 
-    public List<Camp> viewCampsICreated() {
+    public void viewCampsICreated() {
         System.out.println("Viewing camps I created");
-        List<Camp> camps = staffController.viewAllCamps();
-        List<Camp> campsICreated = camps.stream().filter(camp -> camp.getStaffInChargeID().equals(staff.getID())).collect(Collectors.toList());
+        List<Camp> campsICreated = staffController.getAllCampsICreated(staff.getID());
         int index = 0;
         for(Camp camp : campsICreated){
             System.out.println("\u001B[34mCamp Number:\u001B[0m " + index++);
             printCamp(camp);
         }
-        return campsICreated;
     }
 
     public void printCamp(Camp camp){
@@ -131,7 +128,8 @@ public class StaffUI implements UI{
     }
 
     public void toggleVisibility() {
-        List<Camp> camps = viewCampsICreated();
+        List<Camp> camps = staffController.getAllCampsICreated(staff.getID());
+        viewCampsICreated();
         Scanner scanner = new Scanner(System.in);
         System.out.println("If you want change visibility of the camp, you should enter the following details!");
         System.out.print("Camp Name: ");
@@ -265,7 +263,6 @@ public class StaffUI implements UI{
     }
 
     public void deleteCamp() {
-        List<Camp> camps = viewCampsICreated();
         Scanner scanner = new Scanner(System.in);
         System.out.println("If you want delete camp, you should enter the following details!");
         System.out.print("Camp Name: ");

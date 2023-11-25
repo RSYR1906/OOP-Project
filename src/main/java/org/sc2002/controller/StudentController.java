@@ -13,16 +13,12 @@ import java.util.stream.Collectors;
 
 public class StudentController {
 
-    private CampRepository campRepository;
+    private CampController campController;
     private CampStudentRepository campStudentRepository;
 
-    public StudentController(CampRepository campRepository, CampStudentRepository campStudentRepository) {
-        this.campRepository = campRepository;
+    public StudentController(CampController campController, CampStudentRepository campStudentRepository) {
+        this.campController = campController;
         this.campStudentRepository = campStudentRepository;
-    }
-
-    public Camp getCamp(String campId) throws EntityNotFoundException {
-        return campRepository.getCampByID(campId);
     }
 
     public void withdrawFromCamp(Student student, Camp camp) throws EntityNotFoundException, Exception {
@@ -79,7 +75,7 @@ public class StudentController {
    }
 
     public List<Camp> ViewCamp(Student student) {
-        List<Camp> camps = campRepository.getAllCamps();
+        List<Camp> camps = campController.getAllCamps();
 
         List<Camp> filteredCamps = camps.stream()
                 .filter(camp -> (camp.getUserGroupOpenTo().equals(student.getFaculty()) || camp.getUserGroupOpenTo().equals(Faculty.ALL)))

@@ -36,78 +36,21 @@ public class Main {
 
         CampController campController = new CampController(campRepository);
         UserController userController = new UserController(studentRepository, staffRepository);
-        StaffController staffController = new StaffController(campController, campRepository, staffRepository);
-        StudentController studentController = new StudentController(campRepository, campStudentRepository);
+        StaffController staffController = new StaffController(campController, staffRepository);
+        StudentController studentController = new StudentController(campController, campStudentRepository);
         EnquiryController enquiryController = new EnquiryController();
-
-
 
         LoginUI loginUI = new LoginUI(userController);
 
         User user = loginUI.body();
         if (userController.getUserRole(user).equals("Staff Member")) {
             Staff staff = (Staff) user;
-            StaffUI staffUI = new StaffUI(staffController, campController, userController, campRepository, staff);
+            StaffUI staffUI = new StaffUI(staff, staffController, campController);
             staffUI.body();
         } else if (userController.getUserRole(user).equals("Student")) {
             Student student = (Student) user;
-            StudentUI studentUI = new StudentUI(studentController, student, enquiryController,campController);
+            StudentUI studentUI = new StudentUI(student, studentController, enquiryController,campController);
             studentUI.body();
         }
-
-
-//      // Test StudentRepository
-//        Path path = Paths.get(studentRepository.getFilePath());
-//        if (!Files.exists(path)) {
-//            try {
-//                System.out.println("No file at path. Creating new file.");
-//                Files.createFile(path);
-//            } catch (IOException e) {
-//                System.out.println("Failed to create file: " + e.getMessage());
-//                return;
-//            }
-//        }
-//
-//        studentRepository.load();
-//        List<Student> students = studentRepository.getAllStudents();
-//        students.forEach(student -> {
-//            System.out.println("Name " + student.getName());
-//            System.out.println("Email " + student.getEmail());
-//            System.out.println("Password " + student.getPassword());
-//            System.out.println("Faculty " + student.getFaculty());
-//        });
-//        Student s1 = new Student("Dave", "DAVE@ntu.edu.sg", "password", "NBS");
-//        try{
-//            studentRepository.add(s1);
-//        } catch (DuplicateEntityExistsException e){
-//            System.out.println("Failed to add entity: " + e.getMessage());
-//            return;
-//        }
-
-        //Test CampController and CampRepository
-//        Path campPath = Paths.get(campRepository.getFilePath());
-//        if (!Files.exists(campPath)) {
-//            try {
-//                System.out.println("No file at path. Creating new file.");
-//                Files.createFile(campPath);
-//            } catch (IOException e) {
-//                System.out.println("Failed to create file: " + e.getMessage());
-//                return;
-//            }
-//        }
-//
-//        campRepository.load();
-//        List<Camp> camps = campRepository.getAllCamps();
-//        camps.forEach(camp -> {
-//            System.out.println("CampName " + camp.getCampName());
-//            System.out.println("Description " + camp.getDescription());
-//        });
-//
-//        campController.createCamp("CAC FOP", "CAC Yearly event to welcome freshmen", LocalDate.of(2023, 8, 10), LocalDate.of(2023, 8, 13), LocalDate.of(2023, 7, 12), Faculty.ALL, "NTU campus", 300, 30);
-
-
-
-
-
     }
 }

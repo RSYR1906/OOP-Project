@@ -21,19 +21,16 @@ import java.util.stream.Collectors;
 
 public class StaffUI implements UI{
 
+    private Staff staff;
     private StaffController staffController;
     private CampController campController;
-    private UserController userController;
     //private CommitteeController committeeController;
-    private CampRepository campRepository;
-    private Staff staff;
 
-    public StaffUI(StaffController staffController, CampController campController, UserController userController, CampRepository campRepository, Staff staff) {
-        this.staffController = staffController;
-        this.userController = userController;
-        this.campController = campController;
-        this.campRepository = campRepository;
+
+    public StaffUI(Staff staff, StaffController staffController, CampController campController) {
         this.staff = staff;
+        this.staffController = staffController;
+        this.campController = campController;
     }
 
     @Override
@@ -94,27 +91,24 @@ public class StaffUI implements UI{
 
 
 
-    public List<Camp> viewAllCamps() {
+    public void viewAllCamps() {
         System.out.println("Viewing All camps");
-        List<Camp> camps = staffController.viewAllCamps();
+        List<Camp> camps = campController.getAllCamps();
         int index = 0;
         for(Camp camp : camps){
             System.out.println("\u001B[34mCamp Number:\u001B[0m " + index++);
             printCamp(camp);
         }
-        return camps;
     }
 
-    public List<Camp> viewCampsICreated() {
+    public void viewCampsICreated() {
         System.out.println("Viewing camps I created");
-        List<Camp> camps = staffController.viewAllCamps();
-        List<Camp> campsICreated = camps.stream().filter(camp -> camp.getStaffInChargeID().equals(staff.getID())).collect(Collectors.toList());
+        List<Camp> campsICreated = staffController.getAllCampsICreated(staff.getID());
         int index = 0;
         for(Camp camp : campsICreated){
             System.out.println("\u001B[34mCamp Number:\u001B[0m " + index++);
             printCamp(camp);
         }
-        return campsICreated;
     }
 
     public void printCamp(Camp camp){
@@ -134,14 +128,15 @@ public class StaffUI implements UI{
     }
 
     public void toggleVisibility() {
-        List<Camp> camps = viewCampsICreated();
+        List<Camp> camps = staffController.getAllCampsICreated(staff.getID());
+        viewCampsICreated();
         Scanner scanner = new Scanner(System.in);
         System.out.println("If you want change visibility of the camp, you should enter the following details!");
         System.out.print("Camp Name: ");
         String campName = scanner.nextLine();
 
         try{
-            Camp campToChangeVisibility = campRepository.getCampByID(campName);
+            Camp campToChangeVisibility = campController.getCamp(campName);
             if(!campToChangeVisibility.getStaffInChargeID().equals(staff.getID())){
                 throw new WrongStaffException();
             }
@@ -188,7 +183,7 @@ public class StaffUI implements UI{
         LocalDate campRegistrationEndDate = null;
 
         try{
-            Camp camp = campRepository.getCampByID(campName);
+            Camp camp = campController.getCamp(campName);
             if(!camp.getStaffInChargeID().equals(staff.getID())){
                 throw new WrongStaffException();
             }
@@ -268,14 +263,13 @@ public class StaffUI implements UI{
     }
 
     public void deleteCamp() {
-        List<Camp> camps = viewCampsICreated();
         Scanner scanner = new Scanner(System.in);
         System.out.println("If you want delete camp, you should enter the following details!");
         System.out.print("Camp Name: ");
         String campName = scanner.nextLine();
 
         try{
-            Camp campToDelete = campRepository.getCampByID(campName);
+            Camp campToDelete = campController.getCamp(campName);
             if(!campToDelete.getStaffInChargeID().equals(staff.getID())){
                 throw new WrongStaffException();
             }

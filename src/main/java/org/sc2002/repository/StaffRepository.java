@@ -32,11 +32,6 @@ public class StaffRepository extends Repository {
         return fields -> new Staff(fields[0].trim(), fields[1].trim(), fields[2].trim(), fields[3].trim());
     }
 
-
-    // Methods specific to Staff entity
-    // Implement methods for handling staff-related functionality based on your requirements.
-    // For example, methods for creating, editing, and deleting camps, replying to inquiries, generating reports, etc.
-
     /**
      * Gets the list of staff members stored in the repository
      *

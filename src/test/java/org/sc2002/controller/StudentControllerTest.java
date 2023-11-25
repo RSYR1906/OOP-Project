@@ -15,6 +15,7 @@ public class StudentControllerTest {
     StudentRepository studentRepository;
     StaffRepository staffRepository;
     CampRepository campRepository;
+    CampController campController;
 
     CampStudentRepository campStudentRepository;
     
@@ -36,6 +37,7 @@ public class StudentControllerTest {
         this.studentRepository = new StudentRepository();
         this.staffRepository = new StaffRepository();
         this.campRepository = new CampRepository();
+        this.campController = new CampController(campRepository);
         this.campStudentRepository = new CampStudentRepository(campRepository, studentRepository);
 
         campRepository.load();
@@ -43,7 +45,7 @@ public class StudentControllerTest {
         staffRepository.load();
         campStudentRepository.load();
 
-        this.studentController = new StudentController(campRepository,campStudentRepository);
+        this.studentController = new StudentController(campController,campStudentRepository);
     }
 
     @AfterEach

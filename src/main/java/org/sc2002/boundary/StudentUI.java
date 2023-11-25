@@ -13,15 +13,16 @@ import java.util.Scanner;
 
 public class StudentUI implements UI{
 
+    private Student student;
     private StudentController studentController;
     private CampController campController;
     private EnquiryController enquiryController;
 
-    private Student student;
 
-    public StudentUI(StudentController studentController, Student student, EnquiryController enquiryController, CampController campController) {
-        this.studentController = studentController;
+
+    public StudentUI(Student student, StudentController studentController,  EnquiryController enquiryController, CampController campController) {
         this.student = student;
+        this.studentController = studentController;
         this.enquiryController = enquiryController;
         this.campController = campController;
     }
@@ -114,7 +115,7 @@ public class StudentUI implements UI{
         System.out.println("Please enter whether to register as an attendee or a committee member: 0 member; 1 committee");
         int input = scanner.nextInt();
         try{
-            Camp camp = studentController.getCamp(userInput);
+            Camp camp = campController.getCamp(userInput);
             if (input == 0) {
                 studentController.registerCampAsStudent(student, camp);
             } else if (input == 1) {
@@ -146,7 +147,7 @@ public class StudentUI implements UI{
         }
 
         try{
-            Camp camp = studentController.getCamp(userInput);
+            Camp camp = campController.getCamp(userInput);
             studentController.withdrawFromCamp(student, camp);
             System.out.println("Successfully withdrawn from: " + camp.getCampName());
 

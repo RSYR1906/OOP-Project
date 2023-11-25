@@ -1,12 +1,10 @@
 package org.sc2002.controller;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.sc2002.entity.Camp;
 import org.sc2002.entity.Student;
 import org.sc2002.repository.CampRepository;
+import org.sc2002.repository.CampStudentRepository;
 import org.sc2002.repository.StaffRepository;
 import org.sc2002.repository.StudentRepository;
 import org.sc2002.utils.exception.*;
@@ -17,6 +15,8 @@ public class StudentControllerTest {
     StudentRepository studentRepository;
     StaffRepository staffRepository;
     CampRepository campRepository;
+
+    CampStudentRepository campStudentRepository;
     
     StudentController studentController;
 
@@ -36,11 +36,19 @@ public class StudentControllerTest {
         this.studentRepository = new StudentRepository();
         this.staffRepository = new StaffRepository();
         this.campRepository = new CampRepository();
-        this.studentController = new StudentController(campRepository);
+        this.campStudentRepository = new CampStudentRepository(campRepository, studentRepository);
 
         campRepository.load();
         studentRepository.load();
         staffRepository.load();
+        campStudentRepository.load();
+
+        this.studentController = new StudentController(campRepository,campStudentRepository);
+    }
+
+    @AfterEach
+    public void clearUp(){
+        campStudentRepository.clear();
     }
 
     // MethodName_ExpectedBehavior_WhenCondition

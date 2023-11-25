@@ -1,9 +1,9 @@
 package org.sc2002;
 
 import org.sc2002.boundary.LoginUI;
-import org.sc2002.controller.CampController;
-import org.sc2002.controller.StaffController;
-import org.sc2002.controller.UserController;
+import org.sc2002.boundary.StaffUI;
+import org.sc2002.boundary.StudentUI;
+import org.sc2002.controller.*;
 import org.sc2002.entity.*;
 import org.sc2002.repository.CampRepository;
 import org.sc2002.repository.StaffRepository;
@@ -34,16 +34,42 @@ public class Main {
 
         CampController campController = new CampController(campRepository);
         UserController userController = new UserController(studentRepository, staffRepository);
-        StaffController staffController = new StaffController(campController);
+        StaffController staffController = new StaffController(campController, campRepository, staffRepository);
+        StudentController studentController = new StudentController(campRepository);
+        EnquiryController enquiryController = new EnquiryController();
 
         LoginUI loginUI = new LoginUI(userController);
-
-
         System.out.println("Hello world!");
 
+             boolean logout = true;
+        while (logout) {
+            User user = loginUI.body();
+            if (user != null) {
+                String userRole = userController.getUserRole(user);
+                if ("Staff Member".equals(userRole)) {
+                    StaffUI staffUI = new StaffUI(staffController, campController, userController, campRepository, (Staff)user);
+                    logout = (boolean) staffUI.body(); // Returns true if user logs out
+                } else if ("Student".equals(userRole)) {
+                    StudentUI studentUI = new StudentUI(studentController, campController, userController, campRepository, (Student)user);
+                    logout = (boolean) studentUI.body(); // Returns true if user logs out
+                }
+            } else {
+                logout= false; // User chose to exit or failed to log in
+            }
+        }
 
 
-        loginUI.body();
+
+        User user = loginUI.body();
+        if (userController.getUserRole(user).equals("Staff Member")) {
+            Staff staff = (Staff) user;
+            StaffUI staffUI = new StaffUI(staffController, campController, userController, campRepository, staff);
+            staffUI.body();
+        } else if (userController.getUserRole(user).equals("Student")) {
+            Student student = (Student) user;
+            StudentUI studentUI = new StudentUI(studentController, student, enquiryController,campController);
+            studentUI.body();
+        }
 
 
 //      // Test StudentRepository

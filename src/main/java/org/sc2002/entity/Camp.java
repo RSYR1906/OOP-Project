@@ -3,8 +3,8 @@ package org.sc2002.entity;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.sc2002.utils.exception.EntityNotFoundException;
-import org.sc2002.utils.exception.CampFullException;
+
+import org.sc2002.utils.exception.*;
 
 public class Camp implements Entity{
 
@@ -18,16 +18,18 @@ public class Camp implements Entity{
     private Faculty userGroupOpenTo;
     private String location;
 
-    private Staff staffInCharge;
+    private String staffInChargeID;
+
+    private boolean visibilityToStudent = true;
 
     private int totalSlots;
     private int campCommitteeSlots;
 
-    private String staffInChargeID;
-
     private ArrayList<Student> studentsRegistered;
     
-    private ArrayList<Student> committeeRegistered;
+    private ArrayList<String> committeeRegistered;
+
+    private ArrayList<Student> studentBlacklist;
 
 
     public String getCampName() {
@@ -106,32 +108,35 @@ public class Camp implements Entity{
         this.campCommitteeSlots = campCommitteeSlots;
     }
 
-
-   public Staff getStaffInCharge() {
-       return staffInCharge;
-   }
-
-   public void setStaffInCharge(Staff staffInCharge) {
-       this.staffInCharge = staffInCharge;
-   }
-
-
-
-    public void setStudentsRegistered(Student[] studentsArray) {
-        this.studentsRegistered.clear();
-        this.studentsRegistered.addAll(Arrays.asList(studentsArray));
+    public String getStaffInChargeID() {
+        return staffInChargeID;
     }
 
-    public ArrayList<Student> getCommitteeRegistered() {
+    public void setStudentsRegistered(ArrayList<Student> studentsArray) {
+        this.studentsRegistered = studentsArray;
+    }
+
+    public ArrayList<String> getCommitteeRegistered() {
         return committeeRegistered;
     }
 
-    public void setCommitteeRegistered(ArrayList<Student> committeeRegistered) {
+    public void setCommitteeRegistered(ArrayList<String> committeeRegistered) {
         this.committeeRegistered = committeeRegistered;
     }
 
+    public void setStaffInChargeID(String staffInChargeID) {
+        this.staffInChargeID = staffInChargeID;
+    }
 
-    public Camp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, Staff staffInCharge) {
+    public boolean getVisibilityToStudent() {
+        return visibilityToStudent;
+    }
+
+    public void setVisibilityToStudent(boolean visibilityToStudent) {
+        this.visibilityToStudent = visibilityToStudent;
+    }
+
+    public Camp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, String staffInChargeID, Boolean visibilityToStudent) {
         this.campName = campName;
         this.description = description;
         this.campStartDate = campStartDate;
@@ -141,18 +146,37 @@ public class Camp implements Entity{
         this.location = location;
         this.totalSlots = totalSlots;
         this.campCommitteeSlots = campCommitteeSlots;
-        this.staffInCharge = staffInCharge;
         
-        this.studentsRegistered = new ArrayList<>(); 
+        this.studentsRegistered = new ArrayList<>();
+        this.studentBlacklist = new ArrayList<>();
+        this.committeeRegistered = new ArrayList<>();
         this.staffInChargeID = staffInChargeID;
+        this.visibilityToStudent = visibilityToStudent;
     }
     
-    public void registerStudent(Student student) throws CampFullException {
-        if (studentsRegistered.size() < totalSlots) {
-            studentsRegistered.add(student);
-        } else {
+    public Camp() {
+    }
+
+    public void registerStudent(Student student) throws CampFullException, BlacklistedStudentException {
+        if (studentsRegistered.size() >= (totalSlots - campCommitteeSlots)) {
             throw new CampFullException("No available slots to register for the camp.");
         }
+
+        if (studentBlacklist.contains(student)){
+            throw new BlacklistedStudentException();
+        }
+        studentsRegistered.add(student);
+    }
+
+    public void registerCampCommitteeMember(String student) throws CampFullException, BlacklistedStudentException {
+        if (committeeRegistered.size() >= campCommitteeSlots) {
+            throw new CampFullException("No available slots to register for the camp.");
+        }
+
+        if (studentBlacklist.contains(student)){
+            throw new BlacklistedStudentException();
+        }
+        committeeRegistered.add(student);
     }
     
     
@@ -161,17 +185,51 @@ public class Camp implements Entity{
         if (!isRemoved) {
             throw new EntityNotFoundException("Student is not registered for this camp.");
         }
+        studentBlacklist.add(student);
+        totalSlots++;
     }
-    
-    public Student[] getStudentsRegistered() {
-        return studentsRegistered.toArray(new Student[0]);
+
+    public ArrayList<Student> getStudentsRegistered() {
+        return studentsRegistered;
     }
-    
-    public boolean canStudentRegister(Student student) {
+
+    public ArrayList<Student> getStudentBlacklist() {
+        return studentBlacklist;
+    }
+
+
+    public boolean canStudentRegister(Student student) throws RegistrationClosedException, FacultyNotEligibleException, CampFullException, BlacklistedStudentException {
         LocalDate now = LocalDate.now();
-        boolean isBeforeDeadline = !now.isAfter(campRegistrationEndDate);
-        boolean isFacultyAllowed = student.getFaculty() == userGroupOpenTo || userGroupOpenTo == null; // Assuming null means open to all faculties
-        return isBeforeDeadline && isFacultyAllowed && studentsRegistered.size() < totalSlots;
+//        if(now.isAfter(campRegistrationEndDate)){ //comment out for test
+//            throw new RegistrationClosedException();
+//        }
+        if(student.getFaculty() != userGroupOpenTo && userGroupOpenTo != Faculty.ALL){
+            throw new FacultyNotEligibleException();
+        }
+        if (studentsRegistered.size() >= totalSlots) {
+            throw new CampFullException();
+        }
+        if (studentBlacklist.contains(student)){
+            throw new BlacklistedStudentException();
+        }
+        return true;
+    }
+
+    public boolean canCampCommitteeMemberRegister(Student student) throws RegistrationClosedException, FacultyNotEligibleException, CampFullException, BlacklistedStudentException {
+        LocalDate now = LocalDate.now();
+//        if(now.isAfter(campRegistrationEndDate)){ //comment out for test
+//            throw new RegistrationClosedException();
+//        }
+        if(student.getFaculty() != userGroupOpenTo && userGroupOpenTo != Faculty.ALL){
+            throw new FacultyNotEligibleException();
+        }
+        if (committeeRegistered.size() >= campCommitteeSlots) {
+            throw new CampFullException();
+        }
+        if (studentBlacklist.contains(student)){
+            throw new BlacklistedStudentException();
+        }
+        return true;
     }
 
     public String toStringWithSeparator(String separator){
@@ -185,8 +243,12 @@ public class Camp implements Entity{
                 .append(location).append(separator)
                 .append(totalSlots).append(separator)
                 .append(campCommitteeSlots).append(separator)
-                .append(staffInChargeID);
+                .append(staffInChargeID).append(separator)
+                .append(visibilityToStudent);
         return sb.toString();
 
+    }
+
+    public void registerCampCommitteeMember(Student student) {
     }
 }

@@ -6,6 +6,7 @@ import org.sc2002.boundary.StudentUI;
 import org.sc2002.controller.*;
 import org.sc2002.entity.*;
 import org.sc2002.repository.CampRepository;
+import org.sc2002.repository.CampStudentRepository;
 import org.sc2002.repository.StaffRepository;
 import org.sc2002.repository.StudentRepository;
 import org.sc2002.utils.exception.DuplicateEntityExistsException;
@@ -26,22 +27,22 @@ public class Main {
         StudentRepository studentRepository = new StudentRepository();
         StaffRepository staffRepository = new StaffRepository();
         CampRepository campRepository = new CampRepository();
+        CampStudentRepository campStudentRepository = new CampStudentRepository(campRepository, studentRepository);
 
         campRepository.load();
         studentRepository.load();
         staffRepository.load();
-
+        campStudentRepository.load();
 
         CampController campController = new CampController(campRepository);
         UserController userController = new UserController(studentRepository, staffRepository);
         StaffController staffController = new StaffController(campController, campRepository, staffRepository);
-        StudentController studentController = new StudentController(campRepository);
+        StudentController studentController = new StudentController(campRepository, campStudentRepository);
         EnquiryController enquiryController = new EnquiryController();
 
+
+
         LoginUI loginUI = new LoginUI(userController);
-        System.out.println("Hello world!");
-
-
 
         User user = loginUI.body();
         if (userController.getUserRole(user).equals("Staff Member")) {

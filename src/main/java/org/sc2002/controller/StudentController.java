@@ -1,9 +1,8 @@
 package org.sc2002.controller;
 
-import org.sc2002.entity.Camp;
-import org.sc2002.entity.Faculty;
-import org.sc2002.entity.Student;
+import org.sc2002.entity.*;
 import org.sc2002.repository.CampRepository;
+import org.sc2002.repository.CampStudentRepository;
 import org.sc2002.utils.exception.*;
 
 import java.util.ArrayList;
@@ -15,9 +14,11 @@ import java.util.stream.Collectors;
 public class StudentController {
 
     private CampRepository campRepository;
+    private CampStudentRepository campStudentRepository;
 
-    public StudentController(CampRepository campRepository) {
+    public StudentController(CampRepository campRepository, CampStudentRepository campStudentRepository) {
         this.campRepository = campRepository;
+        this.campStudentRepository = campStudentRepository;
     }
 
     public Camp getCamp(String campId) throws EntityNotFoundException {
@@ -31,12 +32,13 @@ public class StudentController {
         if (student.getRegisteredCamps().contains(camp)) {
             camp.withdrawStudent(student);
             student.withdrawFromCamp(camp);
+            campStudentRepository.update(new CampStudent(camp, student, CampRole.ATTENDEE, true));
         } else {
             throw new EntityNotFoundException("Student is not registered for the camp.");
         }
     }
     
-    public void registerCampAsStudent(Student student, Camp camp) throws FacultyNotEligibleException, CampFullException, RegistrationClosedException, BlacklistedStudentException, RegisteredAlreadyException {
+    public void registerCampAsStudent(Student student, Camp camp) throws FacultyNotEligibleException, CampFullException, RegistrationClosedException, BlacklistedStudentException, RegisteredAlreadyException, DuplicateEntityExistsException {
         if (student.getRegisteredCamps().contains(camp)){
             throw new RegisteredAlreadyException();
         }
@@ -44,10 +46,12 @@ public class StudentController {
         if (camp.canStudentRegister(student)) {
             camp.registerStudent(student);
             student.registerForCamp(camp);
+            campStudentRepository.add(new CampStudent(camp, student, CampRole.ATTENDEE, false));
+
         }
     }
 
-    public void registerCampAsCampCommitteeMember(Student student, Camp camp) throws FacultyNotEligibleException, CampFullException, RegistrationClosedException, BlacklistedStudentException, RegisteredAlreadyException, AlreadyCampCommitteeMemberException{
+    public void registerCampAsCampCommitteeMember(Student student, Camp camp) throws FacultyNotEligibleException, CampFullException, RegistrationClosedException, BlacklistedStudentException, RegisteredAlreadyException, AlreadyCampCommitteeMemberException, DuplicateEntityExistsException{
         if (student.getRegisteredCamps().contains(camp)){
             throw new RegisteredAlreadyException();
         }
@@ -59,6 +63,7 @@ public class StudentController {
         if(camp.canCampCommitteeMemberRegister(student)){
             camp.registerCampCommitteeMember(student);
             student.registerForCampAsCampCommitteeMember(camp);
+            campStudentRepository.add(new CampStudent(camp, student, CampRole.COMMITTEE, false));
         }
     }
     

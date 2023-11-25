@@ -15,6 +15,8 @@ public class Student extends User {
     private Camp committeeMemberCamp;
     private List<Camp> registeredCamps;
 
+    private int point;
+
     public Student(String name, String email, String password, String faculty) {
         super(name, email, password,Faculty.valueOf(faculty.toUpperCase()));
         this.isCampCommitteeMember = false;
@@ -62,6 +64,14 @@ public class Student extends User {
 
     public Camp getCommitteeMemberCamp() {
         return committeeMemberCamp;
+    }
+
+    public int getPoint() {
+        return point;
+    }
+
+    public void setPoint(int point) {
+        this.point = point;
     }
 }
 

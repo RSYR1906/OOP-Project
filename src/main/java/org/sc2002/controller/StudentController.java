@@ -3,6 +3,7 @@ package org.sc2002.controller;
 import org.sc2002.entity.*;
 import org.sc2002.repository.CampRepository;
 import org.sc2002.repository.CampStudentRepository;
+import org.sc2002.repository.StudentRepository;
 import org.sc2002.utils.exception.*;
 
 import java.util.ArrayList;
@@ -15,10 +16,12 @@ public class StudentController {
 
     private CampController campController;
     private CampStudentRepository campStudentRepository;
+    private StudentRepository studentRepository;
 
-    public StudentController(CampController campController, CampStudentRepository campStudentRepository) {
+    public StudentController(CampController campController, CampStudentRepository campStudentRepository, StudentRepository studentRepository) {
         this.campController = campController;
         this.campStudentRepository = campStudentRepository;
+        this.studentRepository = studentRepository;
     }
 
     public void withdrawFromCamp(Student student, Camp camp) throws EntityNotFoundException, Exception {
@@ -94,6 +97,15 @@ public class StudentController {
             CampRemainSlots.put(name, remainSlots);
         }
         return CampRemainSlots;
+    }
+
+    public void studentAddOnePoint(Student student){
+        student.setPoint(student.getPoint()+1);
+        try{
+            studentRepository.update(student);
+        } catch (EntityNotFoundException e){
+            System.out.println("Failed to update point of the student: " + e.getMessage());
+        }
     }
 
 }

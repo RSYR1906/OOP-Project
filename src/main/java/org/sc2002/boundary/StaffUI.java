@@ -1,12 +1,7 @@
 package org.sc2002.boundary;
 
-import org.sc2002.controller.CampController;
-import org.sc2002.controller.StaffController;
-import org.sc2002.controller.UserController;
-import org.sc2002.entity.Camp;
-import org.sc2002.entity.Faculty;
-import org.sc2002.entity.Staff;
-import org.sc2002.repository.CampRepository;
+import org.sc2002.controller.*;
+import org.sc2002.entity.*;
 import org.sc2002.utils.exception.EntityNotFoundException;
 import org.sc2002.utils.exception.WrongStaffException;
 
@@ -14,23 +9,26 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import static org.sc2002.utils.CAMSDateFormat.formatStringToDate;
-import java.util.stream.Collectors;
 
 public class StaffUI implements UI{
 
     private Staff staff;
     private StaffController staffController;
     private CampController campController;
-    //private CommitteeController committeeController;
+
+    private StudentController studentController;
+    private EnquiryController enquiryController;
+    private SuggestionController suggestionController;
 
 
-    public StaffUI(Staff staff, StaffController staffController, CampController campController) {
+    public StaffUI(Staff staff, StaffController staffController, StudentController studentController, CampController campController, EnquiryController enquiryController, SuggestionController suggestionController) {
         this.staff = staff;
         this.staffController = staffController;
+        this.studentController = studentController;
         this.campController = campController;
+        this.enquiryController = enquiryController;
+        this.suggestionController = suggestionController;
     }
 
     @Override
@@ -65,10 +63,10 @@ public class StaffUI implements UI{
                     viewCampsICreated();
                     break;
                 case 5:
-                    //viewAndReply(user);
+                    replyEnquiryAsStaff();
                     break;
                 case 6:
-                    //viewAndApproveSuggestion(user);
+                    approveSuggestion();
                     break;
                 case 7:
                     //GenerateStudentsReport(user);
@@ -384,6 +382,75 @@ public class StaffUI implements UI{
         } catch (Exception e) {
             System.out.println("Failed to create the camp : " + e.getMessage());
         }
+    }
+
+    void printEnquiries(){
+        List<Enquiry> enquiries = enquiryController.getEnquiryByStaff(staff);
+        int index = 0;
+        for (Enquiry enquiry : enquiries) {
+            System.out.print("\u001B[34m");
+            System.out.println("Number is " + index++);
+            System.out.println("Camp name: " + enquiry.getCamp().getCampName());
+            System.out.println("Query: " + enquiry.getQuery());
+            System.out.println("Answer: " + enquiry.getAnswer());
+            System.out.print("\u001B[0m");
+            System.out.println("---------------------");
+        }
+    }
+
+    void printSuggestions(){
+        List<Suggestion> suggestions = suggestionController.getSuggestionByStaff(staff);
+        int index = 0;
+        for (Suggestion suggestion : suggestions) {
+            System.out.print("\u001B[34m");
+            System.out.println("Number is " + index++);
+            System.out.println("Camp name: " + suggestion.getCamp().getCampName());
+            System.out.println("Suggestion: " + suggestion.getSuggestion());
+            System.out.println("IsApproved: " + suggestion.getApproved());
+            System.out.print("\u001B[0m");
+            System.out.println("---------------------");
+        }
+    }
+
+    void replyEnquiryAsStaff(){
+        printEnquiries();
+        List<Enquiry> enquiries = enquiryController.getEnquiryByStaff(staff);
+
+        int index = -1;
+        Scanner scanner = new Scanner(System.in);
+        while (index < 0 || index >= enquiries.size()) {
+            System.out.println("Please enter the number of enquiry you want to reply");
+            index = scanner.nextInt();
+        }
+        System.out.println("Please enter the reply");
+        scanner.nextLine();
+        String reply = scanner.nextLine();
+
+        Enquiry enquiry = enquiries.get(index);
+
+        if(!enquiry.getAnswer().equals("NOT BEEN ANSWERED")){
+            System.out.println("Query is answered already");
+        } else {
+            enquiry.setAnswer(reply);
+            System.out.println("Added answer to the query");
+        }
+    }
+
+    void approveSuggestion(){
+        printSuggestions();
+        List<Suggestion> suggestions = suggestionController.getSuggestionByStaff(staff);
+        int index = -1;
+        Scanner scanner = new Scanner(System.in);
+        while (index < 0 || index >= suggestions.size()) {
+            System.out.println("Please enter the number you want to approve");
+            index = scanner.nextInt();
+        }
+        Suggestion suggestionToApprove = suggestions.get(index);
+        suggestionToApprove.setApproved(true);
+        studentController.studentAddOnePoint(suggestionToApprove.getStudent());
+        System.out.println("Successfully approved suggestion");
+
+
     }
 
 

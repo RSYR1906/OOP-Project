@@ -287,18 +287,21 @@ public class StaffUI implements UI{
         }
     }
 
+      /**
+     * create camp
+     */
     public void createCamp() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Welcome to Camp Creator!");
-        System.out.println("Please enter the following details:");
+        System.out.println("\u001B[36mWELCOME TO CAMP CREATOR!\n\u001B[0m");
+        System.out.println("\u001B[36mPlease enter the following details:\u001B[0m");
 
-        System.out.print("Camp Name: ");
+        System.out.print("\u001B[34mCamp Name: \u001B[0m");
         String campName = scanner.nextLine();
 
         LocalDate campStartDate = null;
         while (true) {
-            System.out.print("Camp Start Date (format: YYYY-MM-DD): ");
+            System.out.print("\u001B[34mCamp Start Date (format: YYYY-MM-DD): \u001B[0m");
             String dateString = scanner.nextLine();
             try{
                 campStartDate = formatStringToDate(dateString);
@@ -310,7 +313,7 @@ public class StaffUI implements UI{
 
         LocalDate campEndDate = null;
         while (true) {
-            System.out.print("Camp End Date (format: YYYY-MM-DD): "); // Need to add check that start date is before end date
+            System.out.print("\u001B[34mCamp End Date (format: YYYY-MM-DD): \u001B[0m"); // Need to add check that start date is before end date
             String closingDateString = scanner.nextLine();
             try{
                 campEndDate = formatStringToDate(closingDateString);
@@ -322,7 +325,7 @@ public class StaffUI implements UI{
 
         LocalDate campRegistrationEndDate = null;
         while (true) {
-            System.out.print("Camp Registration End Date (format: YYYY-MM-DD): ");
+            System.out.print("\u001B[34mCamp Registration End Date (format: YYYY-MM-DD): \u001B[0m");
             String closingDateString = scanner.nextLine();
             try{
                 campRegistrationEndDate = formatStringToDate(closingDateString);
@@ -333,7 +336,9 @@ public class StaffUI implements UI{
         }
         Faculty userGroupOpenTo;
         while (true) {
-            System.out.print("User group (own school or whole NTU): Please enter 0： own school;     1: whole NTU");
+            System.out.print("\n\u001B[34mUser group (own school or whole NTU): Please enter \u001B[0m" + // Blue color for the question
+                            "\u001B[32m0: own school \u001B[0m" + // Green color for option 0
+                            "\u001B[31m1: whole NTU \u001B[0m");  // Red color for option 1
             String userInput = scanner.nextLine();
             if (userInput.equals("0")) {
                 userGroupOpenTo = staff.getFaculty();
@@ -347,24 +352,24 @@ public class StaffUI implements UI{
         }
 
 
-        System.out.print("Location: ");
+        System.out.print("\u001B[34mLocation: \u001B[0m");
         String location = scanner.nextLine();
 
         int committeeSlots = -1;
         while (committeeSlots < 0 || committeeSlots > 10) {
-            System.out.print("Camp Committee Slots (max 10): ");
+            System.out.print("\n\u001B[34mCamp Committee Slots (max 10): \u001B[0m");
             committeeSlots = scanner.nextInt();
         }
 
         int totalSlots = 0;
         while (totalSlots <= committeeSlots) {
-            System.out.print("Total Slots (must be greater than the number of committee): ");
+            System.out.print("\u001B[34mTotal Slots (must be greater than the number of committee): \u001B[0m");
             totalSlots = scanner.nextInt();
         }
 
         scanner.nextLine(); // consume the newline character
 
-        System.out.print("Description: ");
+        System.out.print("\u001B[34mDescription: \u001B[0m");
         String description = scanner.nextLine();
 
         // Assume the staff in charge is tied to the staff who created it
@@ -372,7 +377,7 @@ public class StaffUI implements UI{
 
         boolean visibilityToStudent = true;
         while (true) {
-            System.out.print("Is the current campsite visible to students;  0： invisible;     1: visible");
+            System.out.print("\u001B[34mIs the current campsite visible to students?  0：invisible  1:visible\u001B[0m ");
             String userInput = scanner.nextLine();
             if (userInput.equals("0")) {
                 visibilityToStudent = false;
@@ -385,13 +390,14 @@ public class StaffUI implements UI{
             }
         }
         try {
-            Camp createdCamp = staffController.createCamp(campName, description, campStartDate, campEndDate, campRegistrationEndDate, userGroupOpenTo, location, totalSlots, committeeSlots, staff, visibilityToStudent);
-            System.out.println("Successfully created a camp");
+            Camp createdCamp = campController.createCamp(campName, description, campStartDate, campEndDate, campRegistrationEndDate, userGroupOpenTo, location, totalSlots, committeeSlots, staff.getID(), visibilityToStudent);
+            System.out.println("\n\u001B[33m Successfully created a camp\u001B[0m ");
             printCamp(createdCamp);
         } catch (Exception e) {
             System.out.println("Failed to create the camp : " + e.getMessage());
         }
     }
+
 
     void printEnquiries(){
         List<Enquiry> enquiries = enquiryController.getEnquiryByStaff(staff);
@@ -427,7 +433,7 @@ public class StaffUI implements UI{
 
         int index = -1;
         Scanner scanner = new Scanner(System.in);
-        while (index < 0 || index >= enquiries.size()) {
+        if (index < 0 || index >= enquiries.size()) {
             System.out.println("Please enter the number of enquiry you want to reply");
             index = scanner.nextInt();
         }

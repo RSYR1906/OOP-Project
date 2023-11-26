@@ -126,9 +126,14 @@ public class StudentEnquiryUI implements UI {
             System.out.println("Please enter the number you want to edit");
             index = scanner.nextInt();
         }
+        Enquiry enquiryToEdit = enquiries.get(index);
+        if(!enquiryToEdit.getAnswer().equals("NOT BEEN ANSWERED")){
+            System.out.println("Fail: answered enquiry cannot be edited");
+        }
+
+
         System.out.println("Please enter the new enquiry");
         String query = scanner.nextLine();
-        Enquiry enquiryToEdit = enquiries.get(index);
         enquiryToEdit.setQuery(query);
         enquiryController.editEnquiry(enquiryToEdit);
         System.out.println("Successfully edited enquiry");
@@ -143,7 +148,11 @@ public class StudentEnquiryUI implements UI {
             System.out.println("Please enter the number you want to delete the inquiry from");
             index = scanner.nextInt();
         }
-        enquiryController.deleteEnquiry(enquiries.get(index).getID());
+        Enquiry enquiryToDelete = enquiries.get(index);
+        if(!enquiryToDelete.getAnswer().equals("NOT BEEN ANSWERED")){
+            System.out.println("Fail: answered enquiry cannot be deleted");
+        }
+        enquiryController.deleteEnquiry(enquiryToDelete.getID());
         System.out.println("Successfully deleted enquiry");
     }
 }

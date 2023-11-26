@@ -21,14 +21,20 @@ public class StaffUI implements UI{
     private EnquiryController enquiryController;
     private SuggestionController suggestionController;
 
+    private StaffCampReportGeneration staffCampReportGeneration;
 
-    public StaffUI(Staff staff, StaffController staffController, StudentController studentController, CampController campController, EnquiryController enquiryController, SuggestionController suggestionController) {
+    private CommitteePerformanceReportGeneration committeePerformanceReportGeneration;
+
+
+    public StaffUI(Staff staff, StaffController staffController, StudentController studentController, UserController userController, CampController campController, EnquiryController enquiryController, SuggestionController suggestionController) {
         this.staff = staff;
         this.staffController = staffController;
         this.studentController = studentController;
         this.campController = campController;
         this.enquiryController = enquiryController;
         this.suggestionController = suggestionController;
+        this.staffCampReportGeneration = new StaffCampReportGeneration(campController);
+        this.committeePerformanceReportGeneration = new CommitteePerformanceReportGeneration(studentController);
     }
 
     @Override
@@ -45,7 +51,8 @@ public class StaffUI implements UI{
             System.out.println("6. View and approve suggestions to changes to camp details from camp committee.");
             System.out.println("7. Generate a report of the list of students attending each camp you has created.");
             System.out.println("8. Generate a performance report of the camp committee members.");
-            System.out.println("9. Exit");
+            System.out.println("9. Change password");
+            System.out.println("10. Exit");
 
             System.out.print("\nYour choice (1-9): ");
             int choice = scanner.nextInt();
@@ -69,13 +76,15 @@ public class StaffUI implements UI{
                     approveSuggestion();
                     break;
                 case 7:
-                    //GenerateStudentsReport(user);
+                    generateStaffCampReport();
                     break;
                 case 8:
-                    //GeneratePerformanceReport(user);
+                    generatePerformanceReport();
                     break;
-
                 case 9:
+                    changePassword();
+                    break;
+                case 10:
                     System.out.println("\nExiting. Goodbye!");
                     System.exit(0);
                     break;
@@ -253,7 +262,7 @@ public class StaffUI implements UI{
 
         Camp editedCamp = new Camp(campName, description, campStartDate, campEndDate, campRegistrationEndDate, userGroupOpenTo, location, totalSlots, committeeSlots, staffInCharge, visibilityToStudent);
         try {
-            campController.editCamp(editedCamp);
+            staffController.editCamp(editedCamp);
             System.out.println("Successfully edited camp: " + editedCamp.getCampName());
         }catch (Exception e){
             System.out.println("Failed to edit camp: " + e.getMessage());
@@ -271,7 +280,7 @@ public class StaffUI implements UI{
             if(!campToDelete.getStaffInChargeID().equals(staff.getID())){
                 throw new WrongStaffException();
             }
-            campController.deleteCamp(campToDelete.getID());
+            staffController.deleteCamp(campToDelete, staff);
             System.out.println("Successfully deleted camp: " + campToDelete.getCampName());
         } catch (EntityNotFoundException | WrongStaffException e) {
             System.out.println("Failed to delete camp: " + e.getMessage());
@@ -376,7 +385,7 @@ public class StaffUI implements UI{
             }
         }
         try {
-            Camp createdCamp = campController.createCamp(campName, description, campStartDate, campEndDate, campRegistrationEndDate, userGroupOpenTo, location, totalSlots, committeeSlots, staff.getID(), visibilityToStudent);
+            Camp createdCamp = staffController.createCamp(campName, description, campStartDate, campEndDate, campRegistrationEndDate, userGroupOpenTo, location, totalSlots, committeeSlots, staff, visibilityToStudent);
             System.out.println("Successfully created a camp");
             printCamp(createdCamp);
         } catch (Exception e) {
@@ -451,6 +460,53 @@ public class StaffUI implements UI{
         System.out.println("Successfully approved suggestion");
 
 
+    }
+
+    public void changePassword() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter your new password: ");
+        String newPassword = scanner.nextLine();
+        staffController.changePassword(staff, newPassword);
+    }
+
+    public void generateStaffCampReport(){
+        Scanner scanner = new Scanner(System.in);
+        boolean attendee = true;
+        while (true) {
+            System.out.print("Print Attendee?;  0： Yes;     1: No");
+            String userInput = scanner.nextLine();
+            if (userInput.equals("0")) {
+                attendee = true;
+                break;
+            } else if (userInput.equals("1")) {
+                attendee = false;
+                break;
+            } else {
+                System.out.println("Invalid date format. Please enter in the format 0/1.");
+            }
+        }
+
+        boolean committee = true;
+        while (true) {
+            System.out.print("Print Committee?;  0： Yes;     1: No");
+            String userInput = scanner.nextLine();
+            if (userInput.equals("0")) {
+                attendee = true;
+                break;
+            } else if (userInput.equals("1")) {
+                attendee = false;
+                break;
+            } else {
+                System.out.println("Invalid date format. Please enter in the format 0/1.");
+            }
+        }
+
+        staffCampReportGeneration.generateReport(staff, attendee, committee);
+
+    }
+
+    public void generatePerformanceReport(){
+        committeePerformanceReportGeneration.generateReport(staff);
     }
 
 

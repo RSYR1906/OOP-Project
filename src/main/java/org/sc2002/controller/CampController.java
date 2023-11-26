@@ -30,19 +30,6 @@ public class CampController {
         return camp;
     }
 
-    public Camp editCamp(String campName, String description, LocalDate campStartDate, LocalDate campEndDate, LocalDate campRegistrationEndDate, Faculty userGroupOpenTo, String location, int totalSlots, int campCommitteeSlots, String staffInChargeID,  boolean visibilityToStudent) throws EntityNotFoundException{
-
-        Camp newCamp = new Camp( campName,  description,  campStartDate,  campEndDate,  campRegistrationEndDate,  userGroupOpenTo,  location, totalSlots,  campCommitteeSlots, staffInChargeID, visibilityToStudent);
-
-        try{
-            campRepository.update(newCamp);
-            return newCamp;
-        } catch (EntityNotFoundException e){
-            System.out.println("Failed to update entity: " + e.getMessage());
-            throw e;
-        }
-    }
-
     public Camp editCamp(Camp camp) throws EntityNotFoundException{
         try{
             campRepository.update(camp);

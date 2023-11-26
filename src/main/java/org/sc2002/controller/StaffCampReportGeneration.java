@@ -1,6 +1,7 @@
 package org.sc2002.controller;
 
 import org.sc2002.entity.Camp;
+import org.sc2002.entity.Staff;
 import org.sc2002.entity.Student;
 
 import java.io.BufferedWriter;
@@ -9,20 +10,29 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class CommitteeCampReportGeneration implements ReportGeneration{
+public class StaffCampReportGeneration implements ReportGeneration{
 
-    public void generateReport(Student student, Boolean attendee, Boolean committee) {
+    CampController campController;
 
-        Camp camp = student.getCommitteeMemberCamp();
+    public StaffCampReportGeneration(CampController campController) {
+        this.campController = campController;
+    }
+
+    public void generateReport(Staff staff, Boolean attendee, Boolean committee) {
+        List<Camp> createdCamps = campController.getAllCamps().stream()
+                .filter(camp -> camp.getStaffInChargeID().equals(staff.getID()))
+                .collect(Collectors.toList());
 
         String currentTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMddHHmm"));
-        String filename = "report-" + student.getID() + "-" + currentTime + ".txt";
+        String filename = "report-" + staff.getID() + "-" + currentTime + ".txt";
 
         System.out.println("CREATING REPORT...");
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-
+            for (Camp camp : createdCamps) {
                 printCamp(camp, writer);
 
                 ArrayList<Student> studentsRegistered = camp.getStudentsRegistered();
@@ -33,8 +43,8 @@ public class CommitteeCampReportGeneration implements ReportGeneration{
                     writer.write("-----------------------------\n");
                     writer.write("ID\tNAME\tFACULTY\n");
                     writer.write("-----------------------------\n");
-                    for (Student studentAttendee : studentsRegistered) {
-                        writer.write(studentAttendee.getID() + "\t" + studentAttendee.getName() + "\t" + studentAttendee.getFaculty() + "\n");
+                    for (Student student : studentsRegistered) {
+                        writer.write(student.getID() + "\t" + student.getName() + "\t" + student.getFaculty() + "\n");
                     }
                     writer.write("\n");
                     writer.write("////////////////////////////////\n");
@@ -52,16 +62,14 @@ public class CommitteeCampReportGeneration implements ReportGeneration{
                     }
                 }
                 writer.write("-----------------------------\n");
-
+            }
 
             System.out.println("SUCCESSFULLY GENERATED REPORT");
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("failed to generate report");
         }
-
     }
-
 
     public static void printCamp(Camp camp, BufferedWriter writer) throws IOException {
         writer.write("Camp Name: " + camp.getCampName() + "\n");

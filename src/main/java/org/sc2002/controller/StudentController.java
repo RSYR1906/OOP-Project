@@ -108,6 +108,14 @@ public class StudentController {
         return CampRemainSlots;
     }
 
+    public List<Camp> getCampsWithRemainSlots(Student student) {
+        List<Camp> camps = ViewCamp(student);
+        return camps.stream().filter(camp -> {
+            int remainSlots = camp.getTotalSlots() - camp.getStudentsRegistered().size() - camp.getCommitteeRegistered().size();
+            return remainSlots > 0;
+        }).collect(Collectors.toList());
+    }
+
     public void studentAddOnePoint(Student student){
         student.setPoint(student.getPoint()+1);
         try{
@@ -129,6 +137,21 @@ public class StudentController {
             }
         }
         return false;
+    }
+
+    public void changePassword(Student student, String newPassword){
+        try{
+            student.setPassword(newPassword);
+            studentRepository.update(student);
+            System.out.println("Successfully updated password");
+        } catch (EntityNotFoundException e){
+            System.out.println("Failed to update password");
+        }
+    }
+
+    public List<Student> getAllStudents(){
+        return studentRepository.getAllStudents();
+
     }
 
 }

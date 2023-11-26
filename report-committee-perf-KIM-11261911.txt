@@ -1,0 +1,6 @@
+COMMITTEE REGISTERED
+-----------------------------
+ID	NAME	FACULTY	POINTS
+-----------------------------
+DL007	DENISE	SCSE	0
+-----------------------------

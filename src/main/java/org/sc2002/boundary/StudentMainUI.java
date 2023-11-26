@@ -1,20 +1,18 @@
 package org.sc2002.boundary;
 
-import org.sc2002.controller.CampController;
-import org.sc2002.controller.EnquiryController;
-import org.sc2002.controller.StudentController;
-import org.sc2002.controller.SuggestionController;
+import org.sc2002.controller.*;
 import org.sc2002.entity.Camp;
 import org.sc2002.entity.Student;
+import org.sc2002.utils.Filter;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class StudentMainUI implements UI{
 
     private Student student;
     private StudentController studentController;
+    private UserController userController;
     private CampController campController;
     private EnquiryController enquiryController;
 
@@ -24,7 +22,7 @@ public class StudentMainUI implements UI{
 
 
 
-    public StudentMainUI(Student student, StudentController studentController, EnquiryController enquiryController, SuggestionController suggestionController, CampController campController) {
+    public StudentMainUI(Student student, StudentController studentController, UserController userController, CampController campController, EnquiryController enquiryController, SuggestionController suggestionController) {
         this.student = student;
         this.studentController = studentController;
         this.enquiryController = enquiryController;
@@ -46,7 +44,7 @@ public class StudentMainUI implements UI{
             System.out.println("4. Withdraw from camps that you have already registered for.");
             System.out.println("5. Manage your student enquiries");
             System.out.println("6. Manage your committee activities");
-            System.out.println("7. ");
+            System.out.println("7. Change your password");
             System.out.println("8. ");
             System.out.println("9. Exit");
 
@@ -72,6 +70,7 @@ public class StudentMainUI implements UI{
                     committeeUI.body();
                     break;
                 case 7:
+                    changePassword();
                     break;
                 case 8:
                     break;
@@ -87,27 +86,48 @@ public class StudentMainUI implements UI{
 
     }
 
-    Map<String, Integer> viewCampsRemain() {
+    void viewCampsRemain() {
         Map<String, Integer> campSlotsMap = studentController.getCampRemainSlots(student);
+        int index = -1;
+        Scanner scanner = new Scanner(System.in);
+        while (index < 0 || index > 2) {
+            System.out.println("Please enter the sort: 0 ALPHABETICAL ; 1 BY CAMP START DATE ; 2 BY CAMP REGISTRATION END DATE");
+            index = scanner.nextInt();
+        }
+        if (index == 0){
+            printCampsWithSlots(Filter.ALPHABETICAL);
+        } else if (index == 1){
+            printCampsWithSlots(Filter.CAMP_START_DATE);
+        } else {
+            printCampsWithSlots(Filter.CAMP_REG_END_DATE);
+        }
+    }
 
-        // Use StringBuilder for efficient string concatenation
-        StringBuilder sb = new StringBuilder();
+    void printCampsWithSlots(Filter filter){
+        List<Camp> campsWithRemainSlots = studentController.getCampsWithRemainSlots(student);
+        List<Camp> filteredCamps = filterCamps(filter,campsWithRemainSlots);
+        System.out.println("CAMP NAME\tREMAINING SLOTS\tLOCATION\tSTART DATE\tEND DATE\tREGISTRATION END DATE");
+        for(Camp camp : filteredCamps){
+            int remainSlots = camp.getTotalSlots() - camp.getStudentsRegistered().size() - camp.getCommitteeRegistered().size();
+            System.out.println(camp.getCampName() + "\t" + remainSlots + "\t" +camp.getLocation() + "\t"  + camp.getCampStartDate()+ "\t"  + camp.getCampEndDate()+ "\t" + camp.getCampRegistrationEndDate()  );
+        }
+    }
 
-        // Add header to the output
-        sb.append("\u001B[34mcamps, RemainSlots\u001B[0m\n");
-
-        // Iterate over the map and add each entry to the output
-        campSlotsMap.forEach((key, value) -> sb.append("\u001B[0m").append(key).append(", ").append(value).append("\n"));
-
-        // Print the result
-        System.out.println(sb.toString());
-
-        return campSlotsMap;
-
+    List<Camp> filterCamps(Filter filter, List<Camp> camps){
+        List<Camp> filteredCamps;
+        if(filter == Filter.CAMP_START_DATE){
+            filteredCamps = camps.stream().sorted(Comparator.comparing(Camp::getCampStartDate)).collect(Collectors.toList());
+        } else if (filter == Filter.CAMP_REG_END_DATE){
+            filteredCamps = camps.stream().sorted(Comparator.comparing(Camp::getCampRegistrationEndDate)).collect(Collectors.toList());
+        } else {
+            filteredCamps = camps.stream().sorted(Comparator.comparing(Camp::getCampName)).collect(Collectors.toList());
+        }
+        return filteredCamps;
     }
 
     void registerCamps() {
-        Map<String, Integer> campSlotsMap = viewCampsRemain();
+        Map<String, Integer> campSlotsMap = studentController.getCampRemainSlots(student);
+        printCampsWithSlots(Filter.ALPHABETICAL);
         Scanner scanner = new Scanner(System.in);
         String userInput = "";
         while (!campSlotsMap.containsKey(userInput)) {
@@ -163,6 +183,13 @@ public class StudentMainUI implements UI{
 
     void printRegisteredCamps(){
         studentController.printRegisteredCamps(student);
+    }
+
+    public void changePassword() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter your new password: ");
+        String newPassword = scanner.nextLine();
+        studentController.changePassword(student, newPassword);
     }
 
 

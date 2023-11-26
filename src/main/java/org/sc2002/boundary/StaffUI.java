@@ -21,8 +21,10 @@ public class StaffUI implements UI{
     private EnquiryController enquiryController;
     private SuggestionController suggestionController;
 
+    private UserController userController;
 
-    public StaffUI(Staff staff, StaffController staffController, StudentController studentController, CampController campController, EnquiryController enquiryController, SuggestionController suggestionController) {
+
+    public StaffUI(Staff staff, StaffController staffController, StudentController studentController, UserController userController, CampController campController, EnquiryController enquiryController, SuggestionController suggestionController) {
         this.staff = staff;
         this.staffController = staffController;
         this.studentController = studentController;
@@ -74,8 +76,10 @@ public class StaffUI implements UI{
                 case 8:
                     //GeneratePerformanceReport(user);
                     break;
-
                 case 9:
+                    changePassword();
+                    break;
+                case 10:
                     System.out.println("\nExiting. Goodbye!");
                     System.exit(0);
                     break;
@@ -451,6 +455,13 @@ public class StaffUI implements UI{
         System.out.println("Successfully approved suggestion");
 
 
+    }
+
+    public void changePassword() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter your new password: ");
+        String newPassword = scanner.nextLine();
+        staffController.changePassword(staff, newPassword);
     }
 
 

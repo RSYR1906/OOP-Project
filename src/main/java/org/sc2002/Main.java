@@ -36,11 +36,11 @@ public class Main {
         User user = loginUI.body();
         if (userController.getUserRole(user).equals("Staff Member")) {
             Staff staff = (Staff) user;
-            StaffUI staffUI = new StaffUI(staff, staffController, studentController ,campController, enquiryController, suggestionController);
+            StaffUI staffUI = new StaffUI(staff, staffController, studentController , userController, campController, enquiryController, suggestionController);
             staffUI.body();
         } else if (userController.getUserRole(user).equals("Student")) {
             Student student = (Student) user;
-            StudentMainUI studentMainUI = new StudentMainUI(student, studentController, enquiryController,suggestionController,campController);
+            StudentMainUI studentMainUI = new StudentMainUI(student, studentController, userController, campController, enquiryController,suggestionController);
             studentMainUI.body();
         }
     }

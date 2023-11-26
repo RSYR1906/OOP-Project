@@ -1,9 +1,6 @@
 package org.sc2002.boundary;
 
-import org.sc2002.controller.CampController;
-import org.sc2002.controller.EnquiryController;
-import org.sc2002.controller.StudentController;
-import org.sc2002.controller.SuggestionController;
+import org.sc2002.controller.*;
 import org.sc2002.entity.Camp;
 import org.sc2002.entity.Student;
 
@@ -15,6 +12,7 @@ public class StudentMainUI implements UI{
 
     private Student student;
     private StudentController studentController;
+    private UserController userController;
     private CampController campController;
     private EnquiryController enquiryController;
 
@@ -24,7 +22,7 @@ public class StudentMainUI implements UI{
 
 
 
-    public StudentMainUI(Student student, StudentController studentController, EnquiryController enquiryController, SuggestionController suggestionController, CampController campController) {
+    public StudentMainUI(Student student, StudentController studentController, UserController userController, CampController campController, EnquiryController enquiryController, SuggestionController suggestionController) {
         this.student = student;
         this.studentController = studentController;
         this.enquiryController = enquiryController;
@@ -46,7 +44,7 @@ public class StudentMainUI implements UI{
             System.out.println("4. Withdraw from camps that you have already registered for.");
             System.out.println("5. Manage your student enquiries");
             System.out.println("6. Manage your committee activities");
-            System.out.println("7. ");
+            System.out.println("7. Change your password");
             System.out.println("8. ");
             System.out.println("9. Exit");
 
@@ -72,6 +70,7 @@ public class StudentMainUI implements UI{
                     committeeUI.body();
                     break;
                 case 7:
+                    changePassword();
                     break;
                 case 8:
                     break;
@@ -163,6 +162,13 @@ public class StudentMainUI implements UI{
 
     void printRegisteredCamps(){
         studentController.printRegisteredCamps(student);
+    }
+
+    public void changePassword() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter your new password: ");
+        String newPassword = scanner.nextLine();
+        studentController.changePassword(student, newPassword);
     }
 
 

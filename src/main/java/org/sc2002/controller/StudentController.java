@@ -131,6 +131,16 @@ public class StudentController {
         return false;
     }
 
+    public void changePassword(Student student, String newPassword){
+        try{
+            student.setPassword(newPassword);
+            studentRepository.update(student);
+            System.out.println("Successfully updated password");
+        } catch (EntityNotFoundException e){
+            System.out.println("Failed to update password");
+        }
+    }
+
 }
 
 

@@ -38,16 +38,4 @@ public class UserController {
             return "Unknown";
         }
     }
-
-    public boolean changePassword(User user, String newPassword) {
-        // Iterate through the users list to find the matching user
-        for (User u : users) {
-            if (u.equals(user)) {
-                // Update the user's password
-                u.setPassword(newPassword);
-                return true; // Return true if the password was successfully
-            }
-}
-        return false;
-}
 }

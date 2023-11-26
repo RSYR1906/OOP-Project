@@ -71,4 +71,14 @@ public class StaffController {
     public List<Camp> getAllCampsICreated(String staffID) {
         return campController.getAllCamps().stream().filter(camp -> camp.getStaffInChargeID().equals(staffID)).collect(Collectors.toList());
     }
+
+    public void changePassword(Staff staff, String newPassword){
+        try{
+            staff.setPassword(newPassword);
+            staffRepository.update(staff);
+            System.out.println("Successfully updated password");
+        } catch (EntityNotFoundException e){
+            System.out.println("Failed to update password");
+        }
+    }
 }

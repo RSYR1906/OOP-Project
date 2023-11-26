@@ -6,6 +6,7 @@ import org.sc2002.repository.CampStudentRepository;
 import org.sc2002.repository.StudentRepository;
 import org.sc2002.utils.exception.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,9 +38,13 @@ public class StudentController {
         }
     }
     
-    public void registerCampAsStudent(Student student, Camp camp) throws FacultyNotEligibleException, CampFullException, RegistrationClosedException, BlacklistedStudentException, RegisteredAlreadyException, DuplicateEntityExistsException {
+    public void registerCampAsStudent(Student student, Camp camp) throws FacultyNotEligibleException, CampFullException, RegistrationClosedException, BlacklistedStudentException, RegisteredAlreadyException, DuplicateEntityExistsException, CampConflictException {
         if (student.getRegisteredCamps().contains(camp)){
             throw new RegisteredAlreadyException();
+        }
+
+        if (isTimeConflict(camp, student)){
+            throw new CampConflictException();
         }
 
         if (camp.canStudentRegister(student)) {
@@ -50,13 +55,17 @@ public class StudentController {
         }
     }
 
-    public void registerCampAsCampCommitteeMember(Student student, Camp camp) throws FacultyNotEligibleException, CampFullException, RegistrationClosedException, BlacklistedStudentException, RegisteredAlreadyException, AlreadyCampCommitteeMemberException, DuplicateEntityExistsException{
+    public void registerCampAsCampCommitteeMember(Student student, Camp camp) throws FacultyNotEligibleException, CampFullException, RegistrationClosedException, BlacklistedStudentException, RegisteredAlreadyException, AlreadyCampCommitteeMemberException, DuplicateEntityExistsException, CampConflictException{
         if (student.getRegisteredCamps().contains(camp)){
             throw new RegisteredAlreadyException();
         }
 
         if (student.isCampCommitteeMember()){
             throw new AlreadyCampCommitteeMemberException();
+        }
+
+        if (isTimeConflict(camp, student)){
+            throw new CampConflictException();
         }
 
         if(camp.canCampCommitteeMemberRegister(student)){
@@ -106,6 +115,20 @@ public class StudentController {
         } catch (EntityNotFoundException e){
             System.out.println("Failed to update point of the student: " + e.getMessage());
         }
+    }
+
+
+    public boolean isTimeConflict(Camp camp, Student student){
+        LocalDate campStartDate = camp.getCampStartDate();
+        LocalDate campEndDate = camp.getCampEndDate();
+        ArrayList<Camp> registeredCamps = student.getRegisteredCamps();
+
+        for (Camp registeredCamp : registeredCamps){
+            if (!(campEndDate.isBefore(registeredCamp.getCampStartDate()) || campStartDate.isAfter(registeredCamp.getCampEndDate()))) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -185,9 +185,9 @@ public class Camp implements Entity{
 
     public boolean canStudentRegister(Student student) throws RegistrationClosedException, FacultyNotEligibleException, CampFullException, BlacklistedStudentException {
         LocalDate now = LocalDate.now();
-//        if(now.isAfter(campRegistrationEndDate)){ //comment out for test
-//            throw new RegistrationClosedException();
-//        }
+        if(now.isAfter(campRegistrationEndDate)){ //comment out for test
+            throw new RegistrationClosedException();
+        }
         if(student.getFaculty() != userGroupOpenTo && userGroupOpenTo != Faculty.ALL){
             throw new FacultyNotEligibleException();
         }
@@ -202,9 +202,9 @@ public class Camp implements Entity{
 
     public boolean canCampCommitteeMemberRegister(Student student) throws RegistrationClosedException, FacultyNotEligibleException, CampFullException, BlacklistedStudentException {
         LocalDate now = LocalDate.now();
-//        if(now.isAfter(campRegistrationEndDate)){ //comment out for test
-//            throw new RegistrationClosedException();
-//        }
+        if(now.isAfter(campRegistrationEndDate)){ //comment out for test
+            throw new RegistrationClosedException();
+        }
         if(student.getFaculty() != userGroupOpenTo && userGroupOpenTo != Faculty.ALL){
             throw new FacultyNotEligibleException();
         }

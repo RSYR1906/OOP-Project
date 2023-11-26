@@ -1,0 +1,65 @@
+Camp Name: CAC FOP
+Camp Start Date: 2023-12-16
+Registration closing date: 2023-12-18
+Camp Registration End Date: 2023-11-30
+User group: ALL
+Location: NTU campus
+Total Slots: 300
+Camp Committee Slots: 30
+Description: CAC Yearly event to welcome freshmen
+Staff in charge: ARVI
+Camp is visible
+------------------------------------
+STUDENT ATTENDEES REGISTERED
+-----------------------------
+ID	NAME	FACULTY
+-----------------------------
+DON84	DONG	ADM
+COMMITTEE REGISTERED
+-----------------------------
+ID	NAME	FACULTY
+-----------------------------
+-----------------------------
+Camp Name: TEST ALL CAMP
+Camp Start Date: 2023-12-20
+Registration closing date: 2023-12-22
+Camp Registration End Date: 2023-11-30
+User group: ALL
+Location: NTU campus
+Total Slots: 10
+Camp Committee Slots: 2
+Description: test
+Staff in charge: ARVI
+Camp is visible
+------------------------------------
+STUDENT ATTENDEES REGISTERED
+-----------------------------
+ID	NAME	FACULTY
+-----------------------------
+Powell	Powell	EEE
+COMMITTEE REGISTERED
+-----------------------------
+ID	NAME	FACULTY
+-----------------------------
+-----------------------------
+Camp Name: TEST SCSE CAMP
+Camp Start Date: 2023-12-20
+Registration closing date: 2023-12-23
+Camp Registration End Date: 2023-11-30
+User group: SCSE
+Location: NTU campus
+Total Slots: 3
+Camp Committee Slots: 1
+Description: test
+Staff in charge: ARVI
+Camp is visible
+------------------------------------
+STUDENT ATTENDEES REGISTERED
+-----------------------------
+ID	NAME	FACULTY
+-----------------------------
+COMMITTEE REGISTERED
+-----------------------------
+ID	NAME	FACULTY
+-----------------------------
+-----------------------------

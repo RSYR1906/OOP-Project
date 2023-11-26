@@ -3,7 +3,6 @@ package org.sc2002.controller;
 import org.sc2002.entity.Camp;
 import org.sc2002.entity.Staff;
 import org.sc2002.entity.Student;
-import org.sc2002.entity.User;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -22,7 +21,7 @@ public class StaffCampReportGeneration implements ReportGeneration{
         this.campController = campController;
     }
 
-    public void generateReportInTxt(Staff staff, Boolean attendee, Boolean committee) {
+    public void generateReport(Staff staff, Boolean attendee, Boolean committee) {
         List<Camp> createdCamps = campController.getAllCamps().stream()
                 .filter(camp -> camp.getStaffInChargeID().equals(staff.getID()))
                 .collect(Collectors.toList());

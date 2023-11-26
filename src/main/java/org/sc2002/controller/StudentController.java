@@ -141,6 +141,11 @@ public class StudentController {
         }
     }
 
+    public List<Student> getAllStudents(){
+        return studentRepository.getAllStudents();
+
+    }
+
 }
 
 

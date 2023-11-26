@@ -1,9 +1,6 @@
 package org.sc2002.boundary;
 
-import org.sc2002.controller.CampController;
-import org.sc2002.controller.EnquiryController;
-import org.sc2002.controller.StudentController;
-import org.sc2002.controller.SuggestionController;
+import org.sc2002.controller.*;
 import org.sc2002.entity.Camp;
 import org.sc2002.entity.Enquiry;
 import org.sc2002.entity.Student;
@@ -21,12 +18,15 @@ public class CommitteeUI implements UI{
     private EnquiryController enquiryController;
     private SuggestionController suggestionController;
 
+    private CommitteeCampReportGeneration committeeCampReportGeneration;
+
     public CommitteeUI(Student student, StudentController studentController, CampController campController, EnquiryController enquiryController, SuggestionController suggestionController) {
         this.student = student;
         this.studentController = studentController;
         this.campController = campController;
         this.enquiryController = enquiryController;
         this.suggestionController = suggestionController;
+        this.committeeCampReportGeneration = new CommitteeCampReportGeneration();
     }
 
     @Override
@@ -40,8 +40,8 @@ public class CommitteeUI implements UI{
         System.out.println("3. View my suggestions");
         System.out.println("4. Edit my suggestions");
         System.out.println("5. Delete my suggestions");
-        System.out.println("6. Go back to student main menu");
-        System.out.print("\nYour choice (1-4): ");
+        System.out.println("6. Generate report of the camp");
+        System.out.print("\nYour choice (1-6): ");
 
         int choice = scanner.nextInt();
         switch (choice) {
@@ -59,6 +59,9 @@ public class CommitteeUI implements UI{
                 break;
             case 5:
                 deleteSuggestion();
+                break;
+            case 6:
+                committeeGenerateReport();
                 break;
             default:
                 System.out.println("\u001B[31mInvalid choice. Please enter a valid option.\u001B[0m");
@@ -196,5 +199,41 @@ public class CommitteeUI implements UI{
         }
         suggestionController.deleteSuggestion(suggestionToDelete.getID());
         System.out.println("Successfully deleted suggestion");
+    }
+
+    void committeeGenerateReport(){
+        Scanner scanner = new Scanner(System.in);
+        boolean attendee = true;
+        while (true) {
+            System.out.print("Print Attendee?;  0： Yes;     1: No");
+            String userInput = scanner.nextLine();
+            if (userInput.equals("0")) {
+                attendee = true;
+                break;
+            } else if (userInput.equals("1")) {
+                attendee = false;
+                break;
+            } else {
+                System.out.println("Invalid date format. Please enter in the format 0/1.");
+            }
+        }
+
+        boolean committee = true;
+        while (true) {
+            System.out.print("Print Committee?;  0： Yes;     1: No");
+            String userInput = scanner.nextLine();
+            if (userInput.equals("0")) {
+                attendee = true;
+                break;
+            } else if (userInput.equals("1")) {
+                attendee = false;
+                break;
+            } else {
+                System.out.println("Invalid date format. Please enter in the format 0/1.");
+            }
+        }
+
+        committeeCampReportGeneration.generateReport(student, attendee, committee);
+
     }
 }

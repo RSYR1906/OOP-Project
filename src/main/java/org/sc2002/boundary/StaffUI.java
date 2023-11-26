@@ -23,6 +23,8 @@ public class StaffUI implements UI{
 
     private StaffCampReportGeneration staffCampReportGeneration;
 
+    private CommitteePerformanceReportGeneration committeePerformanceReportGeneration;
+
 
     public StaffUI(Staff staff, StaffController staffController, StudentController studentController, UserController userController, CampController campController, EnquiryController enquiryController, SuggestionController suggestionController) {
         this.staff = staff;
@@ -32,6 +34,7 @@ public class StaffUI implements UI{
         this.enquiryController = enquiryController;
         this.suggestionController = suggestionController;
         this.staffCampReportGeneration = new StaffCampReportGeneration(campController);
+        this.committeePerformanceReportGeneration = new CommitteePerformanceReportGeneration(studentController);
     }
 
     @Override
@@ -76,7 +79,7 @@ public class StaffUI implements UI{
                     generateStaffCampReport();
                     break;
                 case 8:
-                    //GeneratePerformanceReport(user);
+                    generatePerformanceReport();
                     break;
                 case 9:
                     changePassword();
@@ -498,8 +501,12 @@ public class StaffUI implements UI{
             }
         }
 
-        staffCampReportGeneration.generateReportInTxt(staff, attendee, committee);
+        staffCampReportGeneration.generateReport(staff, attendee, committee);
 
+    }
+
+    public void generatePerformanceReport(){
+        committeePerformanceReportGeneration.generateReport(staff);
     }
 
 

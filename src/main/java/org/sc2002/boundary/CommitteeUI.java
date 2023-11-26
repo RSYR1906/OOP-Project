@@ -168,10 +168,14 @@ public class CommitteeUI implements UI{
             System.out.println("Please enter the number you want to edit");
             index = scanner.nextInt();
         }
+        Suggestion suggestionToEdit = suggestions.get(index);
+        if(suggestionToEdit.getApproved()){
+            System.out.println("Fail: accepted suggestion cannot be edited");
+        }
+
         System.out.println("Please enter the new suggestion");
         scanner.nextLine();
         String suggestionContent = scanner.nextLine();
-        Suggestion suggestionToEdit = suggestions.get(index);
         suggestionToEdit.setSuggestion(suggestionContent);
         System.out.println("Successfully edited suggestion");
     }
@@ -185,7 +189,12 @@ public class CommitteeUI implements UI{
             System.out.println("Please enter the number you want to delete the suggestion from");
             index = scanner.nextInt();
         }
-        suggestionController.deleteSuggestion(suggestions.get(index).getID());
+
+        Suggestion suggestionToDelete = suggestions.get(index);
+        if(suggestionToDelete.getApproved()){
+            System.out.println("Fail: accepted suggestion cannot be deleted");
+        }
+        suggestionController.deleteSuggestion(suggestionToDelete.getID());
         System.out.println("Successfully deleted suggestion");
     }
 }

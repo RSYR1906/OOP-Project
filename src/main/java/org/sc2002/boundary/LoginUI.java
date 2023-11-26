@@ -58,10 +58,19 @@ public class LoginUI implements UI{
     }
 
     public User login() {
-        Scanner scanner = new Scanner(System.in);
+    Scanner scanner = new Scanner(System.in);
 
-        System.out.print("\nEnter your user ID: ");
+    while (true) {
+        // Get user input for user ID and password
+        System.out.print("\nEnter your user ID (or type 'exit' to go back): ");
         String userId = scanner.nextLine();
+
+        // Allow user to exit the loop
+        if ("exit".equalsIgnoreCase(userId)) {
+        System.out.print("\u001B[35m\nExiting. Goodbye! \u001B[0m");
+        System.exit(0);
+        }
+
         System.out.print("Enter your password: ");
         String password = scanner.nextLine();
 
@@ -74,11 +83,9 @@ public class LoginUI implements UI{
             System.out.println("\u001B[34mUser Role:\u001B[0m " + userRole);
 
             return authenticatedUser;
-    } else {
-        System.out.println("\u001B[31m \nLogin failed. Invalid user ID or password.\u001B[0m");
-        scanner.close();
-        return null;
+        } else {
+            System.out.println("\u001B[31m \nLogin failed. Invalid user ID or password.\u001B[0m");
+        }
     }
-
-    }
+}
 }
